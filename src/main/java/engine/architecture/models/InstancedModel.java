@@ -6,7 +6,6 @@ import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 import engine.utils.libraryWrappers.opengl.objects.Vao;
 import engine.utils.libraryWrappers.opengl.objects.Vbo;
 import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
 import engine.utils.libraryWrappers.opengl.utils.GlRendering;
 
 public class InstancedModel implements Model {
@@ -49,9 +48,7 @@ public class InstancedModel implements Model {
     }
 
     @Override
-    public void render(RenderState<?> instanceState, ShadersProgram program) {
-        this.vao.bind();
-        this.vao.enableAttributes();
+    public void render(RenderState<?> instanceState, int meshIdx) {
         if (this.vao.hasIndices()) {
             GlRendering.drawElementsInstanced(renderMode,
                     vertices, DataType.U_INT, 0, instances);
@@ -59,6 +56,17 @@ public class InstancedModel implements Model {
             GlRendering.drawArraysInstanced(renderMode, 0,
                     vertices, instances);
         }
+    }
+
+    @Override
+    public void bindAndConfigure(int meshIdx) {
+        this.vao.bind();
+        this.vao.enableAttributes();
+    }
+
+    @Override
+    public void unbind(int meshIdx) {
+        this.vao.unbind();
     }
 
     @Override
@@ -82,7 +90,7 @@ public class InstancedModel implements Model {
     }
 
     @Override
-    public Mesh getMesh(int i) {
+    public Mesh[] getMeshes() {
         return null;
     }
 }

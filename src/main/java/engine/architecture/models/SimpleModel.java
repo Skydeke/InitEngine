@@ -4,7 +4,6 @@ import engine.utils.libraryWrappers.maths.objects.Box;
 import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 import engine.utils.libraryWrappers.opengl.objects.IVbo;
 import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
 
 public class SimpleModel implements Model {
 
@@ -40,14 +39,18 @@ public class SimpleModel implements Model {
         this.bounds = bounds;
     }
 
+    public void bindAndConfigure(int meshIdx){
+        m[meshIdx].preconfigureRendering();
+        m[meshIdx].bind(getLod());
+    }
+
     @Override
-    public void render(RenderState state, ShadersProgram program) {
-        for (Mesh m : m) {
-            m.preconfigureRendering();
-            program.updatePerMeshUniforms(state);
-            m.render(getLod(), renderMode);
-            state.incrementMeshRenderingValue();
-        }
+    public void render(RenderState state, int meshIdx) {
+        m[meshIdx].render(renderMode);
+    }
+
+    public void unbind(int meshIdx){
+        m[meshIdx].unbind();
     }
 
     public float getLowest() {
@@ -61,8 +64,8 @@ public class SimpleModel implements Model {
     }
 
     @Override
-    public Mesh getMesh(int i) {
-        return m[i];
+    public Mesh[] getMeshes() {
+        return m;
     }
 
     @Override

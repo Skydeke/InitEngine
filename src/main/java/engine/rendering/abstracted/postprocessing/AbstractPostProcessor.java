@@ -71,8 +71,8 @@ public abstract class AbstractPostProcessor implements PostProcessor {
         GlUtils.clear(GlBuffer.COLOUR);
         getShadersProgram().bind();
 
-        getShadersProgram().updatePerRenderUniforms(new RenderState<>(null, renderOutputData, null));
-        getShadersProgram().updatePerInstanceUniforms(new RenderState<>(null, renderOutputData, null));
+        getShadersProgram().updatePerRenderUniforms(new RenderState<>(null, renderOutputData, null, 0));
+        getShadersProgram().updatePerInstanceUniforms(new RenderState<>(null, renderOutputData, null, 0));
 
         draw();
         fbo.unbind();

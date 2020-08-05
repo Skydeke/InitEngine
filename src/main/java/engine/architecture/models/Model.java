@@ -2,7 +2,6 @@ package engine.architecture.models;
 
 import engine.utils.libraryWrappers.maths.objects.Box;
 import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
 
 public interface Model {
 
@@ -11,7 +10,10 @@ public interface Model {
      *
      * @param instanceState
      */
-    void render(RenderState<?> instanceState, ShadersProgram program);
+    void render(RenderState<?> instanceState, int meshIdx);
+
+    void bindAndConfigure(int meshIdx);
+    void unbind(int meshIdx);
 
     /**
      * Returns the level of detail of the model
@@ -34,5 +36,5 @@ public interface Model {
 
     float getLowest();
 
-    Mesh getMesh(int i);
+    Mesh[] getMeshes();
 }

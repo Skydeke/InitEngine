@@ -6,7 +6,6 @@ import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 import engine.utils.libraryWrappers.opengl.constants.VboUsage;
 import engine.utils.libraryWrappers.opengl.objects.*;
 import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
 import engine.utils.libraryWrappers.opengl.utils.GlRendering;
 
 public class ModifiableModel implements Model {
@@ -43,20 +42,28 @@ public class ModifiableModel implements Model {
     }
 
     @Override
-    public void render(RenderState<?> instanceState, ShadersProgram program) {
-        if (getLod().available()) {
-            IVbo indexBuffer = getLod().current();
-            vao.loadIndexBuffer(indexBuffer, false);
-        }
-        vao.bind();
-        vao.enableAttributes();
-
+    public void render(RenderState<?> instanceState, int meshIdx) {
         if (vao.hasIndices()) {
             GlRendering.drawElements(renderMode,
                     vao.getIndexCount(), DataType.U_INT, 0);
         } else {
             GlRendering.drawArrays(renderMode, 0, vao.getIndexCount());
         }
+    }
+
+    @Override
+    public void bindAndConfigure(int meshIdx) {
+        if (getLod().available()) {
+            IVbo indexBuffer = getLod().current();
+            vao.loadIndexBuffer(indexBuffer, false);
+        }
+        vao.bind();
+        vao.enableAttributes();
+    }
+
+    @Override
+    public void unbind(int meshIdx) {
+        vao.unbind();
     }
 
     @Override
@@ -84,7 +91,7 @@ public class ModifiableModel implements Model {
     }
 
     @Override
-    public Mesh getMesh(int i) {
+    public Mesh[] getMeshes() {
         return null;
     }
 }

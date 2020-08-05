@@ -1,9 +1,11 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
+import engine.rendering.abstracted.Renderable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class UniformArrayProperty<T> implements UniformProperty<T> {
+public class UniformArrayProperty<T extends Renderable> implements UniformProperty<T> {
 
     private final String name;
     private final SizeSupplier sizeSupplier;
@@ -48,7 +50,7 @@ public class UniformArrayProperty<T> implements UniformProperty<T> {
         return name;
     }
 
-    public interface UniformSupplier<T> {
+    public interface UniformSupplier<T extends Renderable> {
         UniformProperty<T> createUniform(String name, int index);
     }
 

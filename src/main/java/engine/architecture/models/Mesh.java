@@ -1,6 +1,7 @@
 package engine.architecture.models;
 
 
+import engine.rendering.abstracted.Renderable;
 import engine.utils.libraryWrappers.opengl.constants.DataType;
 import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 import engine.utils.libraryWrappers.opengl.constants.VboUsage;
@@ -9,7 +10,7 @@ import engine.utils.libraryWrappers.opengl.utils.GlRendering;
 
 import java.util.Arrays;
 
-public class Mesh {
+public class Mesh implements Renderable {
 
     private float[] vert;
     private float[] tex;
@@ -91,21 +92,41 @@ public class Mesh {
         return ret;
     }
 
-    public void render(ILod lod, RenderMode renderMode) {
+    @Override
+    public void process() {}
+
+    public void preconfigureRendering() {
+        if (material != null){
+            material.preconfigure();
+        }
+    }
+
+    public void bind(ILod lod){
         if (lod.available()) {
             IVbo indexBuffer = lod.current();
             vao.loadIndexBuffer(indexBuffer, false);
         }
         vao.bind();
         vao.enableAttributes();
+    }
 
+    @Override
+    public void render(RenderMode renderMode) {
         if (vao.hasIndices()) {
             GlRendering.drawElements(renderMode,
                     vao.getIndexCount(), DataType.U_INT, 0);
         } else {
             GlRendering.drawArrays(renderMode, 0, vao.getIndexCount());
         }
+    }
+
+    public void unbind(){
         vao.unbind();
+    }
+
+    @Override
+    public Model getModel() {
+        return null;
     }
 
     public void delete(boolean b) {
@@ -118,11 +139,5 @@ public class Mesh {
 
     public void setMaterial(Material material) {
         this.material = material;
-    }
-
-    public void preconfigureRendering() {
-        if (material != null){
-            material.preconfigure();
-        }
     }
 }

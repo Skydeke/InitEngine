@@ -1,10 +1,12 @@
 package engine.rendering.abstracted.renderers;
 
+import engine.architecture.models.Model;
 import engine.architecture.system.AppContext;
+import engine.rendering.abstracted.Renderable;
 import engine.utils.libraryWrappers.opengl.shaders.RenderState;
 import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
 
-public abstract class AbstractRenderer3D<T> extends Renderer3D<T> {
+public abstract class AbstractRenderer3D<T extends Renderable> extends Renderer3D<T> {
 
     private final ShadersProgram<T> shadersProgram;
 
@@ -27,15 +29,22 @@ public abstract class AbstractRenderer3D<T> extends Renderer3D<T> {
         getShadersProgram().updatePerRenderUniforms(renderState);
         onRenderStage(renderState);
 
-        for (T instance : renderList) {
-            final RenderState<T> instanceState = new RenderState<T>(this, instance, context.getSceneContext().getCamera());
 
-            if (!canCullInstance(instanceState)) {
-                getShadersProgram().updatePerInstanceUniforms(instanceState);
+        for (Model model : renderList.keySet()) {
+            for (int i = 0; i < model.getMeshes().length; i++) {
+                model.bindAndConfigure(i);
+                for (T instance : renderList.get(model)){
+                    final RenderState<T> instanceState = new RenderState<T>(this, instance, context.getSceneContext().getCamera(), i);
 
-                onInstanceRender(instanceState);
+                    if (!canCullInstance(instanceState)) {
+                        getShadersProgram().updatePerInstanceUniforms(instanceState);
 
-                render(instance);
+                        onInstanceRender(instanceState);
+
+                        render(instance);
+                    }
+                }
+                model.unbind(i);
             }
         }
 

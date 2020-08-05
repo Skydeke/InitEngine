@@ -7,7 +7,6 @@ import engine.rendering.abstracted.renderers.Renderer3D
 import engine.utils.libraryWrappers.maths.joml.Vector3f
 import engine.utils.libraryWrappers.opengl.shaders.*
 import engine.utils.libraryWrappers.opengl.textures.TextureObject
-import engine.utils.libraryWrappers.opengl.utils.GlUtils
 
 internal class EntityRenderer : Renderer3D<Entity>() {
 
@@ -16,23 +15,23 @@ internal class EntityRenderer : Renderer3D<Entity>() {
     init {
         this.shadersProgram = ShadersProgram.create(VERT_FILE, FRAG_FILE)
 
-        shadersProgram.addPerMeshUniform(object : UniformValueProperty<Entity>("albedoConst") {
+        shadersProgram.addPerInstanceUniform(object : UniformValueProperty<Entity>("albedoConst") {
             override fun getUniformValue(state: RenderState<Entity>): Vector3f {
                 return Vector3f(
-                    state.toRenderMesh.material.diffuseColor.x,
-                    state.toRenderMesh.material.diffuseColor.y,
-                    state.toRenderMesh.material.diffuseColor.z
+                    state.mesh.material.diffuseColor.x,
+                    state.mesh.material.diffuseColor.y,
+                    state.mesh.material.diffuseColor.z
                 )
             }
         })
-        shadersProgram.addPerMeshUniform(object : UniformTextureProperty<Entity>("albedoTex",  0) {
+        shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<Entity>("albedoTex",  0) {
             override fun getUniformValue(state: RenderState<Entity>): TextureObject {
-                return state.toRenderMesh.material.getDiffuseTexture();
+                return state.mesh.material.diffuseTexture;
             }
         })
-        shadersProgram.addPerMeshUniform(object : UniformBooleanProperty<Entity>("isAlbedoMapped") {
+        shadersProgram.addPerInstanceUniform(object : UniformBooleanProperty<Entity>("isAlbedoMapped") {
             override fun getUniformValue(state: RenderState<Entity>): Boolean {
-                return state.toRenderMesh.material.hasTexture();
+                return state.mesh.material.hasTexture();
             }
         })
 
@@ -62,11 +61,17 @@ internal class EntityRenderer : Renderer3D<Entity>() {
 
         val renderState = RenderState<Entity>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
-
-        for (entity in renderList) {
-            val instanceState = RenderState<Entity>(this, entity, context.camera)
-            shadersProgram.updatePerInstanceUniforms(instanceState)
-            entity.model.render(instanceState, shadersProgram)
+        for (model in renderList.keys) {
+            for (i in model.meshes.indices) {
+                model.bindAndConfigure(i)
+                for (entity in renderList[model]!!){
+                    if (entity.isActivated) {
+                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                        shadersProgram.updatePerInstanceUniforms(instanceState)
+                        model.render(instanceState, i)
+                    }
+                }
+            }
         }
 
         shadersProgram.unbind()
@@ -78,19 +83,20 @@ internal class EntityRenderer : Renderer3D<Entity>() {
         }
         shadersProgram.bind()
 
-        GlUtils.enableCulling()
-        GlUtils.enableDepthTest()
-        GlUtils.enableDepthMasking()
-        GlUtils.enableAlphaBlending()
-
         val renderState = RenderState<Entity>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
 
-        for (entity in renderList) {
-            if (entity.isActivated && condition.isvalid(entity)) {
-                val instanceState = RenderState<Entity>(this, entity, context.camera)
-                shadersProgram.updatePerInstanceUniforms(instanceState)
-                entity.model.render(instanceState, shadersProgram)
+        for (model in renderList.keys) {
+            for (i in 0..model.meshes.size) {
+                model.bindAndConfigure(i)
+                for (entity in renderList[model]!!){
+                    if (entity.isActivated && condition.isvalid(entity)){
+                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                        shadersProgram.updatePerInstanceUniforms(instanceState)
+                        model.render(instanceState, i)
+                    }
+                }
+                model.unbind(i);
             }
         }
 

@@ -1,8 +1,9 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
+import engine.rendering.abstracted.Renderable;
 import org.lwjgl.opengl.GL30;
 
-public abstract class UniformUIntProperty<T> extends AbstractUniformProperty<T> {
+public abstract class UniformUIntProperty<T extends Renderable> extends AbstractUniformProperty<T> {
 
     protected UniformUIntProperty(String name) {
         super(name);

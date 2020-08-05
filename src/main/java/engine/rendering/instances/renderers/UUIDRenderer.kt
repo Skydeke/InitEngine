@@ -52,10 +52,18 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
         val renderState = RenderState<Entity>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
 
-        for (entity in renderList) {
-            val instanceState = RenderState<Entity>(this, entity, context.camera)
-            shadersProgram.updatePerInstanceUniforms(instanceState)
-            entity.model.render(instanceState, shadersProgram)
+        for (model in renderList.keys) {
+            for (i in 0..model.meshes.size) {
+                model.bindAndConfigure(i)
+                for (entity in renderList[model]!!){
+                    if (entity.isActivated){
+                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                        shadersProgram.updatePerInstanceUniforms(instanceState)
+                        model.render(instanceState, i)
+                    }
+                }
+                model.unbind(i);
+            }
         }
 
         shadersProgram.unbind()
@@ -70,11 +78,17 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
         val renderState = RenderState<Entity>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
 
-        for (entity in renderList) {
-            if (condition.isvalid(entity)) {
-                val instanceState = RenderState<Entity>(this, entity, context.camera)
-                shadersProgram.updatePerInstanceUniforms(instanceState)
-                entity.model.render(instanceState, shadersProgram)
+        for (model in renderList.keys) {
+            for (i in 0..model.meshes.size) {
+                model.bindAndConfigure(i)
+                for (entity in renderList[model]!!){
+                    if (entity.isActivated && condition.isvalid(entity)){
+                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                        shadersProgram.updatePerInstanceUniforms(instanceState)
+                        model.render(instanceState, i)
+                    }
+                }
+                model.unbind(i);
             }
         }
 

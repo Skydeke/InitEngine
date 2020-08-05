@@ -101,6 +101,10 @@ public class Material {
         }
     }
 
+    public Material(boolean bfc){
+        cullBackface = bfc;
+    }
+
     private TextureObject getTexture(int aiTextureType, AIMaterial material, AIScene scene){
         AIString texturename = AIString.calloc();
         Assimp.aiGetMaterialTexture(material, aiTextureType, 0, texturename, (IntBuffer) null, null, null, null, null, null);
@@ -157,5 +161,9 @@ public class Material {
         }else {
             GlUtils.disableCulling();
         }
+    }
+
+    public void setBackfaceCulling(boolean b) {
+        cullBackface = b;
     }
 }

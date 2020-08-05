@@ -1,6 +1,8 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
-public interface UniformProperty<T> {
+import engine.rendering.abstracted.Renderable;
+
+public interface UniformProperty<T  extends Renderable> {
 
     void load(RenderState<T> state);
 

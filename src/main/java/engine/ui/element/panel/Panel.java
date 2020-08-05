@@ -1,24 +1,29 @@
 package engine.ui.element.panel;
 
+import engine.architecture.models.Model;
+import engine.architecture.models.ModelGenerator;
 import engine.architecture.system.AppContext;
 import engine.architecture.system.Config;
 import engine.architecture.system.Window;
-import engine.fileLoaders.ModelLoader;
+import engine.rendering.abstracted.Renderable;
 import engine.ui.element.UIElement;
 import engine.ui.layout.Box;
 import engine.utils.Color;
 import engine.utils.libraryWrappers.maths.joml.Vector4i;
+import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 import engine.utils.libraryWrappers.opengl.shaders.*;
 import engine.utils.libraryWrappers.opengl.textures.TextureObject;
 import engine.utils.libraryWrappers.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Panel extends UIElement {
+public class Panel extends UIElement implements Renderable {
 
     private final static String VERT_FILE = "res/shaders/gui/panel_vs.glsl";
     private final static String FRAG_FILE = "res/shaders/gui/panel_fs.glsl";
     private static ShadersProgram<Panel> shadersProgram;
+    private Model model = ModelGenerator.generateSquare();
+
     @Getter
     protected boolean isBuffer = false;
     // defines color of panel in UI
@@ -80,17 +85,19 @@ public class Panel extends UIElement {
             isWrongFillMode = true;
         }
         shadersProgram.bind();
-        RenderState<Panel> instanceState = new RenderState<Panel>(null, this, AppContext.instance().getSceneContext().getCamera());
+        RenderState<Panel> instanceState = new RenderState<Panel>(null, this, AppContext.instance().getSceneContext().getCamera(), 0);
+        getModel().bindAndConfigure(0);
         shadersProgram.updatePerInstanceUniforms(instanceState);
         if (isScissor()) {
             Window.instance().setScissor(getAbsoluteBox());
-            ModelLoader.posquad.render(instanceState, shadersProgram);
+            getModel().render(instanceState, 0);
             super.render();
             Window.instance().disableScissor();
         } else {
-            ModelLoader.posquad.render(instanceState, shadersProgram);
+            getModel().render(instanceState, 0);
             super.render();
         }
+        getModel().unbind(0);
         shadersProgram.unbind();
 
         if (isWrongFillMode) {
@@ -218,5 +225,20 @@ public class Panel extends UIElement {
         this.rounding.y = r2;
         this.rounding.z = r3;
         this.rounding.w = r4;
+    }
+
+    @Override
+    public void process() {
+
+    }
+
+    @Override
+    public void render(RenderMode renderMode) {
+
+    }
+
+    @Override
+    public Model getModel() {
+        return model;
     }
 }

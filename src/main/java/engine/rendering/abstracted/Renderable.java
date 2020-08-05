@@ -1,5 +1,8 @@
 package engine.rendering.abstracted;
 
+import engine.architecture.models.Model;
+import engine.utils.libraryWrappers.opengl.constants.RenderMode;
+
 public interface Renderable {
 
     /**
@@ -7,4 +10,8 @@ public interface Renderable {
      * Invoked before rendering the spatial object
      */
     void process();
+
+    void render(RenderMode renderMode);
+
+    Model getModel();
 }

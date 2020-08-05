@@ -4,7 +4,6 @@ import engine.architecture.scene.SceneContext
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
 import engine.utils.libraryWrappers.opengl.shaders.*
-import engine.utils.libraryWrappers.opengl.utils.GlUtils
 
 internal class SkyRenderer : Renderer3D<Sky>() {
 
@@ -39,12 +38,18 @@ internal class SkyRenderer : Renderer3D<Sky>() {
         val renderState = RenderState<Sky>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
 
-        for (entity in renderList) {
-            val instanceState = RenderState<Sky>(this, entity, context.camera)
-            shadersProgram.updatePerInstanceUniforms(instanceState)
-            GlUtils.disableCulling()
-            entity.model.render(instanceState, shadersProgram)
-            GlUtils.enableCulling()
+        for (model in renderList.keys) {
+            for (i in model.meshes.indices) {
+                model.bindAndConfigure(i)
+                for (entity in renderList[model]!!){
+                    if (entity.isActivated){
+                        val instanceState = RenderState<Sky>(this, entity, context.camera, i)
+                        shadersProgram.updatePerInstanceUniforms(instanceState)
+                        model.render(instanceState, i)
+                    }
+                }
+                model.unbind(i);
+            }
         }
 
         shadersProgram.unbind()
@@ -59,15 +64,20 @@ internal class SkyRenderer : Renderer3D<Sky>() {
         val renderState = RenderState<Sky>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
 
-        for (entity in renderList) {
-            if (entity.isActivated && condition.isvalid(entity)) {
-                val instanceState = RenderState<Sky>(this, entity, context.camera)
-                shadersProgram.updatePerInstanceUniforms(instanceState)
-                GlUtils.disableCulling()
-                entity.model.render(instanceState, shadersProgram)
-                GlUtils.enableCulling()
+        for (model in renderList.keys) {
+            for (i in 0..model.meshes.size) {
+                model.bindAndConfigure(i)
+                for (entity in renderList[model]!!){
+                    if (entity.isActivated && condition.isvalid(entity)){
+                        val instanceState = RenderState<Sky>(this, entity, context.camera, i)
+                        shadersProgram.updatePerInstanceUniforms(instanceState)
+                        model.render(instanceState, i)
+                    }
+                }
+                model.unbind(i);
             }
         }
+
         shadersProgram.unbind()
     }
 

@@ -5,6 +5,7 @@ import engine.architecture.componentsystem.ComponentGroup;
 import engine.architecture.models.Model;
 import engine.architecture.scene.node.Node;
 import engine.rendering.abstracted.Renderable;
+import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 
 public abstract class Entity extends Node implements ComponentBased, Renderable {
 
@@ -23,7 +24,12 @@ public abstract class Entity extends Node implements ComponentBased, Renderable 
 
     public abstract void process();
 
-    public Model getModel() {
+    public void render(RenderMode renderMode){
+
+    }
+
+    @Override
+    public Model getModel(){
         return model;
     }
 

@@ -1,14 +1,16 @@
 package engine.rendering.abstracted.renderers;
 
+import engine.architecture.models.Model;
 import engine.architecture.scene.SceneContext;
 import engine.architecture.system.AppContext;
+import engine.rendering.abstracted.Renderable;
 
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
-public abstract class Renderer<T> implements IRenderer {
+public abstract class Renderer<T extends Renderable> implements IRenderer {
 
-    protected final List<T> renderList = new LinkedList<>();
+    protected final HashMap<Model, LinkedList<T>> renderList = new HashMap<>();
 
     /**
      * Returns the context of the current render
@@ -25,8 +27,22 @@ public abstract class Renderer<T> implements IRenderer {
      * @param toProcess the T to render
      */
     public void process(T toProcess) {
-        if (toProcess != null && !renderList.contains(toProcess))
-            renderList.add(toProcess);
+//        System.out.println("Processing Entity " + renderList.size());
+        if (toProcess != null){
+            if (renderList.get(toProcess.getModel()) == null){
+                renderList.put(toProcess.getModel(), new LinkedList<>());
+                renderList.get(toProcess.getModel()).add(toProcess);
+//            System.out.println("Created new List and added one T");
+                return;
+            }
+            if (renderList.get(toProcess.getModel()) != null && !renderList.get(toProcess.getModel()).contains(toProcess)) {
+                LinkedList<T> list = renderList.get(toProcess.getModel());
+                if (list != null) {
+                    list.add(toProcess);
+//                System.out.println("Found List and added one T");
+                }
+            }
+        }
     }
 
     /**

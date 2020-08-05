@@ -1,6 +1,8 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
-public abstract class UniformValueProperty<T> extends AbstractUniformProperty<T> {
+import engine.rendering.abstracted.Renderable;
+
+public abstract class UniformValueProperty<T extends Renderable> extends AbstractUniformProperty<T> {
 
     protected UniformValueProperty(String name) {
         super(name);

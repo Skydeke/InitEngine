@@ -1,9 +1,10 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
+import engine.rendering.abstracted.Renderable;
 import engine.utils.libraryWrappers.opengl.textures.TextureObject;
 import org.lwjgl.opengl.GL20;
 
-public abstract class UniformTextureProperty<T> implements UniformProperty<T> {
+public abstract class UniformTextureProperty<T extends Renderable> implements UniformProperty<T> {
 
     private final String name;
     private final int unit;
