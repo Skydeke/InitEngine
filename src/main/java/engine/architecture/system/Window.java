@@ -122,15 +122,14 @@ public class Window {
         }
     }
 
-    public void update() {
-        glfwSwapBuffers(handle);
+    public void update(boolean anyChange) {
+        if (anyChange){
+            glfwSwapBuffers(handle);
+        }
         glfwPollEvents();
-        glfwSetWindowTitle(handle, spec_title);
 
         if (lock)
             setCursorPos(lockedcursorPos);
-
-        glfwSetWindowTitle(handle, "");
     }
 
     /**

@@ -55,7 +55,7 @@ public class Pipeline {
     @Getter
     private SSR ssrPass;
 
-
+    private boolean anyChange = true;
     /**
      * Base class of the pipeline which provides the following functionality:
      * 1. Overlay rendering (outlines, debug scene objects)
@@ -135,6 +135,7 @@ public class Pipeline {
         // call sub-render method
         // that will populate the scene texture
         context.getScene().process();
+        checkForChanges();
         GlUtils.clear(GlBuffer.COLOUR, GlBuffer.DEPTH, GlBuffer.STENCIL);
 
 
@@ -193,6 +194,27 @@ public class Pipeline {
             });
         }
         finish();
+    }
+
+    /**
+     * Returns whether any change occurred, if anything rendered it will be true
+     *
+     * @return true if any new changed happened in the screen, false otherwise
+     */
+    boolean isAnyChange() {
+        return anyChange;
+        // Improvement: check if camera view matrix changed
+    }
+
+    void setAnyChange(boolean b) {
+        anyChange = b;
+    }
+
+    private void checkForChanges() {
+        anyChange = false;
+        for (Renderer renderer : renderers) {
+            anyChange |= renderer.anyProcessed();
+        }
     }
 
     private void addRenderer(Renderer3D<?> renderer) {

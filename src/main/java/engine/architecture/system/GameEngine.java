@@ -57,11 +57,8 @@ public class GameEngine implements Runnable {
                 game.update(Time.getDelta());
                 inputManager.update();
                 game.render(AppContext.instance());
-//                window.update(renderingPipeline.isAnyChange());
-                window.update();
-
-
-//                renderingPipeline.setAnyChange(false);
+                window.update(AppContext.instance().getSceneContext().getPipeline().isAnyChange());
+                AppContext.instance().getSceneContext().getPipeline().setAnyChange(false);
 
             } catch (Exception e) {
                 e.printStackTrace();
