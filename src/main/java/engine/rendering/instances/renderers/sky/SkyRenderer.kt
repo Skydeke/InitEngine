@@ -9,6 +9,7 @@ internal class SkyRenderer : Renderer3D<Sky>() {
 
     private val shadersProgram: ShadersProgram<Sky>
 
+
     init {
         this.shadersProgram = ShadersProgram.create(VERT_FILE, FRAG_FILE)
 
@@ -42,11 +43,9 @@ internal class SkyRenderer : Renderer3D<Sky>() {
             for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
-                    if (entity.isActivated){
-                        val instanceState = RenderState<Sky>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
-                    }
+                    val instanceState = RenderState<Sky>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
                 model.unbind(i);
             }
@@ -68,18 +67,16 @@ internal class SkyRenderer : Renderer3D<Sky>() {
             for (i in 0..model.meshes.size) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
-                    if (entity.isActivated && condition.isvalid(entity)){
-                        val instanceState = RenderState<Sky>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
-                    }
+                    val instanceState = RenderState<Sky>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
                 model.unbind(i);
             }
         }
-
         shadersProgram.unbind()
     }
+
 
     override fun cleanUp() {
         shadersProgram.delete()

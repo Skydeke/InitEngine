@@ -1,15 +1,20 @@
 package engine.rendering.instances.renderers.pbr
 
 import engine.architecture.scene.SceneContext
+import engine.architecture.scene.entity.Entity
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
+import engine.utils.libraryWrappers.maths.joml.FrustumIntersection
 import engine.utils.libraryWrappers.maths.joml.Vector3f
+import engine.utils.libraryWrappers.maths.utils.Matrix4
 import engine.utils.libraryWrappers.opengl.shaders.*
 import engine.utils.libraryWrappers.opengl.textures.TextureObject
 
 internal class PBRRenderer : Renderer3D<PBRModel>() {
 
     private val shadersProgram: ShadersProgram<PBRModel>
+    private val frustumIntersection: FrustumIntersection = FrustumIntersection()
+
 
     init {
         this.shadersProgram = ShadersProgram.create(VERT_FILE, FRAG_FILE)
@@ -114,11 +119,14 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
             for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
-                    if (entity.isActivated){
-                        val instanceState = RenderState<PBRModel>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
+                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
+                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                    if (!checkRenderPass(entity) && entity.isActivated) {
+                        continue
                     }
+                    val instanceState = RenderState<PBRModel>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
                 model.unbind(i);
             }
@@ -140,17 +148,25 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
             for (i in 0..model.meshes.size) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
-                    if (entity.isActivated && condition.isvalid(entity)){
-                        val instanceState = RenderState<PBRModel>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
+                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
+                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                    if (!checkRenderPass(entity) && entity.isActivated) {
+                        continue
                     }
+                    val instanceState = RenderState<PBRModel>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
                 model.unbind(i);
             }
         }
 
         shadersProgram.unbind()
+    }
+
+    private fun checkRenderPass(entity: Entity): Boolean {
+        return !checkClippingCulling(entity.transform.position) &&
+                frustumIntersection.testAab(entity.model.bounds.min, entity.model.bounds.max)
     }
 
     override fun cleanUp() {

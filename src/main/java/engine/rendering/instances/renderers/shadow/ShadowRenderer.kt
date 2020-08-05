@@ -5,6 +5,8 @@ import engine.architecture.scene.entity.Entity
 import engine.architecture.scene.light.LightManager
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
+import engine.utils.libraryWrappers.maths.joml.FrustumIntersection
+import engine.utils.libraryWrappers.maths.utils.Matrix4
 import engine.utils.libraryWrappers.opengl.shaders.RenderState
 import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram
 import engine.utils.libraryWrappers.opengl.shaders.UniformValue
@@ -13,6 +15,7 @@ import engine.utils.libraryWrappers.opengl.shaders.UniformValueProperty
 internal class ShadowRenderer : Renderer3D<Entity>() {
 
     private val shadersProgram: ShadersProgram<Entity>
+    private val frustumIntersection: FrustumIntersection = FrustumIntersection()
 
     init {
         this.shadersProgram = ShadersProgram.create(VERT_FILE, FRAG_FILE)
@@ -41,11 +44,14 @@ internal class ShadowRenderer : Renderer3D<Entity>() {
             for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
-                    if (entity.isActivated){
-                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
+                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
+                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                    if (!checkRenderPass(entity) && entity.isActivated) {
+                        continue
                     }
+                    val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
                 model.unbind(i);
             }
@@ -67,17 +73,25 @@ internal class ShadowRenderer : Renderer3D<Entity>() {
             for (i in 0..model.meshes.size) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
-                    if (entity.isActivated && condition.isvalid(entity)){
-                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
+                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
+                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                    if (!checkRenderPass(entity) && entity.isActivated) {
+                        continue
                     }
+                    val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
                 model.unbind(i);
             }
         }
 
         shadersProgram.unbind()
+    }
+
+    private fun checkRenderPass(entity: Entity): Boolean {
+        return !checkClippingCulling(entity.transform.position) &&
+                frustumIntersection.testAab(entity.model.bounds.min, entity.model.bounds.max)
     }
 
     override fun cleanUp() {
