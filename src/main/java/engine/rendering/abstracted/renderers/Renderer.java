@@ -3,12 +3,12 @@ package engine.rendering.abstracted.renderers;
 import engine.architecture.models.Model;
 import engine.architecture.scene.SceneContext;
 import engine.architecture.system.AppContext;
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public abstract class Renderer<T extends Renderable> implements IRenderer {
+public abstract class Renderer<T extends Processable> implements IRenderer {
 
     protected final HashMap<Model, LinkedList<T>> renderList = new HashMap<>();
 

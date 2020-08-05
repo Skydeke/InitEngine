@@ -1,5 +1,3 @@
-package instances;
-
 import engine.architecture.models.Model;
 import engine.architecture.models.ModelGenerator;
 import engine.architecture.scene.entity.Entity;
@@ -147,7 +145,7 @@ public class Game extends SimpleApplication {
         if (move)
             q += this.duration;
 
-        lights.getTransform().addPosition((float) (Math.sin(q / 4)) * 20, 1f, 0f);
+        lights.getTransform().setPosition((float) (Math.sin(q / 4)) * 20, 1f, 0f);
 
         LightManager.getSun().getTransform().setRotation((float) (Math.sin(t) * 0.5), 0.5f, (float) -(Math.cos(t) * 0.5));
     }

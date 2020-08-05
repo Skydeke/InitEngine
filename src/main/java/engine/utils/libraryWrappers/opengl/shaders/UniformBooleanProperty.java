@@ -1,9 +1,9 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 import org.lwjgl.opengl.GL20;
 
-public abstract class UniformBooleanProperty<T extends Renderable> extends AbstractUniformProperty<T> {
+public abstract class UniformBooleanProperty<T extends Processable> extends AbstractUniformProperty<T> {
 
     protected UniformBooleanProperty(String name) {
         super(name);

@@ -39,6 +39,7 @@ public class SimpleModel implements Model {
         this.bounds = bounds;
     }
 
+    @Override
     public void bindAndConfigure(int meshIdx){
         m[meshIdx].preconfigureRendering();
         m[meshIdx].bind(getLod());
@@ -49,6 +50,7 @@ public class SimpleModel implements Model {
         m[meshIdx].render(renderMode);
     }
 
+    @Override
     public void unbind(int meshIdx){
         m[meshIdx].unbind();
     }

@@ -12,15 +12,16 @@ public interface Model {
      */
     void render(RenderState<?> instanceState, int meshIdx);
 
-    void bindAndConfigure(int meshIdx);
-    void unbind(int meshIdx);
-
     /**
      * Returns the level of detail of the model
      *
      * @return the level of detail
      */
     ILod getLod();
+
+    void bindAndConfigure(int meshIdx);
+
+    void unbind(int meshIdx);
 
     /**
      * Returns the bounds of the model

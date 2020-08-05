@@ -1,13 +1,13 @@
 package engine.rendering.abstracted.renderers;
 
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 import engine.utils.libraryWrappers.maths.joml.Matrix4f;
 import engine.utils.libraryWrappers.maths.joml.Vector3fc;
 import engine.utils.libraryWrappers.maths.joml.Vector4f;
 import engine.utils.libraryWrappers.maths.utils.Maths;
 import engine.utils.libraryWrappers.maths.utils.Vector4;
 
-public abstract class Renderer3D<T extends Renderable> extends Renderer<T> {
+public abstract class Renderer3D<T extends Processable> extends Renderer<T> {
 
     /**
      * Check is the given position is beyond the clipping plane

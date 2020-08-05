@@ -2,11 +2,11 @@ package engine.rendering.abstracted.renderers;
 
 import engine.architecture.models.Model;
 import engine.architecture.system.AppContext;
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 import engine.utils.libraryWrappers.opengl.shaders.RenderState;
 import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
 
-public abstract class AbstractRenderer3D<T extends Renderable> extends Renderer3D<T> {
+public abstract class AbstractRenderer3D<T extends Processable> extends Renderer3D<T> {
 
     private final ShadersProgram<T> shadersProgram;
 

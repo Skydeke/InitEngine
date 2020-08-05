@@ -1,6 +1,6 @@
 package engine.rendering.abstracted.renderers;
 
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 
-public abstract class Renderer2D<T extends Renderable> extends Renderer<T> {
+public abstract class Renderer2D<T extends Processable> extends Renderer<T> {
 }

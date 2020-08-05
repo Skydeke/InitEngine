@@ -5,19 +5,18 @@ import engine.architecture.models.ModelGenerator;
 import engine.architecture.system.AppContext;
 import engine.architecture.system.Config;
 import engine.architecture.system.Window;
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 import engine.ui.element.UIElement;
 import engine.ui.layout.Box;
 import engine.utils.Color;
 import engine.utils.libraryWrappers.maths.joml.Vector4i;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
 import engine.utils.libraryWrappers.opengl.shaders.*;
 import engine.utils.libraryWrappers.opengl.textures.TextureObject;
 import engine.utils.libraryWrappers.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Panel extends UIElement implements Renderable {
+public class Panel extends UIElement implements Processable {
 
     private final static String VERT_FILE = "res/shaders/gui/panel_vs.glsl";
     private final static String FRAG_FILE = "res/shaders/gui/panel_fs.glsl";
@@ -229,11 +228,6 @@ public class Panel extends UIElement implements Renderable {
 
     @Override
     public void process() {
-
-    }
-
-    @Override
-    public void render(RenderMode renderMode) {
 
     }
 

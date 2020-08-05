@@ -1,12 +1,12 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 import org.lwjgl.opengl.GL20;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ShadersProgram<T extends Renderable> {
+public class ShadersProgram<T extends Processable> {
 
     private static int boundProgram = 0;
 
@@ -33,12 +33,12 @@ public class ShadersProgram<T extends Renderable> {
         }
     }
 
-    public static <T extends Renderable> ShadersProgram<T> create(Shader vertexShader, Shader fragmentShader) throws Exception {
+    public static <T extends Processable> ShadersProgram<T> create(Shader vertexShader, Shader fragmentShader) throws Exception {
         final int id = GL20.glCreateProgram();
         return new ShadersProgram<>(id, vertexShader, fragmentShader);
     }
 
-    public static <T extends Renderable> ShadersProgram<T> create(String vertexFile, String fragmentFile) throws Exception {
+    public static <T extends Processable> ShadersProgram<T> create(String vertexFile, String fragmentFile) throws Exception {
         final Shader vertexShader = Shader.createVertex(vertexFile);
         final Shader fragmentShader = Shader.createFragment(fragmentFile);
         return ShadersProgram.create(vertexShader, fragmentShader);

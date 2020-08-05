@@ -1,6 +1,5 @@
 package engine.architecture.models;
 
-
 import engine.rendering.abstracted.Renderable;
 import engine.utils.libraryWrappers.opengl.constants.DataType;
 import engine.utils.libraryWrappers.opengl.constants.RenderMode;
@@ -92,15 +91,13 @@ public class Mesh implements Renderable {
         return ret;
     }
 
-    @Override
-    public void process() {}
-
     public void preconfigureRendering() {
         if (material != null){
             material.preconfigure();
         }
     }
 
+    @Override
     public void bind(ILod lod){
         if (lod.available()) {
             IVbo indexBuffer = lod.current();
@@ -124,7 +121,6 @@ public class Mesh implements Renderable {
         vao.unbind();
     }
 
-    @Override
     public Model getModel() {
         return null;
     }

@@ -79,7 +79,7 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
         shadersProgram.updatePerRenderUniforms(renderState)
 
         for (model in renderList.keys) {
-            for (i in 0..model.meshes.size) {
+            for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
                     if (entity.isActivated && condition.isvalid(entity)){

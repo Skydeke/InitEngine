@@ -1,8 +1,8 @@
 package engine.utils.libraryWrappers.opengl.shaders;
 
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 
-public abstract class AbstractUniformProperty<T extends Renderable> implements UniformProperty<T> {
+public abstract class AbstractUniformProperty<T extends Processable> implements UniformProperty<T> {
 
     private final String name;
     private int location = -1;

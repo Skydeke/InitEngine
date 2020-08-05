@@ -2,11 +2,11 @@ package engine.utils.libraryWrappers.opengl.shaders;
 
 
 import engine.architecture.models.Mesh;
-import engine.rendering.abstracted.Renderable;
+import engine.rendering.abstracted.Processable;
 import engine.rendering.abstracted.renderers.Renderer;
 import engine.rendering.instances.camera.Camera;
 
-public class RenderState<T extends Renderable> {
+public class RenderState<T extends Processable> {
 
     private final Renderer<T> renderer;
     private final T instance;
