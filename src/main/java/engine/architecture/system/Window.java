@@ -1,7 +1,7 @@
 package engine.architecture.system;
 
+import engine.architecture.ui.element.layout.Box;
 import engine.fileLoaders.ImageLoader;
-import engine.ui.layout.Box;
 import engine.utils.libraryWrappers.maths.joml.Vector2d;
 import engine.utils.libraryWrappers.maths.joml.Vector2f;
 import engine.utils.libraryWrappers.maths.joml.Vector2i;
@@ -82,7 +82,7 @@ public class Window {
         glfwSetFramebufferSizeCallback(handle, (window, width, height) -> {
             this.width = width;
             this.height = height;
-            AppContext.instance().getRoot().forceLayout();
+            this.resized = true;
         });
 
         glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {

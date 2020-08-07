@@ -1,6 +1,6 @@
 package engine.rendering.instances.camera;
 
-import engine.ui.element.UIElement;
+import engine.architecture.ui.element.UIElement;
 
 public abstract class CameraController extends UIElement {
 

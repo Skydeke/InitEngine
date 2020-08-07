@@ -99,7 +99,7 @@ public class Pipeline {
                         .allocateImage2D(GL_RGBA16F, GL_RGBA)
                         .bilinearFilter(),
                 SceneFbo.getInstance().getAttachment(0),
-                SceneFbo.getInstance().getDepthAttachment(0));
+                SceneFbo.getInstance().getDepthAttachment());
         shadowFBO = new FrameBufferObject();
         shadowFBO.addAttatchments(new TextureObject(
                 GL_TEXTURE_2D, Config.instance().getShadowBufferWidth(),
@@ -167,7 +167,7 @@ public class Pipeline {
                 pbrFBO.getAttachment(2),
                 pbrFBO.getAttachment(0),
                 pbrFBO.getAttachment(1),
-                shadowFBO.getDepthAttachment(0),
+                shadowFBO.getDepthAttachment(),
                 ssaoPass.getTargetTexture(),
                 pbrFBO.getAttachment(3));
 

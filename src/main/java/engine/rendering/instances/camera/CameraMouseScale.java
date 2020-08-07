@@ -1,6 +1,6 @@
 package engine.rendering.instances.camera;
 
-import engine.ui.event.InputManager;
+import engine.architecture.ui.event.InputManager;
 
 public class CameraMouseScale extends CameraController {
 

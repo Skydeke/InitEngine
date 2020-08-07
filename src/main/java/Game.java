@@ -9,13 +9,13 @@ import engine.architecture.system.AppContext;
 import engine.architecture.system.GameEngine;
 import engine.architecture.system.SimpleApplication;
 import engine.architecture.system.Window;
+import engine.architecture.ui.event.InputManager;
 import engine.fileLoaders.ModelLoader;
 import engine.rendering.instances.camera.FlyCamera;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
-import engine.ui.event.InputManager;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;

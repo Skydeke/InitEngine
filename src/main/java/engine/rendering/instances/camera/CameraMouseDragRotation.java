@@ -1,8 +1,8 @@
 package engine.rendering.instances.camera;
 
 import engine.architecture.system.Window;
-import engine.ui.element.ElementManager;
-import engine.ui.event.InputManager;
+import engine.architecture.ui.element.ElementManager;
+import engine.architecture.ui.event.InputManager;
 import engine.utils.libraryWrappers.maths.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
 

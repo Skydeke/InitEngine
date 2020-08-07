@@ -1,14 +1,14 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
-import engine.ui.element.ElementManager;
-import engine.ui.element.RootElement;
-import engine.ui.element.UIElement;
-import engine.ui.element.button.Button;
-import engine.ui.element.button.ButtonSettings;
-import engine.ui.element.viewport.SceneViewport;
-import engine.ui.element.viewport.VerticalViewport;
-import engine.ui.layout.Box;
+import engine.architecture.ui.element.ElementManager;
+import engine.architecture.ui.element.RootElement;
+import engine.architecture.ui.element.UIElement;
+import engine.architecture.ui.element.button.Button;
+import engine.architecture.ui.element.button.ButtonSettings;
+import engine.architecture.ui.element.layout.Box;
+import engine.architecture.ui.element.viewport.SceneViewport;
+import engine.architecture.ui.element.viewport.VerticalViewport;
 import engine.utils.libraryWrappers.maths.joml.Vector4i;
 import engine.utils.libraryWrappers.opengl.utils.GlBuffer;
 import engine.utils.libraryWrappers.opengl.utils.GlUtils;
@@ -20,8 +20,6 @@ import java.util.Optional;
 
 public class AppContext {
 
-    @Setter
-    static boolean UI_DEBUG_MODE = false;
     private static AppContext instance;
     @Getter
     public SceneContext sceneContext;
@@ -47,35 +45,31 @@ public class AppContext {
 
         elementManager.init(this);
 
+        // initialize pipeline from config
+        try {
 
-        if (!UI_DEBUG_MODE) {
-
-            // initialize pipeline from config
-            try {
-
-                this.sceneContext = game.getContext();
-                sceneContext.init();
-                sceneContext.loadRenderer();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                System.err.println("Render engine class does not exist: " + Config.instance().getRenderEngine());
-                System.exit(-1);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-                System.exit(-1);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                System.exit(-1);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-                System.err.println("Render engine does not take SceneContext in its constructor: " + Config.instance().getRenderEngine());
-                System.exit(-1);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            // initialize engine implementation
-            game.init(Window.instance(), this);
+            this.sceneContext = game.getContext();
+            sceneContext.init();
+            sceneContext.loadRenderer();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.err.println("Render engine class does not exist: " + Config.instance().getRenderEngine());
+            System.exit(-1);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            System.err.println("Render engine does not take SceneContext in its constructor: " + Config.instance().getRenderEngine());
+            System.exit(-1);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+        // initialize engine implementation
+        game.init(Window.instance(), this);
         // replace with application load protocol
         __init__ui();
     }
@@ -86,9 +80,7 @@ public class AppContext {
     private void __init__ui() {
 
         Optional<SceneViewport> sceneViewport = Optional.empty();
-        if (!UI_DEBUG_MODE) {
-            sceneViewport = Optional.of(new SceneViewport(sceneContext));
-        }
+        sceneViewport = Optional.of(new SceneViewport(sceneContext));
 
         ButtonSettings bs = new ButtonSettings();
 //        bs.setButtonColor(new Color(0x6060FF));
@@ -115,36 +107,41 @@ public class AppContext {
 //        pv.setBox(new Box(0.8f, 0.3f, 0.15f, 0.5f));
 //        p2.setBox(new Box(0.5f, 0.3f, 0.15f, 0.5f));
 //        p3.setBox(new Box(0.3f, 0.3f, 0.15f, 0.5f));
-
-
         if (sceneViewport.isPresent()) {
             root.addChildren(sceneViewport.get());
             sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
         }
-
-        root.forceLayout();
+        root.recalculateAbsolutePositions();
     }
 
     public void update() {
         if (Window.instance().isResized()) {
-            root.forceLayout();
+            root.recalculateAbsolutePositions();
             Window.instance().setResized(false);
         }
-
-        if (!UI_DEBUG_MODE) sceneContext.update();
+        sceneContext.update();
         elementManager.update();
         root.update();
     }
 
     public void draw() {
         Window.instance().setBlending(false);
-        if (!UI_DEBUG_MODE) sceneContext.render();
+        sceneContext.render();
         Window.instance().setBlending(true);
         GlUtils.disableDepthTest();
         GlUtils.clear(GlBuffer.COLOUR);
         Window.instance().resetViewport();
         renderElement.render();
         GlUtils.enableDepthTest();
+    }
+
+    public void setRenderElement(UIElement renderElement) {
+        root.setActivated(false);
+        root.getChildren().forEach(e -> e.setActivated(false));
+        this.renderElement = renderElement;
+        this.renderElement.setActivated(true);
+        this.renderElement.getChildren().forEach(e -> e.setActivated(true));
+        this.renderElement.recalculateAbsolutePositions();
     }
 
     public void resetRenderElement() {

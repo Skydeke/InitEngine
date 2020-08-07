@@ -1,6 +1,6 @@
 package engine.rendering.instances.camera;
 
-import engine.ui.event.KeyboardEvent;
+import engine.architecture.ui.event.KeyboardEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class CameraKeyboardRotation extends CameraController {

@@ -135,7 +135,7 @@ public class FrameBufferObject {
         return attatchments.get(index);
     }
 
-    public TextureObject getDepthAttachment(int index) {
+    public TextureObject getDepthAttachment() {
         return depthAttachment;
     }
 

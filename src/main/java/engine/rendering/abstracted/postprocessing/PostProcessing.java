@@ -62,7 +62,7 @@ public class PostProcessing {
             read.blitFbo(draw);
         } else {
             processToFbo(draw, read.getAttachment(0),
-                    read.getDepthAttachment(0));
+                    read.getDepthAttachment());
         }
     }
 
@@ -108,7 +108,7 @@ public class PostProcessing {
             fbo.blitToScreen();
         } else {
             processToScreen(fbo.getAttachment(0),
-                    fbo.getDepthAttachment(0));
+                    fbo.getDepthAttachment());
         }
     }
 

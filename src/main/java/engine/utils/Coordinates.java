@@ -1,7 +1,7 @@
 package engine.utils;
 
 import engine.architecture.system.Window;
-import engine.ui.layout.Box;
+import engine.architecture.ui.element.layout.Box;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 

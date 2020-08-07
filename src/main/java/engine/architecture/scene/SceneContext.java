@@ -2,10 +2,10 @@ package engine.architecture.scene;
 
 import engine.architecture.scene.node.Scenegraph;
 import engine.architecture.system.Pipeline;
+import engine.architecture.ui.element.UIElement;
+import engine.architecture.ui.event.mouse.MouseMoveEvent;
 import engine.rendering.Shader;
 import engine.rendering.instances.camera.Camera;
-import engine.ui.element.UIElement;
-import engine.ui.event.mouse.MouseMoveEvent;
 import engine.utils.libraryWrappers.maths.joml.Vector2i;
 import engine.utils.libraryWrappers.opengl.objects.ClipPlane;
 import lombok.Getter;

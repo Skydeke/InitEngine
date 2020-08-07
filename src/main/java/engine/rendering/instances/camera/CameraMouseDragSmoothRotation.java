@@ -1,7 +1,7 @@
 package engine.rendering.instances.camera;
 
-import engine.ui.event.InputManager;
-import engine.ui.event.mouse.MouseClickEvent;
+import engine.architecture.ui.event.InputManager;
+import engine.architecture.ui.event.mouse.MouseClickEvent;
 import org.lwjgl.glfw.GLFW;
 
 public class CameraMouseDragSmoothRotation extends CameraController {

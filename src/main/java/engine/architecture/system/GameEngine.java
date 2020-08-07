@@ -1,7 +1,7 @@
 package engine.architecture.system;
 
 
-import engine.ui.event.InputManager;
+import engine.architecture.ui.event.InputManager;
 
 public class GameEngine implements Runnable {
 
@@ -32,8 +32,8 @@ public class GameEngine implements Runnable {
     }
 
     public void start() {
+//        this.gameUpdateThread.start();
         this.gameLoopThread.run();
-        this.gameUpdateThread.start();
     }
 
     @Override

@@ -3,10 +3,10 @@ package engine.rendering.instances.camera;
 import engine.architecture.scene.SceneContext;
 import engine.architecture.scene.node.Node;
 import engine.architecture.system.GameState;
+import engine.architecture.ui.element.UIElement;
+import engine.architecture.ui.element.layout.Box;
+import engine.architecture.ui.event.mouse.MouseClickEvent;
 import engine.rendering.abstracted.camera.CameraProjection;
-import engine.ui.element.UIElement;
-import engine.ui.event.mouse.MouseClickEvent;
-import engine.ui.layout.Box;
 import engine.utils.libraryWrappers.maths.Angle;
 import engine.utils.libraryWrappers.maths.joml.Matrix4f;
 import engine.utils.libraryWrappers.maths.joml.Matrix4fc;
@@ -17,7 +17,7 @@ import engine.utils.libraryWrappers.maths.utils.Matrix4;
 import engine.utils.property.FloatProperty;
 import lombok.Getter;
 
-import static engine.ui.event.mouse.MouseClickEvent.BUTTON_CLICK;
+import static engine.architecture.ui.event.mouse.MouseClickEvent.BUTTON_CLICK;
 import static org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 

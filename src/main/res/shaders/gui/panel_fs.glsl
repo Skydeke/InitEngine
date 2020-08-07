@@ -11,12 +11,6 @@ uniform int isTexture;
 uniform ivec4 rounding;
 uniform ivec2 resolution;
 
-uniform int borderSize;
-uniform vec3 borderColor;
-uniform int border;
-
-uniform int multisamples;
-
 uniform int isDepth;
 const float zNear = 0.01, zFar = 100;
 
@@ -81,22 +75,13 @@ void main(){
         vec2 tex = vec2(uv.x, 1 - uv.y);
         if(isDepth == 1){
             fragColor = vec4(vec3(linearize_depth(texture2D(texture, tex).r)),1.0);
-        } else if (multisamples > 0){
-            ivec2 coord = ivec2(int((uv.x*2-1) * (resolution.x-2*borderSize)), int((uv.y*2-1) * (resolution.y-2*borderSize)));
-            coord -= ivec2(borderSize);
-            fragColor = vec4(texelFetch(texture, coord, 0).rgb, 0.5f);
-        }else {
+        } else {
             fragColor = vec4(texture2D(texture, tex).rgb, 1);
         }
 
     } else fragColor = vec4(color, alpha);
 
     ivec2 coord = ivec2(uv.x * resolution.x, uv.y * resolution.y);
-    if(border == 1){
-        if(coord.x < borderSize || coord.y < borderSize ||
-            coord.x + borderSize >= resolution.x || coord.y + borderSize >= resolution.y)
-            fragColor = vec4(borderColor,alpha);
-    }
 
 //    if(coord.x < 1 || coord.x >= resolution.x - 1 || coord.y < 1 || coord.y >= resolution.y -1)
 //        fragColor = vec4(borderColor*1.5, alpha);
