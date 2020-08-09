@@ -30,7 +30,7 @@ void main(){
 
     if(isAlbedoMapped == 1){
         albedo_vbo =  texture(albedoTex, uv);
-        if (albedo_vbo.a < 0.9)
+        if (albedo_vbo.a < 0.99)
             discard;
     } else {
         albedo_vbo = vec4(albedoConst, 1);

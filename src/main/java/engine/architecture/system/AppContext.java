@@ -1,14 +1,19 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
+import engine.architecture.ui.constraints.PercentageConstraint;
+import engine.architecture.ui.constraints.PixelConstraint;
+import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.element.RootElement;
 import engine.architecture.ui.element.UIElement;
 import engine.architecture.ui.element.button.Button;
 import engine.architecture.ui.element.button.ButtonSettings;
 import engine.architecture.ui.element.layout.Box;
+import engine.architecture.ui.element.panel.Panel;
 import engine.architecture.ui.element.viewport.SceneViewport;
 import engine.architecture.ui.element.viewport.VerticalViewport;
+import engine.utils.Color;
 import engine.utils.libraryWrappers.maths.joml.Vector4i;
 import engine.utils.libraryWrappers.opengl.utils.GlBuffer;
 import engine.utils.libraryWrappers.opengl.utils.GlUtils;
@@ -111,6 +116,21 @@ public class AppContext {
             root.addChildren(sceneViewport.get());
             sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
         }
+
+        Panel p = new Panel();
+        p.setColor(new Color(0, 0, 250));
+        p.setConstraints(new UIConstraints(new PixelConstraint(20),
+                new PixelConstraint(20),
+                new PercentageConstraint(0.9f),
+                new PercentageConstraint(0.9f)));
+        Panel d = new Panel();
+        d.setColor(new Color(0, 250, 0));
+        d.setConstraints(new UIConstraints(new PercentageConstraint(0.1f),
+                new PercentageConstraint(0.1f),
+                new PercentageConstraint(0.8f),
+                new PercentageConstraint(0.8f)));
+        p.addChild(d);
+        root.addChild(p);
         root.recalculateAbsolutePositions();
     }
 
@@ -120,8 +140,8 @@ public class AppContext {
             Window.instance().setResized(false);
         }
         sceneContext.update();
-        elementManager.update();
         root.update();
+        elementManager.update();
     }
 
     public void draw() {
@@ -142,6 +162,7 @@ public class AppContext {
         this.renderElement.setActivated(true);
         this.renderElement.getChildren().forEach(e -> e.setActivated(true));
         this.renderElement.recalculateAbsolutePositions();
+        this.renderElement.update();
     }
 
     public void resetRenderElement() {

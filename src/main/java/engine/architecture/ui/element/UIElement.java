@@ -1,6 +1,7 @@
 package engine.architecture.ui.element;
 
 import engine.architecture.system.Window;
+import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.layout.*;
 import engine.architecture.ui.element.viewport.Viewport;
 import engine.architecture.ui.event.Event;
@@ -21,6 +22,7 @@ public abstract class UIElement {
      */
     @Getter
     protected Box relativeBox, absoluteBox;
+    @Getter @Setter protected UIConstraints constraints = null;
     @Setter
     protected Layout layout;
     @Setter
@@ -54,7 +56,7 @@ public abstract class UIElement {
     protected UIElement() {
         children = new ArrayList<>(5);
         handlers = new ArrayList<>(2);
-        layout = new AbsoluteLayout(this);
+        layout = new ConstraintLayout(this);
         relativeBox = new Box(0, 0, 0, 0);
         absoluteBox = new Box(0, 0, 0, 0);
         UUID = Utils.generateNewUUID_GUI();
@@ -95,8 +97,8 @@ public abstract class UIElement {
      * @param e event to add
      */
     public void addChild(UIElement e) {
-        children.add(e);
         e.setParent(this);
+        children.add(e);
     }
 
     /**
@@ -106,8 +108,8 @@ public abstract class UIElement {
      */
     public void addChildren(UIElement... elements) {
         for (UIElement e : elements) {
-            children.add(e);
             e.setParent(this);
+            children.add(e);
         }
     }
 
@@ -121,7 +123,7 @@ public abstract class UIElement {
         for (UIElement child : children) {
             switch (child.alignType) {
                 default:
-                case RELATIVE_TO_PARENT:
+                case RELATIVE_TO_PARENT://TODO MAKE THE TRANSFORMS SAVE ROMOVE SETABSOLUTEBOX MAKE setting constraints easier!
                     Optional<Box> relative = layout.findRelativeTransform(child, i++);
                     if (relative.isPresent() && child.setBox(relative.get())) {
                         child.handle(new ResizeEvent());
@@ -129,8 +131,8 @@ public abstract class UIElement {
                     }
                     break;
                 case ABSOLUTE:
-                    child.handle(new ResizeEvent());
-                    child.recalculateAbsolutePositions();
+                        child.handle(new ResizeEvent());
+                        child.recalculateAbsolutePositions();
                     break;
             }
         }
@@ -149,9 +151,9 @@ public abstract class UIElement {
         return ret;
     }
 
-    public Vector2i getPixelSizeForRelative(Box within) {
+    public Vector2i getPixelSizeForRelative(Box parent) {
         Vector2i ret = new Vector2i();
-        Box box = within.relativeTo(getAbsoluteBox());
+        Box box = parent.relativeTo(getAbsoluteBox());
         ret.x = (int) (Window.instance().getWidth() * box.getWidth());
         ret.y = (int) (Window.instance().getHeight() * box.getHeight());
         return ret;
@@ -173,9 +175,10 @@ public abstract class UIElement {
         if (getRelativeBox().equals(position))
             ret = false;
 
-        if (parent == null)
+        if (parent == null) {
             absoluteBox.set(relativeBox);
-        else {
+            alignType = LayoutType.ABSOLUTE;
+        } else {
             Box newAbsolute = position.relativeTo(parent.absoluteBox);
             if (newAbsolute.width * Window.instance().getWidth() >= minWidth &&
                     newAbsolute.height * Window.instance().getHeight() >= minHeight)
