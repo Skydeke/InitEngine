@@ -1,13 +1,17 @@
 package engine.architecture.ui.constraints;
 
 import engine.architecture.ui.element.layout.Box;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class UIConstraints {
 
-    private Constraint xPosition;
-    private Constraint yPosition;
-    private Constraint xScale;
-    private Constraint yScale;
+    private Optional<Constraint> xPosition = Optional.empty();
+    private Optional<Constraint> yPosition = Optional.empty();
+    @Getter private Optional<Constraint> xScale = Optional.empty();
+    @Getter private Optional<Constraint> yScale = Optional.empty();
 
     private Box screenCoords = new Box(0, 0, 0, 0);
 
@@ -18,49 +22,57 @@ public class UIConstraints {
         h(h);
     }
 
+    public UIConstraints(){
+
+    }
+
     public void updateConstraints() {
-        if (xPosition != null) {
-            xPosition.setXdependant();
-            xPosition.update();
-            screenCoords.setX(xPosition.getScreenValue());
+        if (xPosition.isPresent()) {
+            xPosition.get().setDependingOnX();
+            xPosition.get().update();
+            screenCoords.setX(xPosition.get().getScreenValue());
         }
-        if (yPosition != null) {
-            yPosition.setYdependant();
-            yPosition.update();
-            screenCoords.setY(yPosition.getScreenValue());
+        if (yPosition.isPresent()) {
+            yPosition.get().setDependingOnY();
+            yPosition.get().update();
+            screenCoords.setY(yPosition.get().getScreenValue());
         }
-        if (xScale != null) {
-            xScale.setXdependant();
-            xScale.update();
-            screenCoords.setWidth(xScale.getScreenValue());
+        if (xScale.isPresent()) {
+            xScale.get().setDependingOnX();
+            xScale.get().update();
+            screenCoords.setWidth(xScale.get().getScreenValue());
         }
-        if (yScale != null) {
-            yScale.setYdependant();
-            yScale.update();
-            screenCoords.setHeight(yScale.getScreenValue());
+        if (yScale.isPresent()) {
+            yScale.get().setDependingOnY();
+            yScale.get().update();
+            screenCoords.setHeight(yScale.get().getScreenValue());
         }
     }
 
-    public UIConstraints x(Constraint xPosition) {
-        this.xPosition = xPosition;
+    public UIConstraints x(@NotNull Constraint xPosition) {
+        this.xPosition = Optional.of(xPosition);
+        this.xPosition.get().setUiConstraints(this);
         updateConstraints();
         return this;
     }
 
-    public UIConstraints y(Constraint yPosition) {
-        this.yPosition = yPosition;
+    public UIConstraints y(@NotNull Constraint yPosition) {
+        this.yPosition = Optional.of(yPosition);
+        this.yPosition.get().setUiConstraints(this);
         updateConstraints();
         return this;
     }
 
-    public UIConstraints w(Constraint xScale) {
-        this.xScale = xScale;
+    public UIConstraints w(@NotNull Constraint xScale) {
+        this.xScale = Optional.of(xScale);
+        this.xScale.get().setUiConstraints(this);
         updateConstraints();
         return this;
     }
 
-    public UIConstraints h(Constraint yScale) {
-        this.yScale = yScale;
+    public UIConstraints h(@NotNull Constraint yScale) {
+        this.yScale = Optional.of(yScale);
+        this.yScale.get().setUiConstraints(this);
         updateConstraints();
         return this;
     }

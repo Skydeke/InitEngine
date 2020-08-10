@@ -15,7 +15,7 @@ public class PixelConstraint extends Constraint{
 
     @Override
     public void update() {
-        if (isXdependant())
+        if (isDependingOnX())
             valueInScreen = (float) pixels / Window.instance().getWidth();
         else
             valueInScreen = (float) pixels / Window.instance().getHeight();

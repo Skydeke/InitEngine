@@ -99,12 +99,17 @@ public class ElementManager {
                             lastAccepted = post.getViewport();
                         }
 
-                        lastAccepted.handle(e);
+                        if (lastAccepted != null)
+                            lastAccepted.handle(e);
                         prev = post;
                     }
                 } else {
                     if (focusLock) focused.handle(e);
-                    else lastAccepted.handle(e);
+                    else{
+                        if (lastAccepted != null){
+                            lastAccepted.handle(e);
+                        }
+                    }
                 }
             } else {
                 if (focusLock) focused.handle(e);

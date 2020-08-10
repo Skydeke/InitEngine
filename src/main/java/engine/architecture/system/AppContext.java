@@ -1,19 +1,14 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
-import engine.architecture.ui.constraints.PercentageConstraint;
-import engine.architecture.ui.constraints.PixelConstraint;
-import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.element.RootElement;
 import engine.architecture.ui.element.UIElement;
 import engine.architecture.ui.element.button.Button;
 import engine.architecture.ui.element.button.ButtonSettings;
 import engine.architecture.ui.element.layout.Box;
-import engine.architecture.ui.element.panel.Panel;
 import engine.architecture.ui.element.viewport.SceneViewport;
 import engine.architecture.ui.element.viewport.VerticalViewport;
-import engine.utils.Color;
 import engine.utils.libraryWrappers.maths.joml.Vector4i;
 import engine.utils.libraryWrappers.opengl.utils.GlBuffer;
 import engine.utils.libraryWrappers.opengl.utils.GlUtils;
@@ -106,9 +101,9 @@ public class AppContext {
 //        VerticalViewport pv = new VerticalViewport(40, 100, 100);
 //        VerticalViewport p2 = new VerticalViewport(40, 100, 100);
 //        VerticalViewport p3 = new VerticalViewport(40, 100, 100);
-        VerticalViewport viewport = new VerticalViewport(40, 100, 100, button, up, down, ssrToggle);
+        VerticalViewport viewport = new VerticalViewport(40, 100, 160, button, up, down, ssrToggle);
         root.addChildren(viewport);//), pv, p2, p3);
-        viewport.setBox(new Box(0.05f, 0.25f, 0.2f, 0.5f));
+        viewport.setBox(new Box(0.05f, 0.25f, 0.2f, 0.25f));
 //        pv.setBox(new Box(0.8f, 0.3f, 0.15f, 0.5f));
 //        p2.setBox(new Box(0.5f, 0.3f, 0.15f, 0.5f));
 //        p3.setBox(new Box(0.3f, 0.3f, 0.15f, 0.5f));
@@ -117,20 +112,20 @@ public class AppContext {
             sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
         }
 
-        Panel p = new Panel();
-        p.setColor(new Color(0, 0, 250));
-        p.setConstraints(new UIConstraints(new PixelConstraint(20),
-                new PixelConstraint(20),
-                new PercentageConstraint(0.9f),
-                new PercentageConstraint(0.9f)));
-        Panel d = new Panel();
-        d.setColor(new Color(0, 250, 0));
-        d.setConstraints(new UIConstraints(new PercentageConstraint(0.1f),
-                new PercentageConstraint(0.1f),
-                new PercentageConstraint(0.8f),
-                new PercentageConstraint(0.8f)));
-        p.addChild(d);
-        root.addChild(p);
+//        Panel p = new Panel();
+//        p.setColor(new Color(0, 0, 250));
+//        p.setConstraints(new UIConstraints(new CenterConstraint(),
+//                new CenterConstraint(),
+//                new PercentageConstraint(1f),
+//                new PercentageConstraint(1f)));
+//        Panel d = new Panel();
+//        d.setColor(new Color(0, 250, 0));
+//        d.setConstraints(new UIConstraints(new CenterConstraint(),
+//                new CenterConstraint(),
+//                new PercentageConstraint(0.8f),
+//                new PercentageConstraint(0.8f)));
+//        p.addChild(d);
+//        root.addChild(p);
         root.recalculateAbsolutePositions();
     }
 

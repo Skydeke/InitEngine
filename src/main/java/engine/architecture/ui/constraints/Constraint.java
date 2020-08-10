@@ -1,23 +1,26 @@
 package engine.architecture.ui.constraints;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public abstract class Constraint {
 
-    @Getter private boolean isXdependant;
-    @Getter private boolean isYdependant;
+    @Getter private boolean isDependingOnX;
+    @Getter private boolean isDependingOnY;
+
+    @Setter protected UIConstraints uiConstraints;
 
     public abstract void update();
 
     public abstract float getScreenValue();
 
-    public void setYdependant(){
-        isXdependant = false;
-        isYdependant = true;
+    public void setDependingOnY(){
+        isDependingOnX = false;
+        isDependingOnY = true;
     }
 
-    public void setXdependant(){
-        isXdependant = true;
-        isYdependant = false;
+    public void setDependingOnX(){
+        isDependingOnX = true;
+        isDependingOnY = false;
     }
 }

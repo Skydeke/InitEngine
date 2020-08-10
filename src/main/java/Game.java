@@ -146,8 +146,9 @@ public class Game extends SimpleApplication {
             q += this.duration;
 
         lights.getTransform().setPosition((float) (Math.sin(q / 4)) * 20, 1f, 0f);
-
         LightManager.getSun().getTransform().setRotation((float) (Math.sin(t) * 0.5), 0.5f, (float) -(Math.cos(t) * 0.5));
+
+        System.out.print("\u001B[32m" + "\r fps: " + (int) GameEngine.FRAMES_PER_SECOND + "\u001B[0m");
     }
 
     @Override

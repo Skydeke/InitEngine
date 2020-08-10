@@ -4,8 +4,10 @@ import engine.architecture.scene.SceneContext;
 import engine.architecture.scene.SceneFbo;
 import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
+import engine.architecture.ui.constraints.CenterConstraint;
+import engine.architecture.ui.constraints.PercentageConstraint;
+import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.ElementManager;
-import engine.architecture.ui.element.layout.Box;
 import engine.architecture.ui.element.layout.LayoutType;
 import engine.architecture.ui.event.InputManager;
 import engine.architecture.ui.event.KeyboardEvent;
@@ -60,22 +62,30 @@ public class ScenePanel extends Panel {
                 if (InputManager.instance().isKeyPressed(GLFW_KEY_F6)) {
                     GlUtils.drawPolygonFill();
                 }
-                /** F11: TOGGLE FULLSCREEN  **/
+                /* F11: TOGGLE FULLSCREEN  **/
                 if (InputManager.instance().isKeyPressed(GLFW_KEY_F11)) {
                     if (isFullDisplay) {
                         // unset fullscreen
                         setAlignType(LayoutType.RELATIVE_TO_PARENT);
+                        setConstraints(null);//Deactivate Constraints cause the ViewportLayout cant handle them.
                         ElementManager.instance().resetFocused();
                         AppContext.instance().resetRenderElement();
+                        getParent().recalculateAbsolutePositions();
+                        context.setResolution(getAbsoluteBox().resolution());
                         isFullDisplay = false;
                         e.consume();
                     } else {
                         // set fullscreen
                         ElementManager.instance().setFocused(this);
                         AppContext.instance().setRenderElement(this);
-                        if (setAbsoluteBox(new Box(0, 0, 1, 1))) {
-                            context.setResolution(Window.instance().getResolution());
-                        }
+                        setAlignType(LayoutType.ABSOLUTE);
+                        setConstraints(new UIConstraints()
+                                .x(new CenterConstraint())
+                                .y(new CenterConstraint())
+                                .w(new PercentageConstraint(1f))
+                                .h(new PercentageConstraint(1f)));
+                        context.setResolution(Window.instance().getResolution());
+                        getParent().recalculateAbsolutePositions();
                         isFullDisplay = true;
                         e.consume();
                     }

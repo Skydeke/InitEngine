@@ -123,7 +123,7 @@ public abstract class UIElement {
         for (UIElement child : children) {
             switch (child.alignType) {
                 default:
-                case RELATIVE_TO_PARENT://TODO MAKE THE TRANSFORMS SAVE ROMOVE SETABSOLUTEBOX MAKE setting constraints easier!
+                case RELATIVE_TO_PARENT:
                     Optional<Box> relative = layout.findRelativeTransform(child, i++);
                     if (relative.isPresent() && child.setBox(relative.get())) {
                         child.handle(new ResizeEvent());
@@ -131,8 +131,13 @@ public abstract class UIElement {
                     }
                     break;
                 case ABSOLUTE:
-                        child.handle(new ResizeEvent());
-                        child.recalculateAbsolutePositions();
+                        child.getConstraints().updateConstraints();
+                        Optional<Box> absolute = Optional.ofNullable(child.getConstraints().getRelativeBox());
+                        if (absolute.isPresent()){
+                            child.absoluteBox = absolute.get();
+                            child.handle(new ResizeEvent());
+                            child.recalculateAbsolutePositions();
+                        }
                     break;
             }
         }
@@ -190,19 +195,6 @@ public abstract class UIElement {
         return ret;
     }
 
-
-    public boolean setAbsoluteBox(Box position) {
-        if (alignType == LayoutType.ABSOLUTE){
-            absoluteBox = position;
-            return true;
-        }else if (alignType == LayoutType.RELATIVE_TO_PARENT){
-            alignType = LayoutType.ABSOLUTE;
-            absoluteBox = position;
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Appends event handler to front of list
      * This means on any subclass of class that derives from Element,
@@ -245,6 +237,7 @@ public abstract class UIElement {
         }
         return ret;
     }
+
 
     public void cleanup() {
         children.forEach(UIElement::cleanup);

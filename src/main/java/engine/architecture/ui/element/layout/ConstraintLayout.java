@@ -4,14 +4,14 @@ import engine.architecture.ui.element.UIElement;
 
 import java.util.Optional;
 
-public class AbsoluteLayout extends Layout {
+public class ConstraintLayout extends Layout {
 
-    public AbsoluteLayout(UIElement e) {
+    public ConstraintLayout(UIElement e) {
         super(e);
     }
 
     /**
-     * Absolute layout that takes the entire screen no matter the input
+     * Constraint layout that takes the entire screen no matter the input
      * and is default the parameter in the Element class
      *
      * @param e     any element object
@@ -20,11 +20,17 @@ public class AbsoluteLayout extends Layout {
      */
     @Override
     public Optional<Box> findRelativeTransform(UIElement e, final int index) {
-        return Optional.of(e.getRelativeBox());
+        if (e.getConstraints() != null){
+            e.getConstraints().updateConstraints();
+            return Optional.of(e.getConstraints().getRelativeBox());
+        }else {
+            return Optional.of(e.getRelativeBox());
+        }
     }
 
     @Override
     public void update() {
-
+        if (owner.getConstraints() != null)
+            owner.getConstraints().updateConstraints();
     }
 }

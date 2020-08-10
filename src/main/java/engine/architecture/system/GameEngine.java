@@ -48,7 +48,6 @@ public class GameEngine implements Runnable {
                     times++;
                     fps += Time.getDelta();
                     if (times >= 50) {
-//                        System.out.print("\u001B[32m" + "\r fps: " + (int) (times / fps) + "\u001B[0m");
                         FRAMES_PER_SECOND = (int) (times / fps);
                         times = 0;
                         fps = 0;
