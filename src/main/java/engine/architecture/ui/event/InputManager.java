@@ -5,8 +5,8 @@ import engine.architecture.system.Window;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.event.mouse.MouseClickEvent;
 import engine.architecture.ui.event.mouse.MouseWheelEvent;
-import engine.utils.libraryWrappers.maths.joml.Vector2d;
-import engine.utils.libraryWrappers.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2d;
+import engine.utils.libraryBindings.maths.joml.Vector2f;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,8 +2,8 @@ package engine.architecture.scene;
 
 import engine.architecture.system.Config;
 import engine.architecture.system.Window;
-import engine.utils.libraryWrappers.opengl.fbos.FrameBufferObject;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;

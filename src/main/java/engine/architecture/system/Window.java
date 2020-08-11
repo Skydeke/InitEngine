@@ -2,10 +2,10 @@ package engine.architecture.system;
 
 import engine.architecture.ui.element.layout.Box;
 import engine.fileLoaders.ImageLoader;
-import engine.utils.libraryWrappers.maths.joml.Vector2d;
-import engine.utils.libraryWrappers.maths.joml.Vector2f;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.maths.joml.Vector4i;
+import engine.utils.libraryBindings.maths.joml.Vector2d;
+import engine.utils.libraryBindings.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.maths.joml.Vector4i;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.BufferUtils;

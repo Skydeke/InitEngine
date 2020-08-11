@@ -1,9 +1,9 @@
 package engine.rendering.instances.camera;
 
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
-import engine.utils.libraryWrappers.maths.objects.Transform;
-import engine.utils.libraryWrappers.maths.objects.Transformable;
-import engine.utils.libraryWrappers.maths.utils.Vector3;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.objects.Transform;
+import engine.utils.libraryBindings.maths.objects.Transformable;
+import engine.utils.libraryBindings.maths.utils.Vector3;
 
 public class CameraFollowingMovement extends CameraController {
 

@@ -1,12 +1,12 @@
 package engine.architecture.models;
 
-import engine.utils.libraryWrappers.maths.objects.Box;
-import engine.utils.libraryWrappers.opengl.constants.DataType;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.constants.VboUsage;
-import engine.utils.libraryWrappers.opengl.objects.*;
-import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.utils.GlRendering;
+import engine.utils.libraryBindings.maths.objects.Box;
+import engine.utils.libraryBindings.opengl.constants.DataType;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.VboUsage;
+import engine.utils.libraryBindings.opengl.objects.*;
+import engine.utils.libraryBindings.opengl.shaders.RenderState;
+import engine.utils.libraryBindings.opengl.utils.GlRendering;
 
 public class ModifiableModel implements Model {
 

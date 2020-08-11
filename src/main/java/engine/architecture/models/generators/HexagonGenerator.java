@@ -3,13 +3,13 @@ package engine.architecture.models.generators;
 import engine.architecture.models.Mesh;
 import engine.architecture.models.Model;
 import engine.architecture.models.SimpleModel;
-import engine.utils.libraryWrappers.maths.utils.Maths;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.constants.VboUsage;
-import engine.utils.libraryWrappers.opengl.objects.BufferUtils;
-import engine.utils.libraryWrappers.opengl.objects.DataBuffer;
-import engine.utils.libraryWrappers.opengl.objects.IndexBuffer;
-import engine.utils.libraryWrappers.opengl.objects.Vao;
+import engine.utils.libraryBindings.maths.utils.Maths;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.VboUsage;
+import engine.utils.libraryBindings.opengl.objects.BufferUtils;
+import engine.utils.libraryBindings.opengl.objects.DataBuffer;
+import engine.utils.libraryBindings.opengl.objects.IndexBuffer;
+import engine.utils.libraryBindings.opengl.objects.Vao;
 
 public class HexagonGenerator implements IModelGenerator {
 

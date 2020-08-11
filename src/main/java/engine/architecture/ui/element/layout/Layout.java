@@ -1,7 +1,7 @@
 package engine.architecture.ui.element.layout;
 
 import engine.architecture.ui.element.UIElement;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
 import lombok.Getter;
 
 import java.util.Optional;

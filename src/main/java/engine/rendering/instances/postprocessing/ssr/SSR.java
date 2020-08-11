@@ -2,7 +2,7 @@ package engine.rendering.instances.postprocessing.ssr;
 
 import engine.architecture.scene.SceneFbo;
 import engine.architecture.system.Pipeline;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 
 /**

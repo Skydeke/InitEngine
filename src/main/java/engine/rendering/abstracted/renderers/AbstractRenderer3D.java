@@ -3,8 +3,8 @@ package engine.rendering.abstracted.renderers;
 import engine.architecture.models.Model;
 import engine.architecture.system.AppContext;
 import engine.rendering.abstracted.Processable;
-import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
+import engine.utils.libraryBindings.opengl.shaders.RenderState;
+import engine.utils.libraryBindings.opengl.shaders.ShadersProgram;
 
 public abstract class AbstractRenderer3D<T extends Processable> extends Renderer3D<T> {
 

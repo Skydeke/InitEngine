@@ -1,8 +1,8 @@
 package engine.architecture.scene.light;
 
 import engine.architecture.system.AppContext;
-import engine.utils.libraryWrappers.maths.joml.Matrix4f;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.joml.Matrix4f;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
 import lombok.Getter;
 import lombok.Setter;
 

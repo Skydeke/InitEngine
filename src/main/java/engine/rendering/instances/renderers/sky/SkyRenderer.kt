@@ -3,7 +3,7 @@ package engine.rendering.instances.renderers.sky
 import engine.architecture.scene.SceneContext
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
-import engine.utils.libraryWrappers.opengl.shaders.*
+import engine.utils.libraryBindings.opengl.shaders.*
 
 internal class SkyRenderer : Renderer3D<Sky>() {
 

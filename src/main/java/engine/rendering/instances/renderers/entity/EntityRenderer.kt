@@ -4,11 +4,11 @@ import engine.architecture.scene.SceneContext
 import engine.architecture.scene.entity.Entity
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
-import engine.utils.libraryWrappers.maths.joml.FrustumIntersection
-import engine.utils.libraryWrappers.maths.joml.Vector3f
-import engine.utils.libraryWrappers.maths.utils.Matrix4
-import engine.utils.libraryWrappers.opengl.shaders.*
-import engine.utils.libraryWrappers.opengl.textures.TextureObject
+import engine.utils.libraryBindings.maths.joml.FrustumIntersection
+import engine.utils.libraryBindings.maths.joml.Vector3f
+import engine.utils.libraryBindings.maths.utils.Matrix4
+import engine.utils.libraryBindings.opengl.shaders.*
+import engine.utils.libraryBindings.opengl.textures.TextureObject
 
 internal class EntityRenderer : Renderer3D<Entity>() {
 

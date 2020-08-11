@@ -1,9 +1,9 @@
 package engine.architecture.models;
 
 import engine.fileLoaders.ImageLoader;
-import engine.utils.libraryWrappers.maths.joml.Vector4f;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
-import engine.utils.libraryWrappers.opengl.utils.GlUtils;
+import engine.utils.libraryBindings.maths.joml.Vector4f;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
 
@@ -101,8 +101,10 @@ public class Material {
         }
     }
 
-    public Material(boolean bfc){
-        cullBackface = bfc;
+    private Material(){}
+
+    public static MaterialBuilder builder() {
+        return new MaterialBuilder();
     }
 
     private TextureObject getTexture(int aiTextureType, AIMaterial material, AIScene scene){
@@ -163,7 +165,21 @@ public class Material {
         }
     }
 
-    public void setBackfaceCulling(boolean b) {
-        cullBackface = b;
+    public static class MaterialBuilder {
+        private Material mat = new Material();
+
+        public MaterialBuilder activateBackFaceCulling(){
+            mat.cullBackface = true;
+            return this;
+        }
+
+        public MaterialBuilder deactivateBackFaceCulling(){
+            mat.cullBackface = false;
+            return this;
+        }
+
+        public Material create(){
+            return mat;
+        }
     }
 }

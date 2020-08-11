@@ -1,7 +1,7 @@
 package engine.architecture.componentsystem;
 
 import engine.architecture.scene.node.Node;
-import engine.utils.libraryWrappers.maths.objects.Transform;
+import engine.utils.libraryBindings.maths.objects.Transform;
 
 public abstract class GameComponent {
 

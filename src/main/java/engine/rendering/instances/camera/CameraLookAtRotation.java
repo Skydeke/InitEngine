@@ -1,6 +1,6 @@
 package engine.rendering.instances.camera;
 
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
 
 public class CameraLookAtRotation extends CameraController {
 

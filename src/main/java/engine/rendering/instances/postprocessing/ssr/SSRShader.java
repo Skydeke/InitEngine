@@ -2,8 +2,8 @@ package engine.rendering.instances.postprocessing.ssr;
 
 import engine.architecture.system.Config;
 import engine.rendering.Shader;
-import engine.utils.libraryWrappers.maths.joml.Matrix4f;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.maths.joml.Matrix4f;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 import static org.lwjgl.opengl.GL15.GL_READ_ONLY;
 import static org.lwjgl.opengl.GL15.GL_READ_WRITE;

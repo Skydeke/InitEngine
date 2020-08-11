@@ -1,7 +1,7 @@
 package engine.architecture.models;
 
-import engine.utils.libraryWrappers.maths.objects.Box;
-import engine.utils.libraryWrappers.opengl.shaders.RenderState;
+import engine.utils.libraryBindings.maths.objects.Box;
+import engine.utils.libraryBindings.opengl.shaders.RenderState;
 
 public interface Model {
 

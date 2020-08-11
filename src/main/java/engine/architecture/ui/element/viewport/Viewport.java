@@ -16,9 +16,9 @@ import engine.architecture.ui.event.mouse.HoverLostEvent;
 import engine.architecture.ui.event.mouse.HoverStartEvent;
 import engine.architecture.ui.event.mouse.MouseClickEvent;
 import engine.utils.Color;
-import engine.utils.libraryWrappers.maths.joml.Vector2f;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.maths.joml.Vector4i;
+import engine.utils.libraryBindings.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.maths.joml.Vector4i;
 
 import static engine.architecture.ui.event.mouse.MouseClickEvent.*;
 import static org.lwjgl.glfw.GLFW.*;

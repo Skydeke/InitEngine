@@ -1,8 +1,8 @@
 package engine.architecture.models.generators;
 
 import engine.architecture.models.Model;
-import engine.utils.libraryWrappers.opengl.objects.IVbo;
-import engine.utils.libraryWrappers.opengl.objects.Vao;
+import engine.utils.libraryBindings.opengl.objects.IVbo;
+import engine.utils.libraryBindings.opengl.objects.Vao;
 
 public interface IModelGenerator {
 

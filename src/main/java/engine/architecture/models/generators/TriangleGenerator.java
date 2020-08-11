@@ -3,15 +3,15 @@ package engine.architecture.models.generators;
 import engine.architecture.models.Mesh;
 import engine.architecture.models.Model;
 import engine.architecture.models.SimpleModel;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
-import engine.utils.libraryWrappers.maths.objects.Triangle;
-import engine.utils.libraryWrappers.maths.utils.Maths;
-import engine.utils.libraryWrappers.maths.utils.Vector2;
-import engine.utils.libraryWrappers.maths.utils.Vector3;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.constants.VboUsage;
-import engine.utils.libraryWrappers.opengl.objects.*;
-import engine.utils.libraryWrappers.opengl.utils.MemoryUtils;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.objects.Triangle;
+import engine.utils.libraryBindings.maths.utils.Maths;
+import engine.utils.libraryBindings.maths.utils.Vector2;
+import engine.utils.libraryBindings.maths.utils.Vector3;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.VboUsage;
+import engine.utils.libraryBindings.opengl.objects.*;
+import engine.utils.libraryBindings.opengl.utils.MemoryUtils;
 
 import java.nio.FloatBuffer;
 

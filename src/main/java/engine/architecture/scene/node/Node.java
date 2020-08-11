@@ -1,7 +1,7 @@
 package engine.architecture.scene.node;
 
-import engine.utils.libraryWrappers.maths.objects.Transform;
-import engine.utils.libraryWrappers.opengl.utils.Utils;
+import engine.utils.libraryBindings.maths.objects.Transform;
+import engine.utils.libraryBindings.opengl.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 

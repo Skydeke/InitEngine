@@ -1,6 +1,6 @@
 package engine.utils;
 
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
 import lombok.Getter;
 
 @Getter

@@ -1,9 +1,9 @@
 package engine.architecture.ui.element.layout;
 
 import engine.architecture.system.Window;
-import engine.utils.libraryWrappers.maths.joml.Vector2f;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.maths.joml.Vector4i;
+import engine.utils.libraryBindings.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.maths.joml.Vector4i;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

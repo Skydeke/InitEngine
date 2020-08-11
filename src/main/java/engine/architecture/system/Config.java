@@ -1,6 +1,6 @@
 package engine.architecture.system;
 
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package engine.architecture.scene.light;
 
 import engine.architecture.scene.node.Node;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
 
 public abstract class Light extends Node {
 

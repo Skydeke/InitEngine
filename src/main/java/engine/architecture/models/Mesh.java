@@ -1,11 +1,11 @@
 package engine.architecture.models;
 
 import engine.rendering.abstracted.Renderable;
-import engine.utils.libraryWrappers.opengl.constants.DataType;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.constants.VboUsage;
-import engine.utils.libraryWrappers.opengl.objects.*;
-import engine.utils.libraryWrappers.opengl.utils.GlRendering;
+import engine.utils.libraryBindings.opengl.constants.DataType;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.VboUsage;
+import engine.utils.libraryBindings.opengl.objects.*;
+import engine.utils.libraryBindings.opengl.utils.GlRendering;
 
 import java.util.Arrays;
 
@@ -26,9 +26,9 @@ public class Mesh implements Renderable {
         Norm = listToArray2;
         indicies = listIntToArray;
 
-        final IndexBuffer indexBuffer = engine.utils.libraryWrappers.opengl.objects.BufferUtils.loadToIndexBuffer(VboUsage.STATIC_DRAW, indicies);
+        final IndexBuffer indexBuffer = engine.utils.libraryBindings.opengl.objects.BufferUtils.loadToIndexBuffer(VboUsage.STATIC_DRAW, indicies);
         float[] data = connectData(vert.length / 3, vert, tex, Norm);
-        DataBuffer buffer = engine.utils.libraryWrappers.opengl.objects.BufferUtils.loadToDataBuffer(VboUsage.STATIC_DRAW, data);
+        DataBuffer buffer = engine.utils.libraryBindings.opengl.objects.BufferUtils.loadToDataBuffer(VboUsage.STATIC_DRAW, data);
         vao = Vao.create();
         vao.bind();
         vao.loadIndexBuffer(indexBuffer);
@@ -43,9 +43,9 @@ public class Mesh implements Renderable {
         tex = listToArray1;
         indicies = listIntToArray;
 
-        final IndexBuffer indexBuffer = engine.utils.libraryWrappers.opengl.objects.BufferUtils.loadToIndexBuffer(VboUsage.STATIC_DRAW, indicies);
+        final IndexBuffer indexBuffer = engine.utils.libraryBindings.opengl.objects.BufferUtils.loadToIndexBuffer(VboUsage.STATIC_DRAW, indicies);
         float[] data = connectData((int) indexBuffer.getSize(), vert, tex);
-        DataBuffer buffer = engine.utils.libraryWrappers.opengl.objects.BufferUtils.loadToDataBuffer(VboUsage.STATIC_DRAW, data);
+        DataBuffer buffer = engine.utils.libraryBindings.opengl.objects.BufferUtils.loadToDataBuffer(VboUsage.STATIC_DRAW, data);
         vao = Vao.create();
         vao.bind();
         vao.loadIndexBuffer(indexBuffer);

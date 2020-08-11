@@ -1,8 +1,8 @@
 package engine.rendering.instances.renderers.pbr;
 
 import engine.fileLoaders.ImageLoader;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 public class PBRMaterial {
 

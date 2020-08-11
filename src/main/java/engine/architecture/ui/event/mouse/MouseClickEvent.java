@@ -2,8 +2,8 @@ package engine.architecture.ui.event.mouse;
 
 import engine.architecture.system.Window;
 import engine.architecture.ui.event.Event;
-import engine.utils.libraryWrappers.maths.joml.Vector2f;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
+import engine.utils.libraryBindings.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

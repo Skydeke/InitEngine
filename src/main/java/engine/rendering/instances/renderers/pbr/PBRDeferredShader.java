@@ -4,7 +4,7 @@ import engine.architecture.scene.light.Light;
 import engine.architecture.scene.light.LightManager;
 import engine.architecture.system.Config;
 import engine.rendering.Shader;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import lombok.Getter;
 
 import static org.lwjgl.opengl.GL15.GL_READ_ONLY;

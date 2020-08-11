@@ -4,10 +4,10 @@ import engine.architecture.models.Material;
 import engine.architecture.models.Mesh;
 import engine.architecture.models.SimpleModel;
 import engine.utils.IOUtils;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
-import engine.utils.libraryWrappers.maths.objects.Box;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.utils.Utils;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.objects.Box;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.utils.Utils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
 

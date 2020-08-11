@@ -1,8 +1,8 @@
 package engine.rendering.abstracted.postprocessing.effects;
 
 import engine.architecture.scene.node.Node;
-import engine.utils.libraryWrappers.opengl.fbos.FrameBufferObject;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 public abstract class ExtraRenderEffect extends Effect {
 

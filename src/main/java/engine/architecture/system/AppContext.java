@@ -9,9 +9,9 @@ import engine.architecture.ui.element.button.ButtonSettings;
 import engine.architecture.ui.element.layout.Box;
 import engine.architecture.ui.element.viewport.SceneViewport;
 import engine.architecture.ui.element.viewport.VerticalViewport;
-import engine.utils.libraryWrappers.maths.joml.Vector4i;
-import engine.utils.libraryWrappers.opengl.utils.GlBuffer;
-import engine.utils.libraryWrappers.opengl.utils.GlUtils;
+import engine.utils.libraryBindings.maths.joml.Vector4i;
+import engine.utils.libraryBindings.opengl.utils.GlBuffer;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;
 

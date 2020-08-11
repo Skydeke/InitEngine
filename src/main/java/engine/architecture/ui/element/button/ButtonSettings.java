@@ -1,8 +1,8 @@
 package engine.architecture.ui.element.button;
 
 import engine.utils.Color;
-import engine.utils.libraryWrappers.maths.joml.Vector4i;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.maths.joml.Vector4i;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import lombok.Getter;
 import lombok.Setter;
 

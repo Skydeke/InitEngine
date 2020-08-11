@@ -1,6 +1,6 @@
 package engine.rendering.instances.postprocessing.ssao;
 
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;

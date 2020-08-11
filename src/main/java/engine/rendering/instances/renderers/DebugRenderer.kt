@@ -4,13 +4,13 @@ import engine.architecture.scene.SceneContext
 import engine.architecture.scene.entity.Entity
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
-import engine.utils.libraryWrappers.maths.joml.FrustumIntersection
-import engine.utils.libraryWrappers.maths.joml.Vector3f
-import engine.utils.libraryWrappers.maths.utils.Matrix4
-import engine.utils.libraryWrappers.opengl.shaders.RenderState
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram
-import engine.utils.libraryWrappers.opengl.shaders.UniformValue
-import engine.utils.libraryWrappers.opengl.shaders.UniformValueProperty
+import engine.utils.libraryBindings.maths.joml.FrustumIntersection
+import engine.utils.libraryBindings.maths.joml.Vector3f
+import engine.utils.libraryBindings.maths.utils.Matrix4
+import engine.utils.libraryBindings.opengl.shaders.RenderState
+import engine.utils.libraryBindings.opengl.shaders.ShadersProgram
+import engine.utils.libraryBindings.opengl.shaders.UniformValue
+import engine.utils.libraryBindings.opengl.shaders.UniformValueProperty
 
 internal class DebugRenderer : Renderer3D<Entity>() {
 

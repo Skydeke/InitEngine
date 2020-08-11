@@ -1,9 +1,9 @@
 package engine.architecture.models;
 
-import engine.utils.libraryWrappers.maths.objects.Box;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.objects.IVbo;
-import engine.utils.libraryWrappers.opengl.shaders.RenderState;
+import engine.utils.libraryBindings.maths.objects.Box;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.objects.IVbo;
+import engine.utils.libraryBindings.opengl.shaders.RenderState;
 
 public class SimpleModel implements Model {
 

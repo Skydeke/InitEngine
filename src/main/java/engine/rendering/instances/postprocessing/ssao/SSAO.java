@@ -1,7 +1,7 @@
 package engine.rendering.instances.postprocessing.ssao;
 
 import engine.architecture.system.Pipeline;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import lombok.Getter;
 
 import static org.lwjgl.opengl.GL11.GL_RED;

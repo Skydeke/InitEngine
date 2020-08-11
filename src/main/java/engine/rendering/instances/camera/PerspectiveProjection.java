@@ -1,8 +1,8 @@
 package engine.rendering.instances.camera;
 
 import engine.rendering.abstracted.camera.CameraProjection;
-import engine.utils.libraryWrappers.maths.joml.Matrix4f;
-import engine.utils.libraryWrappers.maths.utils.Matrix4;
+import engine.utils.libraryBindings.maths.joml.Matrix4f;
+import engine.utils.libraryBindings.maths.utils.Matrix4;
 
 public class PerspectiveProjection implements CameraProjection {
 

@@ -3,10 +3,10 @@ package engine.architecture.models.generators;
 import engine.architecture.models.Mesh;
 import engine.architecture.models.Model;
 import engine.architecture.models.SimpleModel;
-import engine.utils.libraryWrappers.opengl.constants.DataType;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.constants.VboUsage;
-import engine.utils.libraryWrappers.opengl.objects.*;
+import engine.utils.libraryBindings.opengl.constants.DataType;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.VboUsage;
+import engine.utils.libraryBindings.opengl.objects.*;
 
 import java.util.Arrays;
 

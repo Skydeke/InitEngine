@@ -1,7 +1,7 @@
 package engine.architecture.models;
 
-import engine.utils.libraryWrappers.maths.utils.Maths;
-import engine.utils.libraryWrappers.opengl.objects.IVbo;
+import engine.utils.libraryBindings.maths.utils.Maths;
+import engine.utils.libraryBindings.opengl.objects.IVbo;
 
 import java.util.ArrayList;
 import java.util.Arrays;

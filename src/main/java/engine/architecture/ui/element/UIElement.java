@@ -6,9 +6,9 @@ import engine.architecture.ui.element.layout.*;
 import engine.architecture.ui.element.viewport.Viewport;
 import engine.architecture.ui.event.Event;
 import engine.architecture.ui.event.ResizeEvent;
-import engine.utils.libraryWrappers.maths.joml.Vector2f;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.opengl.utils.Utils;
+import engine.utils.libraryBindings.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.opengl.utils.Utils;
 import lombok.Getter;
 import lombok.Setter;
 

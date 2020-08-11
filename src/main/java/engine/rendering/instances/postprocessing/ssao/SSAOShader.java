@@ -2,9 +2,9 @@ package engine.rendering.instances.postprocessing.ssao;
 
 import engine.architecture.system.Config;
 import engine.rendering.Shader;
-import engine.utils.libraryWrappers.maths.joml.Matrix4f;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.maths.joml.Matrix4f;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 import java.util.List;
 

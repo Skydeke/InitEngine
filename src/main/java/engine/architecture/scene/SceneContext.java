@@ -6,8 +6,8 @@ import engine.architecture.ui.element.UIElement;
 import engine.architecture.ui.event.mouse.MouseMoveEvent;
 import engine.rendering.Shader;
 import engine.rendering.instances.camera.Camera;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.opengl.objects.ClipPlane;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.opengl.objects.ClipPlane;
 import lombok.Getter;
 import lombok.Setter;
 

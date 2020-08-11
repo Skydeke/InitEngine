@@ -8,7 +8,7 @@ public class Sky extends Entity {
 
     public Sky() {
         super(ModelLoader.sphere);
-        getModel().getMeshes()[0].setMaterial(new Material(false));
+        getModel().getMeshes()[0].setMaterial(Material.builder().deactivateBackFaceCulling().create());
         getTransform().setScale(2800);
     }
 

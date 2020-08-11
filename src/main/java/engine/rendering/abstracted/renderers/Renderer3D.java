@@ -1,11 +1,11 @@
 package engine.rendering.abstracted.renderers;
 
 import engine.rendering.abstracted.Processable;
-import engine.utils.libraryWrappers.maths.joml.Matrix4f;
-import engine.utils.libraryWrappers.maths.joml.Vector3fc;
-import engine.utils.libraryWrappers.maths.joml.Vector4f;
-import engine.utils.libraryWrappers.maths.utils.Maths;
-import engine.utils.libraryWrappers.maths.utils.Vector4;
+import engine.utils.libraryBindings.maths.joml.Matrix4f;
+import engine.utils.libraryBindings.maths.joml.Vector3fc;
+import engine.utils.libraryBindings.maths.joml.Vector4f;
+import engine.utils.libraryBindings.maths.utils.Maths;
+import engine.utils.libraryBindings.maths.utils.Vector4;
 
 public abstract class Renderer3D<T extends Processable> extends Renderer<T> {
 

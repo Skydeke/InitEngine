@@ -1,7 +1,7 @@
 package engine.rendering.abstracted.postprocessing;
 
 import engine.rendering.RenderOutputData;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
 
 import java.util.Arrays;
 import java.util.List;

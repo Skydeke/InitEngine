@@ -3,7 +3,7 @@ package engine.rendering.instances.renderers.generic;
 import engine.architecture.scene.node.Node;
 import engine.rendering.Shader;
 import engine.rendering.instances.camera.Camera;
-import engine.utils.libraryWrappers.maths.joml.Matrix4f;
+import engine.utils.libraryBindings.maths.joml.Matrix4f;
 
 public class GenericOverlayShader extends Shader {
 

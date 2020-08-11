@@ -1,7 +1,7 @@
 package engine.rendering.abstracted;
 
 import engine.architecture.models.ILod;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
 
 public interface Renderable {
 

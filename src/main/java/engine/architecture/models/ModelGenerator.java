@@ -1,14 +1,14 @@
 package engine.architecture.models;
 
 import engine.architecture.models.generators.*;
-import engine.utils.libraryWrappers.maths.joml.Vector3f;
-import engine.utils.libraryWrappers.maths.noise.Noise3f;
-import engine.utils.libraryWrappers.maths.objects.Triangle;
-import engine.utils.libraryWrappers.maths.utils.Vector3;
-import engine.utils.libraryWrappers.opengl.constants.DataType;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.constants.VboUsage;
-import engine.utils.libraryWrappers.opengl.objects.*;
+import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.maths.noise.Noise3f;
+import engine.utils.libraryBindings.maths.objects.Triangle;
+import engine.utils.libraryBindings.maths.utils.Vector3;
+import engine.utils.libraryBindings.opengl.constants.DataType;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.constants.VboUsage;
+import engine.utils.libraryBindings.opengl.objects.*;
 
 import java.util.Arrays;
 import java.util.function.Predicate;

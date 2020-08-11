@@ -1,7 +1,8 @@
 package engine.fileLoaders;
 
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
-import engine.utils.libraryWrappers.opengl.utils.Utils;
+import engine.utils.libraryBindings.opengl.textures.TextureCache;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.utils.Utils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.assimp.AITexture;
 import org.lwjgl.system.MemoryUtil;
@@ -60,6 +61,10 @@ public class ImageLoader {
      * @return texture object with width, height, and handle
      */
     public static TextureObject loadTexture(String filename, boolean srgb) {
+        if (TextureCache.getTexture(filename) != null){
+//            System.out.println("LOADED CACHED TEXTURE!");
+            return TextureCache.getTexture(filename);
+        }
 
         ByteBuffer buffer;
 
@@ -107,7 +112,7 @@ public class ImageLoader {
 
         stbi_image_free(image);
         System.out.println("Texture " + id + " loaded: " + filename + " (" + w.get(0) + "," + h.get(0) + ")");
-
+        TextureCache.addToCache(filename, ret);
         return ret;
     }
 
@@ -118,6 +123,11 @@ public class ImageLoader {
      * @return texture object with width, height, and handle
      */
     public static TextureObject loadTextureFromBuffer(AITexture assimpTexture, boolean srgb) {
+        if (TextureCache.getTexture(assimpTexture.hashCode() + "") != null){
+//            System.out.println("LOADED CACHED TEXTURE!");
+            return TextureCache.getTexture(assimpTexture.hashCode() + "");
+        }
+
         ByteBuffer buffer = MemoryUtil.memByteBuffer(assimpTexture.pcData(0).address0(), assimpTexture.mWidth());
         IntBuffer w = BufferUtils.createIntBuffer(1);
         IntBuffer h = BufferUtils.createIntBuffer(1);
@@ -155,7 +165,7 @@ public class ImageLoader {
 
         stbi_image_free(image);
         System.out.println("Texture " + id + " loaded: " + buffer.toString() + " (" + w.get(0) + "," + h.get(0) + ")");
-
+        TextureCache.addToCache(assimpTexture.hashCode() + "", ret);
         return ret;
     }
 }

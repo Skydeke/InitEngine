@@ -12,8 +12,8 @@ import engine.architecture.ui.element.layout.LayoutType;
 import engine.architecture.ui.event.InputManager;
 import engine.architecture.ui.event.KeyboardEvent;
 import engine.architecture.ui.event.ResizeEvent;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.opengl.utils.GlUtils;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;

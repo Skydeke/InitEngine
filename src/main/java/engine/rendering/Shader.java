@@ -5,9 +5,9 @@ import engine.architecture.scene.light.Light;
 import engine.architecture.scene.node.Node;
 import engine.architecture.system.Window;
 import engine.utils.Color;
-import engine.utils.libraryWrappers.maths.joml.*;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
-import engine.utils.libraryWrappers.opengl.utils.Utils;
+import engine.utils.libraryBindings.maths.joml.*;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.utils.Utils;
 import org.lwjgl.system.MemoryStack;
 
 import java.lang.Math;

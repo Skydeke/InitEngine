@@ -8,10 +8,10 @@ import engine.architecture.ui.element.UIElement;
 import engine.architecture.ui.element.layout.Box;
 import engine.rendering.abstracted.Processable;
 import engine.utils.Color;
-import engine.utils.libraryWrappers.maths.joml.Vector4i;
-import engine.utils.libraryWrappers.opengl.shaders.*;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
-import engine.utils.libraryWrappers.opengl.utils.GlUtils;
+import engine.utils.libraryBindings.maths.joml.Vector4i;
+import engine.utils.libraryBindings.opengl.shaders.*;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;
 

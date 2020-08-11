@@ -2,7 +2,7 @@ package engine.rendering
 
 import engine.architecture.models.Model
 import engine.rendering.abstracted.Processable
-import engine.utils.libraryWrappers.opengl.textures.TextureObject
+import engine.utils.libraryBindings.opengl.textures.TextureObject
 
 data class RenderOutputData(
     val colour: TextureObject,

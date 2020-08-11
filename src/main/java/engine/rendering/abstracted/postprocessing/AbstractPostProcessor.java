@@ -2,14 +2,14 @@ package engine.rendering.abstracted.postprocessing;
 
 import engine.architecture.system.Window;
 import engine.rendering.RenderOutputData;
-import engine.utils.libraryWrappers.opengl.constants.RenderMode;
-import engine.utils.libraryWrappers.opengl.fbos.FrameBufferObject;
-import engine.utils.libraryWrappers.opengl.shaders.RenderState;
-import engine.utils.libraryWrappers.opengl.shaders.ShadersProgram;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
-import engine.utils.libraryWrappers.opengl.utils.GlBuffer;
-import engine.utils.libraryWrappers.opengl.utils.GlRendering;
-import engine.utils.libraryWrappers.opengl.utils.GlUtils;
+import engine.utils.libraryBindings.opengl.constants.RenderMode;
+import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
+import engine.utils.libraryBindings.opengl.shaders.RenderState;
+import engine.utils.libraryBindings.opengl.shaders.ShadersProgram;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.utils.GlBuffer;
+import engine.utils.libraryBindings.opengl.utils.GlRendering;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 
 public abstract class AbstractPostProcessor implements PostProcessor {
 

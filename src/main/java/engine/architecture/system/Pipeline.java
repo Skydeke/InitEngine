@@ -13,11 +13,11 @@ import engine.rendering.instances.renderers.pbr.PBRDeferredShader;
 import engine.rendering.instances.renderers.pbr.PBRRenderer;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
 import engine.rendering.instances.renderers.sky.SkyRenderer;
-import engine.utils.libraryWrappers.maths.joml.Vector2i;
-import engine.utils.libraryWrappers.opengl.fbos.FrameBufferObject;
-import engine.utils.libraryWrappers.opengl.textures.TextureObject;
-import engine.utils.libraryWrappers.opengl.utils.GlBuffer;
-import engine.utils.libraryWrappers.opengl.utils.GlUtils;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
+import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.utils.GlBuffer;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 
 import java.util.ArrayList;
