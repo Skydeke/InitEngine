@@ -5,7 +5,6 @@ import engine.architecture.ui.event.InputManager;
 
 public class GameEngine implements Runnable {
 
-    private static final boolean showFps = true;
     public static int FRAMES_PER_SECOND = 0;
 
     private final Window window;
@@ -40,31 +39,21 @@ public class GameEngine implements Runnable {
     public void run() {
         float fps = 0;
         int times = 0;
-        while (!window.shouldClose() && !game.isClosed()) {
-            try {
-                Time.update();
-
-                if (showFps) {
-                    times++;
-                    fps += Time.getDelta();
-                    if (times >= 50) {
-                        FRAMES_PER_SECOND = (int) (times / fps);
-                        times = 0;
-                        fps = 0;
-                    }
-                }
-                game.update(Time.getDelta());
-                inputManager.update();
-                game.render(AppContext.instance());
-                window.update(AppContext.instance().getSceneContext().getPipeline().isAnyChange());
-                AppContext.instance().getSceneContext().getPipeline().setAnyChange(false);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                break;
+        while (!window.shouldClose() & !game.isClosed()) {
+            Time.update();
+            times++;
+            fps += Time.getDelta();
+            if (times >= 50) {
+                FRAMES_PER_SECOND = (int) (times / fps);
+                times = 0;
+                fps = 0;
             }
+            game.update(Time.getDelta());
+            game.render(AppContext.instance());
+            inputManager.update();
+            window.update(AppContext.instance().getSceneContext().getPipeline().isAnyChange());
+            AppContext.instance().getSceneContext().getPipeline().setAnyChange(false);
         }
-
         game.cleanUp();
     }
 

@@ -16,9 +16,7 @@ import engine.utils.libraryBindings.maths.joml.Vector4i;
 import engine.utils.libraryBindings.opengl.utils.GlBuffer;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 public class AppContext {
@@ -28,7 +26,6 @@ public class AppContext {
     public SceneContext sceneContext;
     @Getter
     private RootElement root;
-    @Setter
     @Getter
     private UIElement renderElement;
     @Getter
@@ -49,28 +46,9 @@ public class AppContext {
         elementManager.init(this);
 
         // initialize pipeline from config
-        try {
-
-            this.sceneContext = game.getContext();
-            sceneContext.init();
-            sceneContext.loadRenderer();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.err.println("Render engine class does not exist: " + Config.instance().getRenderEngine());
-            System.exit(-1);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            System.err.println("Render engine does not take SceneContext in its constructor: " + Config.instance().getRenderEngine());
-            System.exit(-1);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        this.sceneContext = game.getContext();
+        sceneContext.init();
+        sceneContext.loadRenderer();
         // initialize engine implementation
         game.init(Window.instance(), this);
         // replace with application load protocol
@@ -109,6 +87,7 @@ public class AppContext {
 //        pv.setBox(new Box(0.8f, 0.3f, 0.15f, 0.5f));
 //        p2.setBox(new Box(0.5f, 0.3f, 0.15f, 0.5f));
 //        p3.setBox(new Box(0.3f, 0.3f, 0.15f, 0.5f));
+
         root.addChildren(sceneViewport.get());
         sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
         sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.4f), new CenterConstraint(),
@@ -145,9 +124,9 @@ public class AppContext {
     }
 
     public void draw() {
-        Window.instance().setBlending(false);
+        GlUtils.disableBlending();
         sceneContext.render();
-        Window.instance().setBlending(true);
+        GlUtils.enableAlphaBlending();
         GlUtils.disableDepthTest();
         GlUtils.clear(GlBuffer.COLOUR);
         Window.instance().resetViewport();
@@ -162,7 +141,6 @@ public class AppContext {
         this.renderElement.setActivated(true);
         this.renderElement.getChildren().forEach(e -> e.setActivated(true));
         this.renderElement.recalculateAbsolutePositions();
-        this.renderElement.update();
     }
 
     public void resetRenderElement() {

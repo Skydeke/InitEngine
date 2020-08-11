@@ -187,9 +187,9 @@ public abstract class UIElement {
 
         if (parent == null) {
             absoluteBox.set(relativeBox);
-//            alignType = LayoutType.ABSOLUTE;
+            alignType = LayoutType.ABSOLUTE;
         } else {
-//            alignType = LayoutType.RELATIVE_TO_PARENT;
+            alignType = LayoutType.RELATIVE_TO_PARENT;
             Box newAbsolute = position.relativeTo(parent.absoluteBox);
             if (newAbsolute.width * Window.instance().getWidth() >= minWidth &&
                     newAbsolute.height * Window.instance().getHeight() >= minHeight)
@@ -276,14 +276,4 @@ public abstract class UIElement {
         return ElementManager.instance().isMouseOver(_vp)
                 && ElementManager.instance().isTop(_vp);
     }
-
-    //    @Override
-//    public String toString(){
-//        StringBuilder builder = new StringBuilder();
-//        builder.append(getClass()+ "\n");
-//        for(Element child: children)
-//            builder.append("    - " + child.getClass() + "\n");
-//        return builder.toString();
-//    }
-
 }

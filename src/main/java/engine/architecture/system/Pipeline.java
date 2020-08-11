@@ -136,62 +136,64 @@ public class Pipeline {
         // that will populate the scene texture
         context.getScene().process();
         checkForChanges();
-        GlUtils.clear(GlBuffer.COLOUR, GlBuffer.DEPTH, GlBuffer.STENCIL);
-
-
-        if (Config.instance().isShadows()) {
-            shadowFBO.bind();
-            Window.instance().resizeViewport(Config.instance().getShadowBufferSize());
-            GlUtils.clear(GlBuffer.DEPTH);
-            ShadowRenderer.getInstance().render(context);
-        }
-
-        pbrFBO.bind(() -> {
+        if (isAnyChange()){
             GlUtils.clear(GlBuffer.COLOUR, GlBuffer.DEPTH, GlBuffer.STENCIL);
-            Window.instance().resizeViewport(context.getResolution());
-            // render scenegraph to obtain geometry data in the pbrFBO buffers
-            for (Renderer r : renderers) {
-                r.render(context);
+
+
+            if (Config.instance().isShadows()) {
+                shadowFBO.bind();
+                Window.instance().resizeViewport(Config.instance().getShadowBufferSize());
+                GlUtils.clear(GlBuffer.DEPTH);
+                ShadowRenderer.getInstance().render(context);
             }
-        });
+
+            pbrFBO.bind(() -> {
+                GlUtils.clear(GlBuffer.COLOUR, GlBuffer.DEPTH, GlBuffer.STENCIL);
+                Window.instance().resizeViewport(context.getResolution());
+                // render scenegraph to obtain geometry data in the pbrFBO buffers
+                for (Renderer r : renderers) {
+                    r.render(context);
+                }
+            });
 
 
-        // calculate ssao
-        if (Config.instance().isSsao())
-            ssaoPass.compute(
-                    pbrFBO.getAttachment(0),
-                    pbrFBO.getAttachment(1));
+            // calculate ssao
+            if (Config.instance().isSsao())
+                ssaoPass.compute(
+                        pbrFBO.getAttachment(0),
+                        pbrFBO.getAttachment(1));
 
-        // using buffer data to compute lit color
-        lightingPass.compute(
-                pbrFBO.getAttachment(2),
-                pbrFBO.getAttachment(0),
-                pbrFBO.getAttachment(1),
-                shadowFBO.getDepthAttachment(),
-                ssaoPass.getTargetTexture(),
-                pbrFBO.getAttachment(3));
-
-        // calculate reflections
-        if (Config.instance().isSsr())
-            ssrPass.compute(
+            // using buffer data to compute lit color
+            lightingPass.compute(
+                    pbrFBO.getAttachment(2),
                     pbrFBO.getAttachment(0),
                     pbrFBO.getAttachment(1),
-                    ssaoPass.getTargetTexture());
+                    shadowFBO.getDepthAttachment(),
+                    ssaoPass.getTargetTexture(),
+                    pbrFBO.getAttachment(3));
 
-        pbrFBO.bind(() -> {
-            for (Renderer lateRenderer : lateRenderers) {
-                lateRenderer.render(context);
-            }
-        });
-        // reset viewport to window size
-        Window.instance().resetViewport();
+            // calculate reflections
+            if (Config.instance().isSsr())
+                ssrPass.compute(
+                        pbrFBO.getAttachment(0),
+                        pbrFBO.getAttachment(1),
+                        ssaoPass.getTargetTexture());
 
-        if (Config.instance().isDebugLayer()) {
-            SceneFbo.getInstance().bind(() -> {
-                Window.instance().resizeViewport(getResolution());
-                DebugRenderer.getInstance().render(context);
-                Window.instance().resetViewport();
+            pbrFBO.bind(() -> {
+                for (Renderer lateRenderer : lateRenderers) {
+                    lateRenderer.render(context);
+                }
             });
+            // reset viewport to window size
+            Window.instance().resetViewport();
+
+            if (Config.instance().isDebugLayer()) {
+                SceneFbo.getInstance().bind(() -> {
+                    Window.instance().resizeViewport(getResolution());
+                    DebugRenderer.getInstance().render(context);
+                    Window.instance().resetViewport();
+                });
+            }
         }
         finish();
     }

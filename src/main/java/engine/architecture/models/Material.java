@@ -86,10 +86,10 @@ public class Material {
                     //Scales the specular color of the material.
                     break;
                 case aiAI_MATKEY_GLTF_PBRMETALLICROUGHNESS_METALLIC_FACTOR:
-                    System.out.println("Metallic Factor: " + prop.mData().get());
+//                    System.out.println("Metallic Factor: " + prop.mData().get());
                     break;
                 case aiAI_MATKEY_GLTF_PBRMETALLICROUGHNESS_ROUGHNESS_FACTOR:
-                    System.out.println("Roughness Factor: " + prop.mData().get());
+//                    System.out.println("Roughness Factor: " + prop.mData().get());
                     break;
             }
         }

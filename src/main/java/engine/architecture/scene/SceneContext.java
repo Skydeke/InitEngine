@@ -11,8 +11,6 @@ import engine.utils.libraryBindings.opengl.objects.ClipPlane;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Contains high level engine context for rendering scenes
  * and GUI layers, updating modules, and events
@@ -47,21 +45,8 @@ public class SceneContext extends UIElement {
      * Reflective method for loading custom render pipeline
      * Will load whichever class of Pipeline is specified in
      * /res/config.properties: "renderEngine"
-     *
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
      */
-    public void loadRenderer() throws
-            ClassNotFoundException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException, NoSuchMethodException {
-//        this.pipeline = SceneContext.class
-//                .getClassLoader()
-//                .loadClass(Config.instance().getRenderEngine())
-//                .asSubclass(Pipeline.class)
-//                .getConstructor(SceneContext.class)
-//                .newInstance(this);
+    public void loadRenderer() {
         pipeline = new Pipeline(this);
     }
 

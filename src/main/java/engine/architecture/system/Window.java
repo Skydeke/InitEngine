@@ -85,12 +85,6 @@ public class Window {
             this.resized = true;
         });
 
-        glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                close();
-            }
-        });
-
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(handle,
                 (vidmode.width() - width) / 2,
@@ -198,13 +192,6 @@ public class Window {
         glfwGetCursorPos(handle, x, y);
 
         return new Vector2f((float) x.get() / getWidth(), 1 - (float) (y.get() / getHeight()));
-    }
-
-    public void setBlending(boolean blending) {
-        if (blending)
-            glEnable(GL_BLEND);
-        else
-            glDisable(GL_BLEND);
     }
 
     public void setScissor(Box box) {

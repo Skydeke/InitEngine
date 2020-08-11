@@ -142,7 +142,6 @@ public class ElementManager {
         if (focusLock) return;
         this.focused = focused;
         this.focusLock = true;
-        focused.recalculateAbsolutePositions();
         System.out.println("Focused: " + focused);
     }
 
@@ -156,7 +155,6 @@ public class ElementManager {
     public void resetFocused() {
         this.focusLock = false;
         this.focused = root;
-        root.recalculateAbsolutePositions();
         System.out.println("Focused: " + focused);
     }
 
