@@ -20,7 +20,7 @@ import static org.lwjgl.opengl.GL32.GL_TEXTURE_2D_MULTISAMPLE;
 import static org.lwjgl.opengl.GL32.glTexImage2DMultisample;
 
 @Getter
-public class TextureObject {
+public class TextureObject implements ITexture {
 
     private static final TextureObject NONE = TextureObject.emptyTexture();
     private static int activeTexture = 0;
@@ -62,7 +62,7 @@ public class TextureObject {
      * @param texture the texture to bind
      * @param unit    the unit to bind to
      */
-    public static void bind(TextureObject texture, int unit) {
+    public static void bind(ITexture texture, int unit) {
         if (texture != null) {
             texture.bind(unit);
         }
@@ -81,6 +81,7 @@ public class TextureObject {
         return new TextureObject(GL_TEXTURE_2D, 0, 0, 0);
     }
 
+    @Override
     public void bind(int unit) {
         if (GlConfigs.CACHE_STATE || activeTexture != unit) {
             activeTexture = unit;
@@ -89,7 +90,8 @@ public class TextureObject {
         bind();
     }
 
-    void bind() {
+    @Override
+    public void bind() {
         if (GlConfigs.CACHE_STATE || boundTextures[activeTexture] != id) {
             bind0();
         }
@@ -100,6 +102,7 @@ public class TextureObject {
         glBindTexture(type, id);
     }
 
+    @Override
     public void delete() {
         if (!deleted) {
             GL11.glDeleteTextures(id);
@@ -107,6 +110,7 @@ public class TextureObject {
         }
     }
 
+    @Override
     public void unbind() {
         glBindTexture(type, 0);
     }

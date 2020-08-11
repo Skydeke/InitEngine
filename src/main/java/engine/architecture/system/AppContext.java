@@ -79,8 +79,7 @@ public class AppContext {
     // TEMPORARY FOR TESTING
     private void __init__ui() {
 
-        Optional<SceneViewport> sceneViewport = Optional.empty();
-        sceneViewport = Optional.of(new SceneViewport(sceneContext));
+        Optional<SceneViewport> sceneViewport = Optional.of(new SceneViewport(sceneContext));
 
         ButtonSettings bs = new ButtonSettings();
 //        bs.setButtonColor(new Color(0x6060FF));

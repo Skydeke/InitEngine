@@ -21,6 +21,8 @@ public class FrameBufferObject {
     private ArrayList<TextureObject> attatchments;
     private TextureObject depthAttachment;
 
+    //TODO WRITE BETTER FRAMEBUFFER_IMPLEMENTATION, BETTER ATTACHMENTS
+
     /**
      * Framebuffer ID
      **/

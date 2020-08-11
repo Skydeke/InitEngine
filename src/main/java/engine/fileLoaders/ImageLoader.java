@@ -5,6 +5,7 @@ import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import engine.utils.libraryBindings.opengl.utils.Utils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.assimp.AITexture;
+import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.IOException;
@@ -16,7 +17,6 @@ import static org.lwjgl.opengl.GL21.GL_SRGB8;
 import static org.lwjgl.opengl.GL21.GL_SRGB8_ALPHA8;
 import static org.lwjgl.opengl.GL30.GL_RGB16F;
 import static org.lwjgl.opengl.GL30.GL_RGBA16F;
-import static org.lwjgl.stb.STBImage.*;
 
 public class ImageLoader {
     /**
@@ -39,14 +39,14 @@ public class ImageLoader {
         IntBuffer h = BufferUtils.createIntBuffer(1);
         IntBuffer c = BufferUtils.createIntBuffer(1);
 
-        if (!stbi_info_from_memory(buffer, w, h, c)) {
-            throw new RuntimeException("Failed to read image info: " + stbi_failure_reason());
+        if (!STBImage.stbi_info_from_memory(buffer, w, h, c)) {
+            throw new RuntimeException("Failed to read image info: " + STBImage.stbi_failure_reason());
         }
 
-        ByteBuffer image = stbi_load_from_memory(buffer, w, h, c, 0);
+        ByteBuffer image = STBImage.stbi_load_from_memory(buffer, w, h, c, 0);
 
         if (image == null) {
-            throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
+            throw new RuntimeException("Failed to load image: " + STBImage.stbi_failure_reason());
         }
 
         System.out.println("Image loaded :" + filename + "(" + w.get(0) + "," + h.get(0) + ")");
@@ -80,14 +80,14 @@ public class ImageLoader {
         IntBuffer h = BufferUtils.createIntBuffer(1);
         IntBuffer c = BufferUtils.createIntBuffer(1);
 
-        if (!stbi_info_from_memory(buffer, w, h, c)) {
-            throw new RuntimeException("Failed to read image info: " + stbi_failure_reason());
+        if (!STBImage.stbi_info_from_memory(buffer, w, h, c)) {
+            throw new RuntimeException("Failed to read image info: " + STBImage.stbi_failure_reason());
         }
 
-        ByteBuffer image = stbi_load_from_memory(buffer, w, h, c, 0);
+        ByteBuffer image = STBImage.stbi_load_from_memory(buffer, w, h, c, 0);
 
         if (image == null) {
-            throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
+            throw new RuntimeException("Failed to load image: " + STBImage.stbi_failure_reason());
         }
 
         int id = glGenTextures();
@@ -110,7 +110,7 @@ public class ImageLoader {
                 ret.allocateImage2D(GL_RGBA16F, GL_RGBA, image);
         }
 
-        stbi_image_free(image);
+        STBImage.stbi_image_free(image);
         System.out.println("Texture " + id + " loaded: " + filename + " (" + w.get(0) + "," + h.get(0) + ")");
         TextureCache.addToCache(filename, ret);
         return ret;
@@ -133,14 +133,14 @@ public class ImageLoader {
         IntBuffer h = BufferUtils.createIntBuffer(1);
         IntBuffer c = BufferUtils.createIntBuffer(1);
 
-        if (!stbi_info_from_memory(buffer, w, h, c)) {
-            throw new RuntimeException("Failed to read image info: " + stbi_failure_reason());
+        if (!STBImage.stbi_info_from_memory(buffer, w, h, c)) {
+            throw new RuntimeException("Failed to read image info: " + STBImage.stbi_failure_reason());
         }
 
-        ByteBuffer image = stbi_load_from_memory(buffer, w, h, c, 0);
+        ByteBuffer image = STBImage.stbi_load_from_memory(buffer, w, h, c, 0);
 
         if (image == null) {
-            throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
+            throw new RuntimeException("Failed to load image: " + STBImage.stbi_failure_reason());
         }
 
         int id = glGenTextures();
@@ -163,7 +163,7 @@ public class ImageLoader {
                 ret.allocateImage2D(GL_RGBA16F, GL_RGBA, image);
         }
 
-        stbi_image_free(image);
+        STBImage.stbi_image_free(image);
         System.out.println("Texture " + id + " loaded: " + buffer.toString() + " (" + w.get(0) + "," + h.get(0) + ")");
         TextureCache.addToCache(assimpTexture.hashCode() + "", ret);
         return ret;

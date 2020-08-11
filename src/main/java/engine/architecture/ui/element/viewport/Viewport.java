@@ -27,6 +27,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * Contains functionality akin to a window in an OS
  * Can be dragged, resized
  * TODO: opened, closed, hidden, docked, named, debug stats
+ * TODO: constraints within mainPanel
  */
 public class Viewport extends UIElement {
 
@@ -132,7 +133,7 @@ public class Viewport extends UIElement {
         setLayout(vsp);
 
         // add sub panels as children
-        addChildren(topBar, edgePanel);
+        super.addChildren(topBar, edgePanel);
 //        addChildren( edgePanel);
 //        addChildren( topBar);
     }

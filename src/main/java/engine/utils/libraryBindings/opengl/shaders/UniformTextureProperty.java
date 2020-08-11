@@ -1,6 +1,7 @@
 package engine.utils.libraryBindings.opengl.shaders;
 
 import engine.rendering.abstracted.Processable;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import org.lwjgl.opengl.GL20;
 
@@ -28,5 +29,5 @@ public abstract class UniformTextureProperty<T extends Processable> implements U
         }
     }
 
-    public abstract TextureObject getUniformValue(RenderState<T> state);
+    public abstract ITexture getUniformValue(RenderState<T> state);
 }
