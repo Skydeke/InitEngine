@@ -37,8 +37,8 @@ public class Viewport extends UIElement {
     protected Panel topBar;
     protected Panel edgePanel;
     protected Panel mainPanel;
-    boolean activeDrag = false;
-    boolean hover = false;
+    private boolean activeDrag = false;
+    private boolean hover = false;
     // defines areas where window cursor acts to resize
     // left , top , right, bottom
     private Box[] edgeBox;

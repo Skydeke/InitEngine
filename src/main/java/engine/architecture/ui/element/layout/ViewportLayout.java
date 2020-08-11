@@ -17,7 +17,8 @@ public class ViewportLayout extends Layout {
     }
 
     public void update() {
-
+        if (owner.getConstraints() != null)
+            owner.getConstraints().updateConstraints();
     }
 
     public Optional<Box> findRelativeTransform(UIElement e, int index) {
@@ -27,9 +28,17 @@ public class ViewportLayout extends Layout {
         } else if (index == 1) { // edge panel
             return Optional.of(new Box(0, 0, 1, 1 - factorTop));
         } else {
-            Inset inset = owner.getChildren().get(index).getInset();
-            Box box = new Box(0, 0, 1, 1 - factorTop);
-            return Optional.of(applyInset(box, inset));
+            if (e.getConstraints() != null){
+                e.getConstraints().updateConstraints();
+                Inset inset = owner.getChildren().get(index).getInset();
+                Box box = new Box(0, 0, 1, 1 - factorTop);
+                Optional<Box> pos = Optional.of(applyInset(box, inset));
+                return Optional.of(e.getConstraints().getRelativeBox().relativeTo(pos.get()));
+            }else {
+                Inset inset = owner.getChildren().get(index).getInset();
+                Box box = new Box(0, 0, 1, 1 - factorTop);
+                return Optional.of(applyInset(box, inset));
+            }
         }
     }
 }

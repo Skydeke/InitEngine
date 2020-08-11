@@ -22,7 +22,9 @@ public abstract class UIElement {
      */
     @Getter
     protected Box relativeBox, absoluteBox;
-    @Getter @Setter protected UIConstraints constraints = null;
+    @Getter
+    @Setter
+    protected UIConstraints constraints = null;
     @Setter
     protected Layout layout;
     @Setter
@@ -122,8 +124,9 @@ public abstract class UIElement {
         int i = 0;
         for (UIElement child : children) {
             switch (child.alignType) {
-                default:
                 case RELATIVE_TO_PARENT:
+                    if (child.getConstraints() != null)
+                        child.getConstraints().updateConstraints();
                     Optional<Box> relative = layout.findRelativeTransform(child, i++);
                     if (relative.isPresent() && child.setBox(relative.get())) {
                         child.handle(new ResizeEvent());
@@ -131,13 +134,15 @@ public abstract class UIElement {
                     }
                     break;
                 case ABSOLUTE:
+                    if (child.getConstraints() != null) {
                         child.getConstraints().updateConstraints();
                         Optional<Box> absolute = Optional.ofNullable(child.getConstraints().getRelativeBox());
-                        if (absolute.isPresent()){
-                            child.absoluteBox = absolute.get();
+                        if (absolute.isPresent()) {
+                            child.absoluteBox.set(absolute.get());
                             child.handle(new ResizeEvent());
                             child.recalculateAbsolutePositions();
                         }
+                    }
                     break;
             }
         }
@@ -182,8 +187,9 @@ public abstract class UIElement {
 
         if (parent == null) {
             absoluteBox.set(relativeBox);
-            alignType = LayoutType.ABSOLUTE;
+//            alignType = LayoutType.ABSOLUTE;
         } else {
+//            alignType = LayoutType.RELATIVE_TO_PARENT;
             Box newAbsolute = position.relativeTo(parent.absoluteBox);
             if (newAbsolute.width * Window.instance().getWidth() >= minWidth &&
                     newAbsolute.height * Window.instance().getHeight() >= minHeight)
@@ -271,7 +277,7 @@ public abstract class UIElement {
                 && ElementManager.instance().isTop(_vp);
     }
 
-//    @Override
+    //    @Override
 //    public String toString(){
 //        StringBuilder builder = new StringBuilder();
 //        builder.append(getClass()+ "\n");

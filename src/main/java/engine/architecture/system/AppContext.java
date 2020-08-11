@@ -1,6 +1,9 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
+import engine.architecture.ui.constraints.CenterConstraint;
+import engine.architecture.ui.constraints.PercentageConstraint;
+import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.element.RootElement;
 import engine.architecture.ui.element.UIElement;
@@ -106,10 +109,13 @@ public class AppContext {
 //        pv.setBox(new Box(0.8f, 0.3f, 0.15f, 0.5f));
 //        p2.setBox(new Box(0.5f, 0.3f, 0.15f, 0.5f));
 //        p3.setBox(new Box(0.3f, 0.3f, 0.15f, 0.5f));
-        if (sceneViewport.isPresent()) {
-            root.addChildren(sceneViewport.get());
-            sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
-        }
+        root.addChildren(sceneViewport.get());
+        sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
+        sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.4f), new CenterConstraint(),
+                new PercentageConstraint(0.6f),
+                new PercentageConstraint(0.8f)));
+        sceneViewport.get().recalculateAbsolutePositions();//One time Positioning
+        sceneViewport.get().setConstraints(null);
 
 //        Panel p = new Panel();
 //        p.setColor(new Color(0, 0, 250));

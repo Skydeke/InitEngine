@@ -3,7 +3,6 @@ package engine.architecture.ui.element.panel;
 import engine.architecture.scene.SceneContext;
 import engine.architecture.scene.SceneFbo;
 import engine.architecture.system.AppContext;
-import engine.architecture.system.Window;
 import engine.architecture.ui.constraints.CenterConstraint;
 import engine.architecture.ui.constraints.PercentageConstraint;
 import engine.architecture.ui.constraints.UIConstraints;
@@ -67,7 +66,7 @@ public class ScenePanel extends Panel {
                     if (isFullDisplay) {
                         // unset fullscreen
                         setAlignType(LayoutType.RELATIVE_TO_PARENT);
-                        setConstraints(null);//Deactivate Constraints cause the ViewportLayout cant handle them.
+//                        setConstraints(null);//Deactivate Constraints cause the ViewportLayout cant handle them.
                         ElementManager.instance().resetFocused();
                         AppContext.instance().resetRenderElement();
                         getParent().recalculateAbsolutePositions();
@@ -84,7 +83,7 @@ public class ScenePanel extends Panel {
                                 .y(new CenterConstraint())
                                 .w(new PercentageConstraint(1f))
                                 .h(new PercentageConstraint(1f)));
-                        context.setResolution(Window.instance().getResolution());
+                        context.setResolution(getAbsoluteBox().resolution());
                         getParent().recalculateAbsolutePositions();
                         isFullDisplay = true;
                         e.consume();
