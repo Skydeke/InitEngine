@@ -38,7 +38,6 @@ public class Panel extends UIElement implements Processable {
     private boolean scissor = true;
     // defines corner rounding for each corner in pixels
     // x: top-left, y: top-right, z: bottom-left, w: bottom-right
-    @Setter
     @Getter
     private Vector4i rounding;
 
@@ -98,70 +97,70 @@ public class Panel extends UIElement implements Processable {
     }
 
     private void setupUniforms() {
-        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<Panel>("box.x") {
+        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<>("box.x") {
             @Override
             public float getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getAbsoluteBox().getX();
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<Panel>("box.y") {
+        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<>("box.y") {
             @Override
             public float getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getAbsoluteBox().getY();
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<Panel>("box.width") {
+        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<>("box.width") {
             @Override
             public float getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getAbsoluteBox().getWidth();
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<Panel>("box.height") {
+        shadersProgram.addPerInstanceUniform(new UniformFloatProperty<>("box.height") {
             @Override
             public float getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getAbsoluteBox().getHeight();
             }
         });
 
-        shadersProgram.addPerInstanceUniform(new UniformValueProperty<Panel>("resolution") {
+        shadersProgram.addPerInstanceUniform(new UniformValueProperty<>("resolution") {
             @Override
             public UniformValue getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getAbsoluteBox().resolution();
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformValueProperty<Panel>("rounding") {
+        shadersProgram.addPerInstanceUniform(new UniformValueProperty<>("rounding") {
             @Override
             public UniformValue getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getRounding();
             }
         });
 
-        shadersProgram.addPerInstanceUniform(new UniformTextureProperty<Panel>("texture", 0) {
+        shadersProgram.addPerInstanceUniform(new UniformTextureProperty<>("texture", 0) {
             @Override
             public TextureObject getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getImageBuffer();
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<Panel>("isTexture") {
+        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<>("isTexture") {
             @Override
             public boolean getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getImageBuffer() != null;
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<Panel>("isDepth") {
+        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<>("isDepth") {
             @Override
             public boolean getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getImageBuffer() != null && state.getInstance().getImageBuffer().isDepth();
             }
         });
 
-        shadersProgram.addPerInstanceUniform(new UniformValueProperty<Panel>("color") {
+        shadersProgram.addPerInstanceUniform(new UniformValueProperty<>("color") {
             @Override
             public UniformValue getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getColor().getColor();
             }
         });
-        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<Panel>("isBuffer") {
+        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<>("isBuffer") {
             @Override
             public boolean getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().isBuffer;

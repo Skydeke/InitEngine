@@ -13,7 +13,6 @@ import engine.architecture.ui.element.layout.Box;
 import engine.architecture.ui.element.viewport.SceneViewport;
 import engine.architecture.ui.element.viewport.VerticalViewport;
 import engine.utils.libraryBindings.maths.joml.Vector4i;
-import engine.utils.libraryBindings.opengl.utils.GlBuffer;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 
@@ -113,8 +112,9 @@ public class AppContext {
         root.recalculateAbsolutePositions();
     }
 
-    public void update() {
+    void update() {
         if (Window.instance().isResized()) {
+            System.out.println("Window size changed.");
             root.recalculateAbsolutePositions();
             Window.instance().setResized(false);
         }
@@ -123,23 +123,18 @@ public class AppContext {
         elementManager.update();
     }
 
-    public void draw() {
-        GlUtils.disableBlending();
+    void draw() {
         sceneContext.render();
-        GlUtils.enableAlphaBlending();
-        GlUtils.disableDepthTest();
-        GlUtils.clear(GlBuffer.COLOUR);
         Window.instance().resetViewport();
+        GlUtils.disableDepthTest();
         renderElement.render();
         GlUtils.enableDepthTest();
     }
 
     public void setRenderElement(UIElement renderElement) {
         root.setActivated(false);
-        root.getChildren().forEach(e -> e.setActivated(false));
         this.renderElement = renderElement;
         this.renderElement.setActivated(true);
-        this.renderElement.getChildren().forEach(e -> e.setActivated(true));
         this.renderElement.recalculateAbsolutePositions();
     }
 

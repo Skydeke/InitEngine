@@ -6,6 +6,7 @@ import engine.utils.libraryBindings.maths.joml.Vector2d;
 import engine.utils.libraryBindings.maths.joml.Vector2f;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
 import engine.utils.libraryBindings.maths.joml.Vector4i;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.BufferUtils;
@@ -25,7 +26,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Window {
 
     private static Window instance;
-    long cursor = 0;
+    private long cursor = 0;
     @Getter
     boolean hidden = false;
     @Getter
@@ -36,17 +37,16 @@ public class Window {
     private long handle;
     @Getter
     @Setter
-    private boolean resized = false;
+    private boolean resized = true;
     @Getter
     private String title;
-    private String spec_title;
     private boolean lock = false;
+    private boolean enableVsync = false;
 
     private Window() {
         this.title = Config.instance().getWindowName();
         this.height = Config.instance().getWindowHeight();
         this.width = Config.instance().getWindowWidth();
-        spec_title = title;
     }
 
     public static Window instance() {
@@ -73,6 +73,12 @@ public class Window {
 
         glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        glfwWindowHint(GLFW_FOCUSED, GL_TRUE);
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GL_TRUE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
         handle = glfwCreateWindow(width, height, title, 0, NULL);
         if (handle == NULL) {
@@ -86,26 +92,31 @@ public class Window {
         });
 
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        assert vidmode != null;
         glfwSetWindowPos(handle,
                 (vidmode.width() - width) / 2,
                 (vidmode.height() - height) / 2);
-
 
         glfwMakeContextCurrent(handle);
         GL.createCapabilities();
         glfwShowWindow(handle);
 
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        glPolygonMode(GL_FRONT_FACE, GL_FILL);
+        // Enable v-sync
+        if (enableVsync) {
+            glfwSwapInterval(1);
+        }else {
+            glfwSwapInterval(0);
+        }
+
+        GlUtils.enableDepthTest();
+        GlUtils.enableCulling();
+        GlUtils.drawPolygonFill();
 
         glEnable(GL_STENCIL_TEST);
         glStencilFunc(GL_ALWAYS, 1, 0xFF); // Set any stencil to 1
         glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GlUtils.enableAlphaBlending();
 
         glLineWidth(1);
 
@@ -129,7 +140,7 @@ public class Window {
     /**
      * Window poll for Core.loop()
      */
-    public boolean shouldClose() {
+    boolean shouldClose() {
         return glfwWindowShouldClose(handle);
     }
 

@@ -12,8 +12,6 @@ public abstract class Application {
 
     public abstract void update(double duration);
 
-    public abstract void render(AppContext renderer);
-
     public abstract void cleanUp();
 
     public abstract boolean isClosed();

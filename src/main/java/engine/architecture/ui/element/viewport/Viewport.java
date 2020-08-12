@@ -5,10 +5,7 @@ import engine.architecture.system.Window;
 import engine.architecture.ui.element.UIElement;
 import engine.architecture.ui.element.button.Button;
 import engine.architecture.ui.element.button.ButtonSettings;
-import engine.architecture.ui.element.layout.Box;
-import engine.architecture.ui.element.layout.Inset;
-import engine.architecture.ui.element.layout.TopbarLayout;
-import engine.architecture.ui.element.layout.ViewportLayout;
+import engine.architecture.ui.element.layout.*;
 import engine.architecture.ui.element.panel.Panel;
 import engine.architecture.ui.event.InputManager;
 import engine.architecture.ui.event.ResizeEvent;
@@ -27,28 +24,32 @@ import static org.lwjgl.glfw.GLFW.*;
  * Contains functionality akin to a window in an OS
  * Can be dragged, resized
  * TODO: opened, closed, hidden, docked, named, debug stats
- * TODO: constraints within mainPanel
  */
 public class Viewport extends UIElement {
 
+    // defines areas where window cursor acts to resize
+    // left , top , right, bottom
+    private Box[] edgeBox;
+
+    // 0: left , 1: top , 2: right, 3: bottom, -1: none
+    private int dragEdge = -1;
+    boolean activeDrag = false;
+    boolean hover = false;
+
+    // size in pixels the mouse can hover over to start a resize event
+    private int edgeSize = 5;
+
     protected float minWidth = 40;
     protected float minHeight = 40;
+
     // child panels
     protected Panel topBar;
     protected Panel edgePanel;
     protected Panel mainPanel;
-    private boolean activeDrag = false;
-    private boolean hover = false;
-    // defines areas where window cursor acts to resize
-    // left , top , right, bottom
-    private Box[] edgeBox;
-    // 0: left , 1: top , 2: right, 3: bottom, -1: none
-    private int dragEdge = -1;
-    // size in pixels the mouse can hover over to start a resize event
-    private int edgeSize = 5;
+
     private ViewportSettings viewportSettings;
 
-    protected Viewport(ViewportSettings vs) {
+    protected Viewport(ViewportSettings vs){
 
         super();
 
@@ -60,7 +61,7 @@ public class Viewport extends UIElement {
 
         this.edgePanel = new Panel();
         edgePanel.setColor(vs.getBorderColor());
-        edgePanel.setRounding(0, 0, vs.getRounding().z, vs.getRounding().w);
+        edgePanel.setRounding(0,0,vs.getRounding().z, vs.getRounding().w);
 
         edgeBox = new Box[4];
 
@@ -71,22 +72,22 @@ public class Viewport extends UIElement {
         // update viewport state
         onEvent(e -> {
 
-            if (e instanceof ResizeEvent)
+            if(e instanceof ResizeEvent)
                 setEdgeBoxs();
 
-            else if (e instanceof HoverStartEvent)
+            else if(e instanceof HoverStartEvent)
                 hover = true;
 
-            else if (e instanceof HoverLostEvent)
+            else if(e instanceof HoverLostEvent)
                 hover = false;
 
-            else if (e instanceof MouseClickEvent) {
+            else if(e instanceof MouseClickEvent) {
                 MouseClickEvent m = (MouseClickEvent) e;
 
                 // resize window start
                 if ((m.getAction() == BUTTON_CLICK)) {
 
-                    if (dragEdge != -1) {
+                    if(dragEdge != -1) {
                         AppContext.instance().getElementManager().setFocused(this);
                         activeDrag = true;
                         e.consume();
@@ -102,29 +103,30 @@ public class Viewport extends UIElement {
 
                 if (!e.isConsumed() && mainPanel.getAbsoluteBox().isWithin(m.getScreenPos()))
                     mainPanel.handle(e);
-                else if (!e.isConsumed() && topBar.getAbsoluteBox().isWithin(m.getScreenPos()))
+                else if(!e.isConsumed() && topBar.getAbsoluteBox().isWithin(m.getScreenPos()))
                     topBar.handle(e);
             }
 
-            if (!e.isConsumed()) {
+            if (!e.isConsumed()){
                 mainPanel.handle(e);
             }
         });
 
         // make viewport draggable by the window
         topBar.onEvent(e -> {
-            if (e instanceof MouseClickEvent) {
+
+            if(e instanceof MouseClickEvent){
+
                 // move window
-                MouseClickEvent m = (MouseClickEvent) e;
-                if (m.getKey() == GLFW_MOUSE_BUTTON_LEFT) {
-                    if (m.getAction() == BUTTON_HELD) {
-                        getRelativeBox().translate(m.getScreenDelta());
-                        getParent().recalculateAbsolutePositions();
-                    }
-                    e.consume();
+                MouseClickEvent m = (MouseClickEvent)e;
+                if(m.getAction()==BUTTON_HELD){
+                    getRelativeBox().translate(m.getScreenDelta());
+                    getParent().recalculateAbsolutePositions(); //HERE
                 }
+                e.consume();
             }
         });
+
 
 
         // create window layout
@@ -133,43 +135,39 @@ public class Viewport extends UIElement {
         setLayout(vsp);
 
         // add sub panels as children
-        super.addChildren(topBar, edgePanel);
-//        addChildren( edgePanel);
-//        addChildren( topBar);
+        addChildren(topBar, edgePanel);
+        setAlignType(LayoutType.ABSOLUTE);
     }
 
-    public void setMainPanel(Panel mainPanel) {
+    void setMainPanel(Panel mainPanel) {
         this.mainPanel = mainPanel;
         mainPanel.setColor(viewportSettings.getPanelColor());
         mainPanel.setRounding(0, 0, viewportSettings.getRounding().z, viewportSettings.getRounding().w);
         int bs = viewportSettings.getBorderSize();
-        mainPanel.setInset(new Inset(bs / 2, bs, bs, bs));
+        mainPanel.setInset(new Inset(bs/2, bs, bs, bs));
         addChild(mainPanel);
     }
 
     @Override
-    public void update() {
+    public void update(){
 
         // WINDOW RESIZE //
         // get cursor delta and update window size and position
-        if (activeDrag) {
+        if(activeDrag){
             Vector2f delta = InputManager.instance().getCursorDelta();
             Box box = new Box(getRelativeBox());
-            switch (dragEdge) {
+            switch(dragEdge){
                 case 0: {   // left
                     box.width -= delta.x;
                     box.x += delta.x;
                     break;
-                }
-                case 1: { // top
+                } case 1: { // top
                     box.height -= delta.y;
                     break;
-                }
-                case 2: { // right
+                } case 2: { // right
                     box.width += delta.x;
                     break;
-                }
-                case 3: { // bottom
+                } case 3: { // bottom
                     box.height += delta.y;
                     box.y -= delta.y;
                     break;
@@ -181,12 +179,13 @@ public class Viewport extends UIElement {
             Vector2i res = Window.instance().getResolution();
 
             // check if new size meets invariants
-            if (abs.width * res.x >= minWidth && abs.height * res.y >= minHeight) {
+            if( abs.width * res.x >= minWidth && abs.height * res.y >= minHeight) {
                 setBox(box);
                 recalculateAbsolutePositions();
             }
 
-        } else {
+        }
+        else {
             // if no active resize is going on, update the drag edge
             if (hover) {
                 Vector2f coord = InputManager.instance().getCursorPos();
@@ -220,15 +219,15 @@ public class Viewport extends UIElement {
         super.update();
     }
 
-    private void setEdgeBoxs() {
+    private void setEdgeBoxs(){
         Vector2i res = getPixelSize();
-        float xFactor = (float) viewportSettings.getBorderSize() / res.x;
-        float yFactor = (float) viewportSettings.getBorderSize() / res.y;
+        float xFactor = (float) viewportSettings.getBorderSize()/res.x;
+        float yFactor = (float) viewportSettings.getBorderSize()/res.y;
         // left right top bottom
-        edgeBox[0] = new Box(-xFactor, 0, 2 * xFactor, 1);
-        edgeBox[1] = new Box(0, 1 - yFactor, 1, 2 * yFactor);
-        edgeBox[2] = new Box(1 - xFactor, 0, 2 * xFactor, 1);
-        edgeBox[3] = new Box(0, -yFactor, 1, 2 * yFactor);
+        edgeBox[0] = new Box(-xFactor,0,2*xFactor, 1);
+        edgeBox[1] = new Box(0,1-yFactor,1, 2*yFactor);
+        edgeBox[2] = new Box(1-xFactor,0,2*xFactor, 1);
+        edgeBox[3] = new Box(0,-yFactor,1, 2*yFactor);
     }
 
     private void initTopBar() {

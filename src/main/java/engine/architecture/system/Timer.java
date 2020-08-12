@@ -1,17 +1,18 @@
 package engine.architecture.system;
 
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Timer {
 
-    private static final List<WeakReference<Timer>> timers = new ArrayList<>();
+    private static final List<Reference<Timer>> timers = new ArrayList<>();
 
     private boolean running = true;
 
     static void updateTimers() {
-        for (WeakReference<Timer> timerRef : timers) {
+        for (Reference<Timer> timerRef : timers) {
             final Timer timer = timerRef.get();
             if (timer != null) {
                 timer.update();

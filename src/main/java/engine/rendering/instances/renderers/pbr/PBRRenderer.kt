@@ -9,6 +9,7 @@ import engine.utils.libraryBindings.maths.joml.Vector3f
 import engine.utils.libraryBindings.maths.utils.Matrix4
 import engine.utils.libraryBindings.opengl.shaders.*
 import engine.utils.libraryBindings.opengl.textures.TextureObject
+import engine.utils.libraryBindings.opengl.utils.GlUtils
 
 internal class PBRRenderer : Renderer3D<PBRModel>() {
 
@@ -112,15 +113,20 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
         }
         shadersProgram.bind()
 
+        GlUtils.disableBlending()
+
         val renderState = RenderState<PBRModel>(this, context.camera)
         shadersProgram.updatePerRenderUniforms(renderState)
 
         for (model in renderList.keys) {
             for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
-                for (entity in renderList[model]!!){
-                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
-                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                for (entity in renderList[model]!!) {
+                    frustumIntersection.set(
+                        context.camera.projectionViewMatrix.mul(
+                            entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
+                        )
+                    )
                     if (!checkRenderPass(entity) && entity.isActivated) {
                         continue
                     }
@@ -128,7 +134,6 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
                     shadersProgram.updatePerInstanceUniforms(instanceState)
                     model.render(instanceState, i)
                 }
-                model.unbind(i);
             }
         }
 
@@ -147,9 +152,12 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
         for (model in renderList.keys) {
             for (i in 0..model.meshes.size) {
                 model.bindAndConfigure(i)
-                for (entity in renderList[model]!!){
-                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
-                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                for (entity in renderList[model]!!) {
+                    frustumIntersection.set(
+                        context.camera.projectionViewMatrix.mul(
+                            entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
+                        )
+                    )
                     if (!checkRenderPass(entity) && entity.isActivated) {
                         continue
                     }
@@ -157,7 +165,6 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
                     shadersProgram.updatePerInstanceUniforms(instanceState)
                     model.render(instanceState, i)
                 }
-                model.unbind(i);
             }
         }
 

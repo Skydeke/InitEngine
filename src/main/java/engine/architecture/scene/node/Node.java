@@ -8,16 +8,15 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Node {
 
     public int UUID;
 
-    @Getter
     @Setter
     private boolean activated = true;
     @Getter
-    @Setter
     private boolean selected = false;
     @Getter
     @Setter
@@ -55,11 +54,7 @@ public class Node {
     }
 
     public String getName() {
-        if (debugName == null)
-            return this.getClass().getSimpleName() + "#" + UUID;
-        else
-            return debugName;
-
+        return Objects.requireNonNullElseGet(debugName, () -> this.getClass().getSimpleName() + "#" + UUID);
     }
 
     public void addChildren(Node... children) {
@@ -103,7 +98,7 @@ public class Node {
     }
 
     public void cleanup() {
-        children.forEach(child -> child.cleanup());
+        children.forEach(Node::cleanup);
     }
 
     public boolean isActivated() {

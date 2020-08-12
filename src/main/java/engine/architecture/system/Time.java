@@ -36,13 +36,4 @@ public class Time {
     public static float getUpdateTime() {
         return current;
     }
-
-    /**
-     * Returns the current time
-     *
-     * @return the current time
-     */
-    public static float getCurrent() {
-        return System.currentTimeMillis() / 1000f;
-    }
 }

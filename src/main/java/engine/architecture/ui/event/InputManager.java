@@ -1,6 +1,5 @@
 package engine.architecture.ui.event;
 
-import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.event.mouse.MouseClickEvent;
@@ -22,24 +21,22 @@ import static org.lwjgl.glfw.GLFW.*;
 public class InputManager {
 
     private static InputManager instance = null;
-    HashSet<Integer> pressedButtons;
-    HashSet<Integer> heldButtons;
-    HashSet<Integer> releasedButtons;
+    private HashSet<Integer> pressedButtons;
+    private HashSet<Integer> heldButtons;
+    private HashSet<Integer> releasedButtons;
 
-    HashSet<Integer> pressedKeys;
-    HashSet<Integer> heldKeys;
-    HashSet<Integer> releasedKeys;
+    private HashSet<Integer> pressedKeys;
+    private HashSet<Integer> heldKeys;
+    private HashSet<Integer> releasedKeys;
     @Getter
     private int mods = 0;
     @Getter
     private float scrollAmount;
     private Vector2d prevPos;
-    @Getter
     @Setter
     private Vector2d cursorPos;
     @Getter
     private Vector2d displacement;
-    private AppContext context;
 
     private InputManager() {
         pressedButtons = new HashSet<>();
@@ -60,22 +57,20 @@ public class InputManager {
     /**
      * Initializes callbacks
      */
-    public void init(AppContext context) {
-
-        this.context = context;
+    public void init() {
         Window window = Window.instance();
 
         this.prevPos = new Vector2d();
         this.cursorPos = new Vector2d();
         this.displacement = new Vector2d();
 
-        /** Mouse position Callback */
+        /* Mouse position Callback */
         glfwSetCursorPosCallback(window.getHandle(), (windowHandle, x, y) -> {
             cursorPos.x = x;
             cursorPos.y = y;
         });
 
-        /** Keyboard Callback */
+        /* Keyboard Callback */
         glfwSetKeyCallback(
                 window.getHandle(), (windowHandle, key, scancode, action, mods) -> {
 
@@ -104,7 +99,7 @@ public class InputManager {
 
                 });
 
-        /** Mouse button Callback */
+        /* Mouse button Callback */
         glfwSetMouseButtonCallback(
                 window.getHandle(), (windowHandle, button, action, mods) -> {
 
@@ -137,7 +132,7 @@ public class InputManager {
                     ));
                 });
 
-        /** Mouse scroll Callback */
+        /* Mouse scroll Callback */
         glfwSetScrollCallback(window.getHandle(), (windowHandle, dx, dy) -> {
             scrollAmount = (float) dy;
             ElementManager.instance().fire(new MouseWheelEvent(
@@ -219,7 +214,7 @@ public class InputManager {
      */
     public void update() {
 
-        /** update displacement vector */
+        /* update displacement vector */
 
         displacement.x = cursorPos.x - prevPos.x;
         displacement.y = cursorPos.y - prevPos.y;
@@ -237,11 +232,11 @@ public class InputManager {
             ));
         }
 
-        /** update key maps */
+        /* update key maps */
 
         releasedKeys.clear();
 
-        /** reset scroll displacement */
+        /* reset scroll displacement */
         scrollAmount = 0;
     }
 

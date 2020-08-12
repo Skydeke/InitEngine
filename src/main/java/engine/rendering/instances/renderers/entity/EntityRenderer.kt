@@ -27,14 +27,14 @@ internal class EntityRenderer : Renderer3D<Entity>() {
                 )
             }
         })
-        shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<Entity>("albedoTex",  0) {
+        shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<Entity>("albedoTex", 0) {
             override fun getUniformValue(state: RenderState<Entity>): TextureObject {
-                return state.mesh.material.diffuseTexture;
+                return state.mesh.material.diffuseTexture
             }
         })
         shadersProgram.addPerInstanceUniform(object : UniformBooleanProperty<Entity>("isAlbedoMapped") {
             override fun getUniformValue(state: RenderState<Entity>): Boolean {
-                return state.mesh.material.hasTexture();
+                return state.mesh.material.hasTexture()
             }
         })
 
@@ -67,15 +67,18 @@ internal class EntityRenderer : Renderer3D<Entity>() {
         for (model in renderList.keys) {
             for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
-                for (entity in renderList[model]!!){
-                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
-                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                for (entity in renderList[model]!!) {
+                    frustumIntersection.set(
+                        context.camera.projectionViewMatrix.mul(
+                            entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
+                        )
+                    )
                     if (!checkRenderPass(entity) && entity.isActivated) {
                         continue
                     }
-                        val instanceState = RenderState<Entity>(this, entity, context.camera, i)
-                        shadersProgram.updatePerInstanceUniforms(instanceState)
-                        model.render(instanceState, i)
+                    val instanceState = RenderState<Entity>(this, entity, context.camera, i)
+                    shadersProgram.updatePerInstanceUniforms(instanceState)
+                    model.render(instanceState, i)
                 }
             }
         }
@@ -95,9 +98,12 @@ internal class EntityRenderer : Renderer3D<Entity>() {
         for (model in renderList.keys) {
             for (i in 0..model.meshes.size) {
                 model.bindAndConfigure(i)
-                for (entity in renderList[model]!!){
-                    frustumIntersection.set(context.camera.projectionViewMatrix.mul(
-                        entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
+                for (entity in renderList[model]!!) {
+                    frustumIntersection.set(
+                        context.camera.projectionViewMatrix.mul(
+                            entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
+                        )
+                    )
                     if (!checkRenderPass(entity) && entity.isActivated) {
                         continue
                     }
@@ -105,7 +111,6 @@ internal class EntityRenderer : Renderer3D<Entity>() {
                     shadersProgram.updatePerInstanceUniforms(instanceState)
                     model.render(instanceState, i)
                 }
-                model.unbind(i);
             }
         }
 

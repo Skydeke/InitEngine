@@ -27,12 +27,12 @@ public class GameEngine implements Runnable {
     public void init() throws Exception {
         window.init();
         app.init(game);
-        inputManager.init(app);
+        inputManager.init();
     }
 
     public void start() {
 //        this.gameUpdateThread.start();
-        this.gameLoopThread.run();
+        this.run();
     }
 
     @Override
@@ -48,11 +48,17 @@ public class GameEngine implements Runnable {
                 times = 0;
                 fps = 0;
             }
+            long a = System.nanoTime();
             game.update(Time.getDelta());
-            game.render(AppContext.instance());
+            AppContext.instance().update();
+            AppContext.instance().draw();
             inputManager.update();
             window.update(AppContext.instance().getSceneContext().getPipeline().isAnyChange());
             AppContext.instance().getSceneContext().getPipeline().setAnyChange(false);
+            long b = System.nanoTime();
+
+//            System.out.print("\u001B[32m" + "\r frametime: " + ((b-a) / 1e+9)+ "\u001B[0m");
+            System.out.print("\u001B[32m" + "\r fps: " + FRAMES_PER_SECOND + "\u001B[0m");
         }
         game.cleanUp();
     }

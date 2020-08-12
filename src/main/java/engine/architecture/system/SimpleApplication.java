@@ -22,11 +22,6 @@ public abstract class SimpleApplication extends Application {
         onUpdate(timeDelta);
     }
 
-    @Override
-    public final void render(AppContext renderer) {
-        onRender(renderer);
-    }
-
     /**
      * Cleanup the game, delete all the objects
      */
@@ -68,13 +63,6 @@ public abstract class SimpleApplication extends Application {
      * @param timeDelta time since last update
      */
     public abstract void onUpdate(double timeDelta);
-
-    /**
-     * Render the scene
-     *
-     * @param renderer the engine.rendering.renderer to use
-     */
-    public abstract void onRender(AppContext renderer);
 
     /**
      * Cleanup the game, delete all the objects
