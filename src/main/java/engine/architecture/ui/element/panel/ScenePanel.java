@@ -36,11 +36,6 @@ public class ScenePanel extends Panel {
         context.setParent(this);
 
         setImageBuffer(SceneFbo.getInstance().getAttachment(0), true);
-//        try {
-//            setImageBuffer(Texture2D.of("images/icon.png"), false);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
 //        setImageBuffer(context.getPipeline().getPbrFBO().getAttachment(2), true);
 //        setImageBuffer(context.getPicking().getUUIDmap().getAttachment(0), true);
 
@@ -66,13 +61,12 @@ public class ScenePanel extends Panel {
                     if (isFullDisplay) {
                         // unset fullscreen
                         setAlignType(LayoutType.RELATIVE_TO_PARENT);
-//                        setConstraints(null);//Deactivate Constraints cause the ViewportLayout cant handle them.
+                        setConstraints(null);//Deactivate Constraints cause the ViewportLayout cant handle them.
                         ElementManager.instance().resetFocused();
                         AppContext.instance().resetRenderElement();
                         getParent().recalculateAbsolutePositions();
                         context.setResolution(getAbsoluteBox().resolution());
                         isFullDisplay = false;
-                        e.consume();
                     } else {
                         // set fullscreen
                         ElementManager.instance().setFocused(this);
@@ -86,8 +80,8 @@ public class ScenePanel extends Panel {
                         context.setResolution(getAbsoluteBox().resolution());
                         getParent().recalculateAbsolutePositions();
                         isFullDisplay = true;
-                        e.consume();
                     }
+                    e.consume();
                 }
             }
             // pass to scene context if not consumed

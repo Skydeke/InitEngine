@@ -1,6 +1,9 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
+import engine.architecture.ui.constraints.CenterConstraint;
+import engine.architecture.ui.constraints.PercentageConstraint;
+import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.element.RootElement;
 import engine.architecture.ui.element.UIElement;
@@ -56,7 +59,6 @@ public class AppContext {
     // TODO: create application loader
     // TEMPORARY FOR TESTING
     private void __init__ui() {
-
         Optional<SceneViewport> sceneViewport = Optional.of(new SceneViewport(sceneContext));
 
         ButtonSettings bs = new ButtonSettings();
@@ -87,26 +89,12 @@ public class AppContext {
 
         root.addChildren(sceneViewport.get());
         sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
-//        sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.4f), new CenterConstraint(),
-//                new PercentageConstraint(0.6f),
-//                new PercentageConstraint(0.8f)));
-//        sceneViewport.get().recalculateAbsolutePositions();//One time Positioning
-//        sceneViewport.get().setConstraints(null);
+        sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.3f), new CenterConstraint(),
+                new PercentageConstraint(0.65f),
+                new PercentageConstraint(0.8f)));
+        sceneViewport.get().getParent().recalculateAbsolutePositions();//One time Positioning
+        sceneViewport.get().setConstraints(null);
 
-//        Panel p = new Panel();
-//        p.setColor(new Color(0, 0, 250));
-//        p.setConstraints(new UIConstraints(new CenterConstraint(),
-//                new CenterConstraint(),
-//                new PercentageConstraint(1f),
-//                new PercentageConstraint(1f)));
-//        Panel d = new Panel();
-//        d.setColor(new Color(0, 250, 0));
-//        d.setConstraints(new UIConstraints(new CenterConstraint(),
-//                new CenterConstraint(),
-//                new PercentageConstraint(0.8f),
-//                new PercentageConstraint(0.8f)));
-//        p.addChild(d);
-//        root.addChild(p);
         root.recalculateAbsolutePositions();
     }
 

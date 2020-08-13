@@ -2,6 +2,8 @@ package engine.utils.libraryBindings.opengl.textures;
 
 import engine.architecture.system.Config;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.opengl.constants.DataType;
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.utils.GlConfigs;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +47,16 @@ public class TextureObject implements ITexture {
 
     public TextureObject(TextureTarget type, int width, int height) {
         this(type, width, height, glGenTextures());
+    }
+
+    public TextureObject(TextureTarget type, int width, int height, DataType dataType) {
+        this.type = type.get();
+        this.width = width;
+        this.height = height;
+        this.id = glGenTextures();
+        this.dataType = dataType.get();
+        this.internalFormat = GL_RGBA8;
+        this.format = GL_RGBA;
     }
 
     public TextureObject(TextureTarget type, Vector2i resolution) {
@@ -178,17 +190,17 @@ public class TextureObject implements ITexture {
         glTexParameteri(type, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     }
 
-    public TextureObject allocateImage2D(int internalFormat, int format) {
-        this.internalFormat = internalFormat;
-        this.format = format;
+    public TextureObject allocateImage2D(FormatType internalFormat, FormatType format) {
+        this.internalFormat = internalFormat.get();
+        this.format = format.get();
         this.dataType = GL_FLOAT;
         allocate();
         return this;
     }
 
-    public TextureObject allocateImage2D(int internalFormat, int format, ByteBuffer buffer) {
-        this.internalFormat = internalFormat;
-        this.format = format;
+    public TextureObject allocateImage2D(FormatType internalFormat, FormatType format, ByteBuffer buffer) {
+        this.internalFormat = internalFormat.get();
+        this.format = format.get();
         this.dataType = GL_UNSIGNED_BYTE;
         allocate(buffer);
         return this;
@@ -249,5 +261,4 @@ public class TextureObject implements ITexture {
     public boolean isDepth() {
         return isDepth;
     }
-
 }

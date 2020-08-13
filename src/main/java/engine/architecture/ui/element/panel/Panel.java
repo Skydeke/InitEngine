@@ -169,7 +169,7 @@ public class Panel extends UIElement implements Processable {
     }
 
 
-    protected void setImageBuffer(TextureObject texture, boolean isFBOFlipped){
+    public void setImageBuffer(TextureObject texture, boolean isFBOFlipped){
         imageBuffer = texture;
         isImage = true;
         isBuffer = isFBOFlipped;

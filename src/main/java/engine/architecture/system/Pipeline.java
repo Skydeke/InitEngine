@@ -14,6 +14,7 @@ import engine.rendering.instances.renderers.pbr.PBRRenderer;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
 import engine.rendering.instances.renderers.sky.SkyRenderer;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import engine.utils.libraryBindings.opengl.textures.TextureTarget;
@@ -23,10 +24,6 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL30.GL_RGBA16F;
-import static org.lwjgl.opengl.GL30.GL_RGBA32F;
 
 public class Pipeline {
 
@@ -87,15 +84,15 @@ public class Pipeline {
         pbrFBO.addAttatchments(
                 new TextureObject(
                         target, getResolution())
-                        .allocateImage2D(GL_RGBA32F, GL_RGBA)
+                        .allocateImage2D(FormatType.RGBA32F, FormatType.RGBA)
                         .bilinearFilter(),
                 new TextureObject(
                         target, getResolution())
-                        .allocateImage2D(GL_RGBA32F, GL_RGBA)
+                        .allocateImage2D(FormatType.RGBA32F, FormatType.RGBA)
                         .bilinearFilter(),
                 new TextureObject(
                         target, getResolution())
-                        .allocateImage2D(GL_RGBA16F, GL_RGBA)
+                        .allocateImage2D(FormatType.RGBA16F, FormatType.RGBA)
                         .bilinearFilter(),
                 SceneFbo.getInstance().getAttachment(0),
                 SceneFbo.getInstance().getDepthAttachment());

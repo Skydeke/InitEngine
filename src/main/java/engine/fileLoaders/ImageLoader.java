@@ -1,5 +1,6 @@
 package engine.fileLoaders;
 
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.textures.TextureCache;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import engine.utils.libraryBindings.opengl.textures.TextureTarget;
@@ -14,10 +15,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL21.GL_SRGB8;
-import static org.lwjgl.opengl.GL21.GL_SRGB8_ALPHA8;
-import static org.lwjgl.opengl.GL30.GL_RGB16F;
-import static org.lwjgl.opengl.GL30.GL_RGBA16F;
 
 public class ImageLoader {
     /**
@@ -99,16 +96,16 @@ public class ImageLoader {
                 glPixelStorei(GL_UNPACK_ALIGNMENT, 2 - (w.get(0) & 1));
             }
             if (srgb)
-                ret.allocateImage2D(GL_SRGB8, GL_RGB, image);
+                ret.allocateImage2D(FormatType.SRGB8, FormatType.RGB, image);
             else
-                ret.allocateImage2D(GL_RGB16F, GL_RGB, image);
+                ret.allocateImage2D(FormatType.RGB16F, FormatType.RGB, image);
         } else if (c.get(0) == 1) {
-            ret.allocateImage2D(GL_RED, GL_RED, image);
+            ret.allocateImage2D(FormatType.RED, FormatType.RED, image);
         } else {
             if (srgb)
-                ret.allocateImage2D(GL_SRGB8_ALPHA8, GL_RGBA, image);
+                ret.allocateImage2D(FormatType.SRGB8_ALPHA8, FormatType.RGBA, image);
             else
-                ret.allocateImage2D(GL_RGBA16F, GL_RGBA, image);
+                ret.allocateImage2D(FormatType.RGBA16F, FormatType.RGBA, image);
         }
 
         STBImage.stbi_image_free(image);
@@ -152,16 +149,16 @@ public class ImageLoader {
                 glPixelStorei(GL_UNPACK_ALIGNMENT, 2 - (w.get(0) & 1));
             }
             if (srgb)
-                ret.allocateImage2D(GL_SRGB8, GL_RGB, image);
+                ret.allocateImage2D(FormatType.SRGB8, FormatType.RGB, image);
             else
-                ret.allocateImage2D(GL_RGB16F, GL_RGB, image);
+                ret.allocateImage2D(FormatType.RGB16F, FormatType.RGB, image);
         } else if (c.get(0) == 1) {
-            ret.allocateImage2D(GL_RED, GL_RED, image);
+            ret.allocateImage2D(FormatType.RED, FormatType.RED, image);
         } else {
             if (srgb)
-                ret.allocateImage2D(GL_SRGB8_ALPHA8, GL_RGBA, image);
+                ret.allocateImage2D(FormatType.SRGB8_ALPHA8, FormatType.RGBA, image);
             else
-                ret.allocateImage2D(GL_RGBA16F, GL_RGBA, image);
+                ret.allocateImage2D(FormatType.RGBA16F, FormatType.RGBA, image);
         }
 
         STBImage.stbi_image_free(image);

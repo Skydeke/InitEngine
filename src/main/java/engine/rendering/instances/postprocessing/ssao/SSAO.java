@@ -1,12 +1,10 @@
 package engine.rendering.instances.postprocessing.ssao;
 
 import engine.architecture.system.Pipeline;
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import engine.utils.libraryBindings.opengl.textures.TextureTarget;
 import lombok.Getter;
-
-import static org.lwjgl.opengl.GL11.GL_RED;
-import static org.lwjgl.opengl.GL30.GL_R16F;
 
 /**
  * SCREEN-SPACED AMBIENT OCCLUSION
@@ -34,11 +32,11 @@ public class SSAO {
     public SSAO(Pipeline pipeline) {
         this.preBlur = new TextureObject(
                 TextureTarget.TEXTURE_2D, pipeline.getResolution())
-                .allocateImage2D(GL_R16F, GL_RED)
+                .allocateImage2D(FormatType.R16F, FormatType.RED)
                 .bilinearFilter();
         this.targetTexture = new TextureObject(
                 TextureTarget.TEXTURE_2D, pipeline.getResolution())
-                .allocateImage2D(GL_R16F, GL_RED)
+                .allocateImage2D(FormatType.R16F, FormatType.RED)
                 .bilinearFilter();
         this.ssaoBlurShader = new SSAOBlurShader();
         this.ssaoShader = new SSAOShader();

@@ -28,6 +28,7 @@ public abstract class UIElement {
     @Setter
     protected Layout layout;
     @Getter
+    @Setter
     private LayoutType alignType = LayoutType.RELATIVE_TO_PARENT;
     @Getter
     protected int minWidth, minHeight, preferredWidth, preferredHeight;
@@ -186,17 +187,17 @@ public abstract class UIElement {
 
         if (parent == null) {
             absoluteBox.set(relativeBox);
-            alignType = LayoutType.ABSOLUTE;
+            setAlignType(LayoutType.ABSOLUTE);
         } else {
-            alignType = LayoutType.RELATIVE_TO_PARENT;
             Box newAbsolute = position.relativeTo(parent.absoluteBox);
             if (newAbsolute.width * Window.instance().getWidth() >= minWidth &&
                     newAbsolute.height * Window.instance().getHeight() >= minHeight)
                 relativeBox.set(position);
             if (getAbsoluteBox().equals(newAbsolute)) ret = true;
             absoluteBox.set(newAbsolute);
+            setAlignType(LayoutType.RELATIVE_TO_PARENT);
+            recalculateAbsolutePositions();
         }
-        recalculateAbsolutePositions();
         return ret;
     }
 
@@ -274,11 +275,5 @@ public abstract class UIElement {
         Viewport _vp = getViewport();
         return ElementManager.instance().isMouseOver(_vp)
                 && ElementManager.instance().isTop(_vp);
-    }
-
-    public void setAlignType(LayoutType alignType) {
-        this.alignType = alignType;
-//        if (getParent() != null)
-//            getParent().recalculateAbsolutePositions();
     }
 }

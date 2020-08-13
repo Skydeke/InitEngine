@@ -4,6 +4,7 @@ import engine.architecture.scene.node.Node;
 import engine.architecture.system.Window;
 import engine.rendering.instances.renderers.UUIDRenderer;
 import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import engine.utils.libraryBindings.opengl.textures.TextureTarget;
@@ -12,7 +13,6 @@ import lombok.Getter;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.GL_RGBA16F;
 
 public class Picking {
 
@@ -26,7 +26,7 @@ public class Picking {
         UUIDmap.addAttatchments(new TextureObject(
                         TextureTarget.TEXTURE_2D, Window.instance().getWidth(),
                         Window.instance().getHeight())
-                        .allocateImage2D(GL_RGBA16F, GL_RGBA)
+                        .allocateImage2D(FormatType.RGBA16F, FormatType.RGBA)
                         .nofilter(),
                 new TextureObject(
                         TextureTarget.TEXTURE_2D, Window.instance().getWidth(),

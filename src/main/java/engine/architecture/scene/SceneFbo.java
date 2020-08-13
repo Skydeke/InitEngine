@@ -2,12 +2,10 @@ package engine.architecture.scene;
 
 import engine.architecture.system.Config;
 import engine.architecture.system.Window;
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
 import engine.utils.libraryBindings.opengl.textures.TextureTarget;
-
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL30.GL_RGBA16F;
 
 public class SceneFbo extends FrameBufferObject {
 
@@ -20,7 +18,7 @@ public class SceneFbo extends FrameBufferObject {
         else
             target = TextureTarget.TEXTURE_2D;
         addAttatchments(new TextureObject(target, Window.instance().getResolution())
-                        .allocateImage2D(GL_RGBA16F, GL_RGBA)
+                        .allocateImage2D(FormatType.RGBA16F, FormatType.RGBA)
                         .bilinearFilter(),
                 new TextureObject(target, Window.instance().getResolution())
                         .allocateDepth()

@@ -82,7 +82,8 @@ public class PBRDeferredShader extends Shader {
         setUniform("isShadow", Config.instance().isShadows() ? 1 : 0);
         activeTexture(lightDepth, 0);
         setUniform("shadowDepthMap", 0);
-        setUniform("shadowSpaceMatrix", LightManager.getSun().getLightSpaceMatrix());
+        if (LightManager.getSun() != null)
+            setUniform("shadowSpaceMatrix", LightManager.getSun().getLightSpaceMatrix());
 
 
         setUniform("camerapos", boundContext.getCamera().getTransform().getPosition());
