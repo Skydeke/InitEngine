@@ -28,7 +28,10 @@ public class Window {
     private static Window instance;
     private long cursor = 0;
     @Getter
-    boolean hidden = false;
+    private boolean cursorHidden = false;
+    @Setter
+    @Getter
+    private boolean isVisible = true;
     @Getter
     Vector2d lockedcursorPos = new Vector2d(0, 0);
     @Getter
@@ -39,14 +42,15 @@ public class Window {
     @Setter
     private boolean resized = true;
     @Getter
-    private String title;
+    private final String title;
     private boolean lock = false;
-    private boolean enableVsync = false;
+    private final boolean enableVsync;
 
     private Window() {
         this.title = Config.instance().getWindowName();
         this.height = Config.instance().getWindowHeight();
         this.width = Config.instance().getWindowWidth();
+        this.enableVsync = Config.instance().isVsync();
     }
 
     public static Window instance() {
@@ -96,6 +100,11 @@ public class Window {
         glfwSetWindowPos(handle,
                 (vidmode.width() - width) / 2,
                 (vidmode.height() - height) / 2);
+
+
+        glfwSetWindowIconifyCallback(handle, (window, iconified) -> {
+            setVisible(!iconified);
+        });
 
         glfwMakeContextCurrent(handle);
         GL.createCapabilities();
@@ -172,7 +181,7 @@ public class Window {
     }
 
     public void hideCursor(boolean hide) {
-        this.hidden = hide;
+        this.cursorHidden = hide;
         if (hide)
             glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         else

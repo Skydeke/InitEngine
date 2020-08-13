@@ -23,6 +23,7 @@ import static org.lwjgl.opengl.GL32.glTexImage2DMultisample;
 public class TextureObject implements ITexture {
 
     private static final TextureObject NONE = TextureObject.emptyTexture();
+    private static final TextureObject nullTexture = new TextureObject(TextureTarget.TEXTURE_2D, 0, 0, 0);
     private static int activeTexture = 0;
     private static int[] boundTextures = new int[32];
 
@@ -32,8 +33,8 @@ public class TextureObject implements ITexture {
     @Setter
     private int width, height;
 
-    public TextureObject(int type, int width, int height, int id) {
-        this.type = type;
+    public TextureObject(TextureTarget type, int width, int height, int id) {
+        this.type = type.get();
         this.width = width;
         this.height = height;
         this.id = id;
@@ -42,16 +43,16 @@ public class TextureObject implements ITexture {
         this.format = GL_RGBA;
     }
 
-    public TextureObject(int type, int width, int height) {
+    public TextureObject(TextureTarget type, int width, int height) {
         this(type, width, height, glGenTextures());
     }
 
-    public TextureObject(int type, Vector2i resolution) {
+    public TextureObject(TextureTarget type, Vector2i resolution) {
         this(type, resolution.x, resolution.y, glGenTextures());
     }
 
     public TextureObject(int width, int height) {
-        this(GL_TEXTURE_2D, width, height);
+        this(TextureTarget.TEXTURE_2D, width, height);
     }
 
     /**
@@ -78,7 +79,7 @@ public class TextureObject implements ITexture {
     }
 
     public static TextureObject emptyTexture() {
-        return new TextureObject(GL_TEXTURE_2D, 0, 0, 0);
+        return nullTexture;
     }
 
     @Override

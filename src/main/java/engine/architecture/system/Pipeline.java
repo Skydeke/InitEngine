@@ -16,6 +16,7 @@ import engine.rendering.instances.renderers.sky.SkyRenderer;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
 import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureTarget;
 import engine.utils.libraryBindings.opengl.utils.GlBuffer;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
@@ -24,10 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.GL_RGBA16F;
 import static org.lwjgl.opengl.GL30.GL_RGBA32F;
-import static org.lwjgl.opengl.GL32.GL_TEXTURE_2D_MULTISAMPLE;
 
 public class Pipeline {
 
@@ -65,11 +64,11 @@ public class Pipeline {
      */
     public Pipeline(SceneContext context) {
         this.context = context;
-        int target;
+        TextureTarget target;
         if (Config.instance().getMultisamples() > 0)
-            target = GL_TEXTURE_2D_MULTISAMPLE;
+            target = TextureTarget.TEXTURE_2D_MULTISAMPLE;
         else
-            target = GL_TEXTURE_2D;
+            target = TextureTarget.TEXTURE_2D;
         /**
          * Channels:
          * layout (location = 0) out vec4 pos_vbo
@@ -102,7 +101,7 @@ public class Pipeline {
                 SceneFbo.getInstance().getDepthAttachment());
         shadowFBO = new FrameBufferObject();
         shadowFBO.addAttatchments(new TextureObject(
-                GL_TEXTURE_2D, Config.instance().getShadowBufferWidth(),
+                TextureTarget.TEXTURE_2D, Config.instance().getShadowBufferWidth(),
                 Config.instance().getShadowBufferHeight())
                 .allocateDepth()
                 .wrap()

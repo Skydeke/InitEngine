@@ -18,8 +18,8 @@ public class CameraMouseDragRotation extends CameraController {
             if (cursorPosAtStart == null) {
                 Window.instance().hideCursor(true);
                 cursorPosAtStart = Window.instance().getCursorPos();
+                ElementManager.instance().setEventHog(this);
             }
-            ElementManager.instance().setEventHog(this);
             rotation.control(camera);
         }
         if (InputManager.instance().isButtonReleased(GLFW.GLFW_MOUSE_BUTTON_RIGHT)) {

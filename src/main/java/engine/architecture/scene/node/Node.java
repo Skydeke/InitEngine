@@ -76,25 +76,8 @@ public class Node {
             if (child.isActivated()) child.update();
     }
 
-    public void render() {
-        for (Node child : children)
-            if (child.isActivated() && !child.isHidden()) {
-                child.render();
-            }
-    }
-
-    public void render(Condition condition) {
-        for (Node child : children) {
-            if (child.isActivated() && condition.isvalid(child)) {
-                child.render(condition);
-            }
-        }
-    }
-
     public void process() {
-        for (Node child : children) {
-            child.process();
-        }
+        children.stream().filter(Node::isActivated).forEach(Node::process);
     }
 
     public void cleanup() {

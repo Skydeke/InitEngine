@@ -81,7 +81,7 @@ public class Button extends Panel {
 
         if (!clicked) {
             if (this.getAbsoluteBox().isWithin(Window.instance().getCursorPosf())
-                    && this.isMouseOver() && !Window.instance().isHidden()) {
+                    && this.isMouseOver() && !Window.instance().isCursorHidden()) {
                 setColor(buttonSettings.getHoverColor());
             } else {
                 setColor(buttonSettings.getButtonColor());

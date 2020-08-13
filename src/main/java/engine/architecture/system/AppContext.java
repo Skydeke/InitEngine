@@ -1,9 +1,6 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
-import engine.architecture.ui.constraints.CenterConstraint;
-import engine.architecture.ui.constraints.PercentageConstraint;
-import engine.architecture.ui.constraints.UIConstraints;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.element.RootElement;
 import engine.architecture.ui.element.UIElement;
@@ -16,6 +13,7 @@ import engine.utils.libraryBindings.maths.joml.Vector4i;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.Optional;
 
 public class AppContext {
@@ -89,11 +87,11 @@ public class AppContext {
 
         root.addChildren(sceneViewport.get());
         sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
-        sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.4f), new CenterConstraint(),
-                new PercentageConstraint(0.6f),
-                new PercentageConstraint(0.8f)));
-        sceneViewport.get().recalculateAbsolutePositions();//One time Positioning
-        sceneViewport.get().setConstraints(null);
+//        sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.4f), new CenterConstraint(),
+//                new PercentageConstraint(0.6f),
+//                new PercentageConstraint(0.8f)));
+//        sceneViewport.get().recalculateAbsolutePositions();//One time Positioning
+//        sceneViewport.get().setConstraints(null);
 
 //        Panel p = new Panel();
 //        p.setColor(new Color(0, 0, 250));
@@ -123,12 +121,16 @@ public class AppContext {
         elementManager.update();
     }
 
-    void draw() {
-        sceneContext.render();
-        Window.instance().resetViewport();
-        GlUtils.disableDepthTest();
-        renderElement.render();
-        GlUtils.enableDepthTest();
+    void draw(boolean isVisible) {
+        if (isVisible){
+            sceneContext.render();
+            Window.instance().resetViewport();
+            GlUtils.disableDepthTest();
+            Collections.reverse(renderElement.getChildren());
+            renderElement.render();
+            Collections.reverse(renderElement.getChildren());
+            GlUtils.enableDepthTest();
+        }
     }
 
     public void setRenderElement(UIElement renderElement) {

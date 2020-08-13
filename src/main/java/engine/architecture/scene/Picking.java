@@ -6,6 +6,7 @@ import engine.rendering.instances.renderers.UUIDRenderer;
 import engine.utils.libraryBindings.maths.joml.Vector3f;
 import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureTarget;
 import lombok.Getter;
 
 import java.nio.ByteBuffer;
@@ -23,12 +24,12 @@ public class Picking {
         this.context = context;
         this.UUIDmap = new FrameBufferObject();
         UUIDmap.addAttatchments(new TextureObject(
-                        GL_TEXTURE_2D, Window.instance().getWidth(),
+                        TextureTarget.TEXTURE_2D, Window.instance().getWidth(),
                         Window.instance().getHeight())
                         .allocateImage2D(GL_RGBA16F, GL_RGBA)
                         .nofilter(),
                 new TextureObject(
-                        GL_TEXTURE_2D, Window.instance().getWidth(),
+                        TextureTarget.TEXTURE_2D, Window.instance().getWidth(),
                         Window.instance().getHeight())
                         .allocateDepth()
                         .bilinearFilter());

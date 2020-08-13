@@ -1,5 +1,5 @@
 package engine.architecture.ui.event;
-
+import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
 import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.event.mouse.MouseClickEvent;
@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import java.util.HashSet;
 
-import static engine.architecture.ui.event.mouse.MouseClickEvent.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 
@@ -20,25 +19,33 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 public class InputManager {
 
-    private static InputManager instance = null;
-    private HashSet<Integer> pressedButtons;
-    private HashSet<Integer> heldButtons;
-    private HashSet<Integer> releasedButtons;
+    @Getter private int mods = 0;
 
-    private HashSet<Integer> pressedKeys;
-    private HashSet<Integer> heldKeys;
-    private HashSet<Integer> releasedKeys;
-    @Getter
-    private int mods = 0;
-    @Getter
-    private float scrollAmount;
+    HashSet<Integer> pressedButtons;
+    HashSet<Integer> heldButtons;
+    HashSet<Integer> releasedButtons;
+
+    HashSet<Integer> pressedKeys;
+    HashSet<Integer> heldKeys;
+    HashSet<Integer> releasedKeys;
+
+    @Getter private float scrollAmount;
+
     private Vector2d prevPos;
-    @Setter
-    private Vector2d cursorPos;
-    @Getter
-    private Vector2d displacement;
+    @Getter @Setter private Vector2d cursorPos;
+    @Getter private Vector2d displacement;
 
-    private InputManager() {
+    private AppContext context;
+
+    private static InputManager instance = null;
+    public static InputManager instance(){
+        if(instance == null){
+            instance = new InputManager();
+        }
+        return instance;
+    }
+
+    private InputManager(){
         pressedButtons = new HashSet<>();
         heldButtons = new HashSet<>();
         releasedButtons = new HashSet<>();
@@ -47,45 +54,45 @@ public class InputManager {
         releasedKeys = new HashSet<>();
     }
 
-    public static InputManager instance() {
-        if (instance == null) {
-            instance = new InputManager();
-        }
-        return instance;
-    }
-
     /**
      * Initializes callbacks
      */
-    public void init() {
+    public void init(AppContext context){
+
+        this.context = context;
         Window window = Window.instance();
 
         this.prevPos = new Vector2d();
         this.cursorPos = new Vector2d();
         this.displacement = new Vector2d();
 
-        /* Mouse position Callback */
+        /** Mouse position Callback */
         glfwSetCursorPosCallback(window.getHandle(), (windowHandle, x, y) -> {
             cursorPos.x = x;
             cursorPos.y = y;
         });
 
-        /* Keyboard Callback */
-        glfwSetKeyCallback(
+        /** Keyboard Callback */
+        glfwSetKeyCallback (
                 window.getHandle(), (windowHandle, key, scancode, action, mods) -> {
 
                     int _action = 0;
                     this.mods = mods;
 
-                    if (action == GLFW_PRESS) {
+                    if(action == GLFW_PRESS){
+
                         pressedKeys.add(key);
                         heldKeys.add(key);
                         _action = KeyboardEvent.KEY_PRESSED;
 
-                    } else if (action == GLFW_REPEAT) {
+                    }
+
+                    else if(action == GLFW_REPEAT){
                         _action = KeyboardEvent.KEY_HELD;
                         pressedKeys.remove(key);
-                    } else if (action == GLFW_RELEASE) {
+                    }
+
+                    else if (action == GLFW_RELEASE){
                         //this.mods = 0;
                         releasedKeys.add(key);
                         heldKeys.remove(key);
@@ -99,40 +106,37 @@ public class InputManager {
 
                 });
 
-        /* Mouse button Callback */
-        glfwSetMouseButtonCallback(
+        /** Mouse button Callback */
+        glfwSetMouseButtonCallback (
                 window.getHandle(), (windowHandle, button, action, mods) -> {
 
                     int _action = 0;
                     this.mods = mods;
 
-                    if (action == GLFW_PRESS) {
-                        _action = BUTTON_HELD;
-                        if (!heldButtons.contains(button)) {
-                            pressedButtons.add(button);
-                            _action = BUTTON_CLICK;
-                        }
-                        heldButtons.add(button);
-                    } else if (action == GLFW_RELEASE) {
+                    if(action == GLFW_PRESS){
+                        pressedButtons.add(button);
+                        _action = MouseClickEvent.BUTTON_CLICK;
+                    }
+                    else if (action == GLFW_RELEASE){
                         this.mods = 0;
                         releasedButtons.add(button);
                         heldButtons.remove(button);
                         pressedButtons.remove(button);
-                        _action = BUTTON_RELEASED;
+                        _action = MouseClickEvent.BUTTON_RELEASED;
                     }
 
 
                     ElementManager.instance().fire(new MouseClickEvent(
-                            button, _action, mods, new Vector2f(
-                            (float) cursorPos.x / (float) Window.instance().getWidth(),
-                            1f - (float) cursorPos.y / (float) Window.instance().getHeight())
-                            , new Vector2f(
-                            (float) displacement.x / (float) Window.instance().getWidth(),
-                            (float) displacement.y / (float) Window.instance().getHeight())
+                            button, _action, mods, new Vector2f (
+                            (float)cursorPos.x/(float)Window.instance().getWidth(),
+                            1f-(float)cursorPos.y/(float)Window.instance().getHeight())
+                            , new Vector2f (
+                            (float)displacement.x/(float)Window.instance().getWidth(),
+                            (float)displacement.y/(float)Window.instance().getHeight())
                     ));
                 });
 
-        /* Mouse scroll Callback */
+        /** Mouse scroll Callback */
         glfwSetScrollCallback(window.getHandle(), (windowHandle, dx, dy) -> {
             scrollAmount = (float) dy;
             ElementManager.instance().fire(new MouseWheelEvent(
@@ -143,78 +147,68 @@ public class InputManager {
         });
     }
 
-    public boolean isMod(int keycode) {
-        return (keycode & mods) == keycode;
-    }
+    public boolean isMod(int keycode){ return (keycode & mods) == keycode;}
 
     /**
      * Returns true for GLFW keycode of any key hold this update
-     *
      * @param keycode GLFW keycode
      * @return boolean held or not
      */
-    public boolean isKeyHeld(int keycode) {
+    public boolean isKeyHeld(int keycode){
         return heldKeys.contains(keycode);
     }
 
     /**
      * Returns true for GLFW keycode of any key pressed this update
-     *
      * @param keycode GLFW keycode (key)
      * @return boolean pressed or not
      */
-    public boolean isKeyPressed(int keycode) {
+    public boolean isKeyPressed(int keycode){
         return pressedKeys.contains(keycode);
     }
 
     /**
      * Returns true for GLFW keycode of any key released this update
-     *
      * @param keycode GLFW keycode (key)
      * @return boolean released or not
      */
-    public boolean isKeyReleased(int keycode) {
+    public boolean isKeyReleased(int keycode){
         return releasedKeys.contains(keycode);
     }
 
     /**
      * Returns true for GLFW keycode of any button hold this update
-     *
      * @param keycode GLFW keycode (buttons)
      * @return boolean held or not
      */
-    public boolean isButtonHeld(int keycode) {
+    public boolean isButtonHeld(int keycode){
         return heldButtons.contains(keycode);
     }
 
     /**
      * Returns true for GLFW keycode of any button pressed this update
-     *
      * @param keycode GLFW keycode (buttons)
      * @return boolean pressed or not
      */
-    public boolean isButtonPressed(int keycode) {
+    public boolean isButtonPressed(int keycode){
         return pressedButtons.contains(keycode);
     }
 
     /**
      * Returns true for GLFW keycode of any button released this update
-     *
      * @param keycode GLFW keycode (buttons)
      * @return boolean released or not
      */
-    public boolean isButtonReleased(int keycode) {
-        boolean b = releasedButtons.contains(keycode);
-        releasedButtons.remove(keycode);
-        return b;
+    public boolean isButtonReleased(int keycode){
+        return releasedButtons.contains(keycode);
     }
 
     /**
      * Clears the key and button maps and updates displacement vectors
      */
-    public void update() {
+    public void update(){
 
-        /* update displacement vector */
+        /** update displacement vector */
 
         displacement.x = cursorPos.x - prevPos.x;
         displacement.y = cursorPos.y - prevPos.y;
@@ -222,22 +216,25 @@ public class InputManager {
         prevPos.x = cursorPos.x;
         prevPos.y = cursorPos.y;
 
-        for (Integer k : pressedButtons) {
-            ElementManager.instance().fire(new MouseClickEvent(k, BUTTON_HELD, mods, new Vector2f(
-                    (float) cursorPos.x / (float) Window.instance().getWidth(),
-                    1f - (float) cursorPos.y / (float) Window.instance().getHeight())
-                    , new Vector2f(
-                    (float) displacement.x / (float) Window.instance().getWidth(),
-                    -(float) displacement.y / (float) Window.instance().getHeight())
+        for(Integer k: pressedButtons){
+            ElementManager.instance().fire(new MouseClickEvent(k, MouseClickEvent.BUTTON_HELD, mods, new Vector2f (
+                    (float)cursorPos.x/(float)Window.instance().getWidth(),
+                    1f-(float)cursorPos.y/(float)Window.instance().getHeight())
+                    , new Vector2f (
+                    (float)displacement.x/(float)Window.instance().getWidth(),
+                    -(float)displacement.y/(float)Window.instance().getHeight())
             ));
         }
 
-        /* update key maps */
+        /** update key maps */
 
+        releasedButtons.clear();
         releasedKeys.clear();
 
-        /* reset scroll displacement */
+        /** reset scroll displacement */
         scrollAmount = 0;
+
+
     }
 
     public Vector2f getCursorPos() {
@@ -246,10 +243,10 @@ public class InputManager {
                 1f - (float) cursorPos.y / (float) Window.instance().getHeight());
     }
 
-    public Vector2f getCursorDelta() {
-        return new Vector2f(
-                (float) displacement.x / (float) Window.instance().getWidth(),
-                (float) displacement.y / (float) Window.instance().getHeight());
+    public Vector2f getCursorDelta(){
+        return new Vector2f (
+                (float)displacement.x/(float)Window.instance().getWidth(),
+                (float)displacement.y/(float)Window.instance().getHeight());
     }
 
 }

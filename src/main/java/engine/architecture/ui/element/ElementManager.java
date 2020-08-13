@@ -120,7 +120,7 @@ public class ElementManager {
         events.clear();
 
         UIElement elem;
-        if (focusLock || Window.instance().isHidden())
+        if (focusLock || Window.instance().isCursorHidden())
             return;
 
         elem = root.findAtPos(InputManager.instance().getCursorPos());

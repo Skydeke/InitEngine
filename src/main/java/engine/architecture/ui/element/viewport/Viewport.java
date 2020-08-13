@@ -33,7 +33,7 @@ public class Viewport extends UIElement {
 
     // 0: left , 1: top , 2: right, 3: bottom, -1: none
     private int dragEdge = -1;
-    boolean activeDrag = false;
+    boolean activeEdgeDrag = false;
     boolean hover = false;
 
     // size in pixels the mouse can hover over to start a resize event
@@ -89,21 +89,21 @@ public class Viewport extends UIElement {
 
                     if(dragEdge != -1) {
                         AppContext.instance().getElementManager().setFocused(this);
-                        activeDrag = true;
+                        activeEdgeDrag = true;
                         e.consume();
                     }
                 }
 
                 // resize window end
-                else if ((m.getAction() == BUTTON_RELEASED) && activeDrag) {
+                else if ((m.getAction() == BUTTON_RELEASED) && activeEdgeDrag) {
                     AppContext.instance().getElementManager().resetFocused();
-                    activeDrag = false;
+                    activeEdgeDrag = false;
                     e.consume();
                 }
 
-                if (!e.isConsumed() && mainPanel.getAbsoluteBox().isWithin(m.getScreenPos()))
+                if (!e.isConsumed() && mainPanel.getAbsoluteBox().isWithin(m.getScreenPos()) && !Window.instance().isCursorHidden())
                     mainPanel.handle(e);
-                else if(!e.isConsumed() && topBar.getAbsoluteBox().isWithin(m.getScreenPos()))
+                else if(!e.isConsumed() && topBar.getAbsoluteBox().isWithin(m.getScreenPos()) && !Window.instance().isCursorHidden())
                     topBar.handle(e);
             }
 
@@ -114,16 +114,17 @@ public class Viewport extends UIElement {
 
         // make viewport draggable by the window
         topBar.onEvent(e -> {
-
             if(e instanceof MouseClickEvent){
-
                 // move window
                 MouseClickEvent m = (MouseClickEvent)e;
                 if(m.getAction()==BUTTON_HELD){
-                    getRelativeBox().translate(m.getScreenDelta());
-                    getParent().recalculateAbsolutePositions(); //HERE
+                    Vector2f delta = InputManager.instance().getCursorDelta();
+                    delta.y = -delta.y;
+                    Box box = new Box(getRelativeBox());
+                    box.translate(delta);
+                    setBox(box);
+                    e.consume();
                 }
-                e.consume();
             }
         });
 
@@ -153,7 +154,7 @@ public class Viewport extends UIElement {
 
         // WINDOW RESIZE //
         // get cursor delta and update window size and position
-        if(activeDrag){
+        if(activeEdgeDrag){
             Vector2f delta = InputManager.instance().getCursorDelta();
             Box box = new Box(getRelativeBox());
             switch(dragEdge){

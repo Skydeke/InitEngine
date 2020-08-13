@@ -27,7 +27,7 @@ public class GameEngine implements Runnable {
     public void init() throws Exception {
         window.init();
         app.init(game);
-        inputManager.init();
+        inputManager.init(app);
     }
 
     public void start() {
@@ -50,10 +50,10 @@ public class GameEngine implements Runnable {
             }
             long a = System.nanoTime();
             game.update(Time.getDelta());
-            AppContext.instance().update();
-            AppContext.instance().draw();
+            app.update();
+            app.draw(window.isVisible());
             inputManager.update();
-            window.update(AppContext.instance().getSceneContext().getPipeline().isAnyChange());
+            window.update(app.getSceneContext().getPipeline().isAnyChange());
             AppContext.instance().getSceneContext().getPipeline().setAnyChange(false);
             long b = System.nanoTime();
 

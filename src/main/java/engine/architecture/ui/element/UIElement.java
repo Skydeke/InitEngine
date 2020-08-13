@@ -27,7 +27,6 @@ public abstract class UIElement {
     protected UIConstraints constraints = null;
     @Setter
     protected Layout layout;
-    @Setter
     @Getter
     private LayoutType alignType = LayoutType.RELATIVE_TO_PARENT;
     @Getter
@@ -197,7 +196,7 @@ public abstract class UIElement {
             if (getAbsoluteBox().equals(newAbsolute)) ret = true;
             absoluteBox.set(newAbsolute);
         }
-
+        recalculateAbsolutePositions();
         return ret;
     }
 
@@ -275,5 +274,11 @@ public abstract class UIElement {
         Viewport _vp = getViewport();
         return ElementManager.instance().isMouseOver(_vp)
                 && ElementManager.instance().isTop(_vp);
+    }
+
+    public void setAlignType(LayoutType alignType) {
+        this.alignType = alignType;
+//        if (getParent() != null)
+//            getParent().recalculateAbsolutePositions();
     }
 }

@@ -2,6 +2,7 @@ package engine.fileLoaders;
 
 import engine.utils.libraryBindings.opengl.textures.TextureCache;
 import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.TextureTarget;
 import engine.utils.libraryBindings.opengl.utils.Utils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.assimp.AITexture;
@@ -91,7 +92,7 @@ public class ImageLoader {
         }
 
         int id = glGenTextures();
-        TextureObject ret = new TextureObject(GL_TEXTURE_2D, w.get(0), h.get(0), id);
+        TextureObject ret = new TextureObject(TextureTarget.TEXTURE_2D, w.get(0), h.get(0), id);
         ret.bilinearFilter();
         if (c.get(0) == 3) {
             if ((w.get(0) & 3) != 0) {
@@ -144,7 +145,7 @@ public class ImageLoader {
         }
 
         int id = glGenTextures();
-        TextureObject ret = new TextureObject(GL_TEXTURE_2D, w.get(0), h.get(0), id);
+        TextureObject ret = new TextureObject(TextureTarget.TEXTURE_2D, w.get(0), h.get(0), id);
         ret.bilinearFilter();
         if (c.get(0) == 3) {
             if ((w.get(0) & 3) != 0) {
