@@ -104,9 +104,8 @@ public class Fbo implements IFbo {
         return getWidth() == width && getHeight() == height;
     }
 
-    public void blitToScreen() {
-//        blitFbo(ScreenFbo.getInstance());
-        //TODO MAKE A SCREENFBO
+    public void blitToScene() {
+        blitFbo(SceneFbo.getInstance());
     }
 
     @Override

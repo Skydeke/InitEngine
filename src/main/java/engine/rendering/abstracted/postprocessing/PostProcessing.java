@@ -105,7 +105,7 @@ public class PostProcessing {
      */
     public void processToScreen(Fbo fbo) {
         if (postProcessors.size() == 0) {
-            fbo.blitToScreen();
+            fbo.blitToScene();
         } else {
             processToScreen(fbo.getAttachments().get(0).getTexture(),
                     fbo.getDepthAttachment().getTexture());

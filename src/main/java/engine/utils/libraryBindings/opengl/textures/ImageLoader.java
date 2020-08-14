@@ -150,6 +150,7 @@ public class ImageLoader {
         TextureBuilder retB = Texture.builder()
                 .setMinFilter(MinFilterParameter.LINEAR_MIPMAP_LINEAR)
                 .setMagFilter(MagFilterParameter.LINEAR)
+                .setAnisotropicFilter(4f)
                 .setGenerateMipMap(true);
         if (c.get(0) == 3) {
             if ((w.get(0) & 3) != 0) {
@@ -205,6 +206,7 @@ public class ImageLoader {
         TextureBuilder retB = Texture.builder()
                 .setMinFilter(MinFilterParameter.LINEAR)
                 .setMagFilter(MagFilterParameter.LINEAR)
+                .setAnisotropicFilter(4f)
                 .setGenerateMipMap(true);
         if (c.get(0) == 3) {
             if ((w.get(0) & 3) != 0) {

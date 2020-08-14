@@ -17,6 +17,7 @@ import engine.utils.libraryBindings.opengl.constants.DataType;
 import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.fbos.Fbo;
 import engine.utils.libraryBindings.opengl.fbos.FboTarget;
+import engine.utils.libraryBindings.opengl.fbos.SceneFbo;
 import engine.utils.libraryBindings.opengl.fbos.attachment.TextureAttachment;
 import engine.utils.libraryBindings.opengl.textures.TextureConfigs;
 import engine.utils.libraryBindings.opengl.textures.parameters.MagFilterParameter;
@@ -92,14 +93,8 @@ public class Pipeline {
         albedoConfigs.magFilter = MagFilterParameter.LINEAR;
         albedoConfigs.minFilter = MinFilterParameter.LINEAR;
         pbrFBO.addAttachment(TextureAttachment.ofColour(2, albedoConfigs));
-        TextureConfigs sceneConfigs = new TextureConfigs(FormatType.RGBA16F, FormatType.RGBA, DataType.FLOAT);
-        sceneConfigs.magFilter = MagFilterParameter.LINEAR;
-        sceneConfigs.minFilter = MinFilterParameter.LINEAR;
-        pbrFBO.addAttachment(TextureAttachment.ofColour(3, sceneConfigs));
-        TextureConfigs dConfigs = new TextureConfigs(FormatType.DEPTH_COMPONENT24, FormatType.DEPTH_COMPONENT, DataType.FLOAT);
-        dConfigs.magFilter = MagFilterParameter.LINEAR;
-        dConfigs.minFilter = MinFilterParameter.LINEAR;
-        pbrFBO.addAttachment(TextureAttachment.ofDepth(dConfigs));
+        pbrFBO.addAttachment(SceneFbo.getInstance().getAttachments().get(0));
+        pbrFBO.addAttachment(SceneFbo.getInstance().getDepthAttachment());
         pbrFBO.unbind();
 
         shadowFBO = Fbo.create(Config.instance().getShadowBufferWidth(), Config.instance().getShadowBufferHeight());
@@ -127,6 +122,7 @@ public class Pipeline {
     public void resize() {
         pbrFBO.resize(getContext().getResolution().x,
                 getContext().getResolution().y);
+        SceneFbo.getInstance().resize(getContext().getResolution().x, getContext().getResolution().y);
         ssaoPass.resize();
     }
 
@@ -173,7 +169,7 @@ public class Pipeline {
                     pbrFBO.getAttachments().get(1).getTexture(),
                     shadowFBO.getDepthAttachment().getTexture(),
                     ssaoPass.getTargetTexture().getTexture(),
-                    pbrFBO.getAttachments().get(3).getTexture());
+                    SceneFbo.getInstance().getAttachments().get(0).getTexture());
 
             // calculate reflections
             if (Config.instance().isSsr())
@@ -191,11 +187,11 @@ public class Pipeline {
             Window.instance().resetViewport();
 
             if (Config.instance().isDebugLayer()) {
-                pbrFBO.bind(FboTarget.DRAW_FRAMEBUFFER);
+                SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
                 Window.instance().resizeViewport(getResolution());
                 DebugRenderer.getInstance().render(context);
                 Window.instance().resetViewport();
-                pbrFBO.unbind(FboTarget.DRAW_FRAMEBUFFER);
+                SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
             }
         }
         finish();

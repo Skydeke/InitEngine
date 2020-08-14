@@ -41,7 +41,7 @@ public class MultisampledFbo implements IFbo {
     }
 
     public void blitToScreen() {
-        getFbo().blitToScreen();
+        getFbo().blitToScene();
     }
 
     @Override

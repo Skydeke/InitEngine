@@ -107,7 +107,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
 
     @Override
     public final void blitToScreen() {
-        getFbo().blitToScreen();
+        getFbo().blitToScene();
     }
 
     @Override
