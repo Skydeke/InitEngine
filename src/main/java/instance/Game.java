@@ -47,13 +47,7 @@ public class Game extends SimpleApplication {
 
         Model cube = ModelLoader.load("/models/cube.gltf");
         PBRMaterial fu = new PBRMaterial("images/plastic_squares/", false);
-        Entity dragon1 = new Entity(cube) {
-            @Override
-            public void process() {
-                EntityRenderer.getInstance().process(this);
-                ShadowRenderer.getInstance().process(this);
-            }
-        };
+        PBRModel dragon1 = new PBRModel(cube, fu);
 
         Model mesh = ModelLoader.load("/models/dragon.obj");
         PBRModel dragon2 = new PBRModel(mesh, new PBRMaterial("images/chipped_paint/",
@@ -70,7 +64,7 @@ public class Game extends SimpleApplication {
 
         /* material testers **/
         Node matTesters = new Node();
-        Model m = ModelLoader.load("/models/doublebarrel.obj");
+        Model m = ModelLoader.load("/models/mat_test.obj");
 
         PBRModel m1 = new PBRModel(m, new PBRMaterial(0.15f, 0.488f, 0.5f, 0.95f, 0f));
         m1.getTransform().setPosition(0, 0, -15);
@@ -129,6 +123,7 @@ public class Game extends SimpleApplication {
         context.getScene().addChildren(sceneRoot, lights);
 
         context.getCamera().setController(new FlyCamera());
+//        context.getCamera().setController(new ThirdPersonCamera(dragon1.getTransform(), context.getCamera()));
     }
 
 

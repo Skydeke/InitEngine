@@ -71,7 +71,7 @@ public class Utils {
 
     public static ByteBuffer ioResourceToBuffer(String filename, int bufferSize) throws IOException {
 
-        ByteBuffer buffer;
+        ByteBuffer buffer = null;
         Path path = Paths.get(filename);
 
         if (Files.isReadable(path)) {
@@ -93,6 +93,8 @@ public class Utils {
                         buffer = resizeBuffer(buffer, buffer.capacity() * 2);
 
                 }
+            }catch (NullPointerException e2){
+                System.out.println("Cant load: " + filename);
             }
         }
 
