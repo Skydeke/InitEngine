@@ -1,5 +1,6 @@
 package engine.rendering.instances.renderers.pbr;
 
+import engine.architecture.models.Material;
 import engine.utils.libraryBindings.maths.joml.Vector3f;
 import engine.utils.libraryBindings.opengl.textures.ITexture;
 import engine.utils.libraryBindings.opengl.textures.ImageLoader;
@@ -8,10 +9,8 @@ import engine.utils.libraryBindings.opengl.textures.parameters.MagFilterParamete
 import engine.utils.libraryBindings.opengl.textures.parameters.MinFilterParameter;
 import engine.utils.libraryBindings.opengl.textures.parameters.WrapParameter;
 
-public class PBRMaterial {
+public class PBRMaterial extends Material {
 
-    ITexture albedoMap = Texture.NONE;
-    ITexture normalMap = Texture.NONE;
     ITexture roughnessMap = Texture.NONE;
     ITexture metalMap = Texture.NONE;
     float IOR;
@@ -82,10 +81,6 @@ public class PBRMaterial {
         useAllMaps(false);
     }
 
-    public PBRMaterial() {
-        this(new Vector3f(1, 1, 1), 0f, 0f);
-    }
-
     public void useAllMaps(Boolean use) {
         this.is_metal_map = use;
         this.is_roughness_map = use;
@@ -94,11 +89,11 @@ public class PBRMaterial {
     }
 
     public Boolean isAlbedoMapped() {
-        return is_albedo_map && albedoMap != null;
+        return is_albedo_map && diffuseTexture != null;
     }
 
     public Boolean isNormalMapped() {
-        return is_normal_map && normalMap != null;
+        return is_normal_map && normalTexture != null;
     }
 
     public Boolean isRoughnessMapped() {
@@ -127,19 +122,19 @@ public class PBRMaterial {
 
 
     public ITexture getAlbedoMap() {
-        return albedoMap;
+        return diffuseTexture;
     }
 
     public void setAlbedoMap(ITexture albedoMap) {
-        this.albedoMap = albedoMap;
+        this.diffuseTexture = albedoMap;
     }
 
     public ITexture getNormalMap() {
-        return normalMap;
+        return normalTexture;
     }
 
     public void setNormalMap(ITexture normalMap) {
-        this.normalMap = normalMap;
+        this.normalTexture = normalMap;
     }
 
     public ITexture getRoughnessMap() {

@@ -38,6 +38,17 @@ internal class EntityRenderer : Renderer3D<Entity>() {
             }
         })
 
+        shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<Entity>("normalMap", 1) {
+            override fun getUniformValue(state: RenderState<Entity>): ITexture? {
+                return state.mesh.material.normalTexture
+            }
+        })
+        shadersProgram.addPerInstanceUniform(object : UniformBooleanProperty<Entity>("map_normal") {
+            override fun getUniformValue(state: RenderState<Entity>): Boolean {
+                return state.mesh.material.isUseNormalTex
+            }
+        })
+
 
         shadersProgram.addPerInstanceUniform(object : UniformValueProperty<Entity>("projectionMatrix") {
             override fun getUniformValue(state: RenderState<Entity>): UniformValue {

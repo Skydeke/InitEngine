@@ -45,9 +45,15 @@ public class Game extends SimpleApplication {
         lights = new Node();
 
 
-        Model cube = ModelLoader.load("/models/cube.obj");
+        Model cube = ModelLoader.load("/models/cube.gltf");
         PBRMaterial fu = new PBRMaterial("images/plastic_squares/", false);
-        PBRModel dragon1 = new PBRModel(cube, fu);
+        Entity dragon1 = new Entity(cube) {
+            @Override
+            public void process() {
+                EntityRenderer.getInstance().process(this);
+                ShadowRenderer.getInstance().process(this);
+            }
+        };
 
         Model mesh = ModelLoader.load("/models/dragon.obj");
         PBRModel dragon2 = new PBRModel(mesh, new PBRMaterial("images/chipped_paint/",

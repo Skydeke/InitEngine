@@ -22,8 +22,11 @@ public class Material {
     private Vector4f emissiveColor;
     private Vector4f transparentColor;
 
-    private ITexture diffuseTexture = Texture.NONE;
+    protected ITexture diffuseTexture = Texture.NONE;
     private boolean useDiffuseTex = false;
+
+    protected ITexture normalTexture = Texture.NONE;
+    private boolean useNormalTex = false;
 
     private boolean cullBackface = true;
 
@@ -74,17 +77,10 @@ public class Material {
                     //Specifies whether meshes using this material must be rendered without backface culling. 0 for false, !0 for true.
                     cullBackface = prop.mData().get() == AI_FALSE;
                     break;
-                case Assimp.AI_MATKEY_OPACITY: {
+                case Assimp.AI_MATKEY_OPACITY:
                     //Defines the opacity of the material in a range between 0..1.
                     //Use this value to decide whether you have to activate alpha blending for rendering.
                     // OPACITY != 1 usually also implies TWOSIDED=1 to avoid cull artifacts.
-                    break;
-                }
-                case Assimp.AI_MATKEY_SHININESS:
-                    //Defines the shininess of a phong-shaded material. This is actually the exponent of the phong specular equation
-                    break;
-                case Assimp.AI_MATKEY_SHININESS_STRENGTH:
-                    //Scales the specular color of the material.
                     break;
                 case aiAI_MATKEY_GLTF_PBRMETALLICROUGHNESS_METALLIC_FACTOR:
 //                    System.out.println("Metallic Factor: " + prop.mData().get());
@@ -95,20 +91,27 @@ public class Material {
             }
         }
         diffuseTexture = getTexture(aiTextureType_DIFFUSE, aiMaterial, scene);
-        if (diffuseTexture != null){
+        if (diffuseTexture != null) {
             useDiffuseTex = true;
-        }else {
+        } else {
             diffuseTexture = Texture.NONE;
+        }
+        normalTexture = getTexture(aiTextureType_NORMALS, aiMaterial, scene);
+        if (normalTexture != null) {
+            useNormalTex = true;
+        } else {
+            normalTexture = Texture.NONE;
         }
     }
 
-    private Material(){}
+    protected Material() {
+    }
 
     public static MaterialBuilder builder() {
         return new MaterialBuilder();
     }
 
-    private ITexture getTexture(int aiTextureType, AIMaterial material, AIScene scene){
+    private ITexture getTexture(int aiTextureType, AIMaterial material, AIScene scene) {
         AIString texturename = AIString.calloc();
         Assimp.aiGetMaterialTexture(material, aiTextureType, 0, texturename, (IntBuffer) null, null, null, null, null, null);
         String textPath = texturename.dataString();
@@ -118,8 +121,9 @@ public class Material {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if(textPath.length() > 0){
+        } else if (textPath.length() > 0) {
             PointerBuffer aiTextures = scene.mTextures();
+            assert aiTextures != null;
             AITexture embeddedTexture = AITexture.create(aiTextures.get(Integer.parseInt(textPath.replace("*", ""))));
             return ImageLoader.loadTextureFromBuffer(embeddedTexture, false);
         }
@@ -158,10 +162,18 @@ public class Material {
         return useDiffuseTex;
     }
 
+    public ITexture getNormalTexture() {
+        return normalTexture;
+    }
+
+    public boolean isUseNormalTex() {
+        return useNormalTex;
+    }
+
     void preconfigure() {
-        if (cullBackface){
+        if (cullBackface) {
             GlUtils.enableCulling();
-        }else {
+        } else {
             GlUtils.disableCulling();
         }
     }
@@ -169,17 +181,17 @@ public class Material {
     public static class MaterialBuilder {
         private Material mat = new Material();
 
-        public MaterialBuilder activateBackFaceCulling(){
+        public MaterialBuilder activateBackFaceCulling() {
             mat.cullBackface = true;
             return this;
         }
 
-        public MaterialBuilder deactivateBackFaceCulling(){
+        public MaterialBuilder deactivateBackFaceCulling() {
             mat.cullBackface = false;
             return this;
         }
 
-        public Material create(){
+        public Material create() {
             return mat;
         }
     }
