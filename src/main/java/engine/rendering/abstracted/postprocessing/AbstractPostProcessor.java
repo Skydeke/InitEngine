@@ -2,11 +2,16 @@ package engine.rendering.abstracted.postprocessing;
 
 import engine.architecture.system.Window;
 import engine.rendering.RenderOutputData;
+import engine.utils.libraryBindings.opengl.constants.DataType;
+import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.constants.RenderMode;
-import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
+import engine.utils.libraryBindings.opengl.fbos.Fbo;
+import engine.utils.libraryBindings.opengl.fbos.FboTarget;
+import engine.utils.libraryBindings.opengl.fbos.attachment.TextureAttachment;
 import engine.utils.libraryBindings.opengl.shaders.RenderState;
 import engine.utils.libraryBindings.opengl.shaders.ShadersProgram;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.textures.TextureConfigs;
 import engine.utils.libraryBindings.opengl.utils.GlBuffer;
 import engine.utils.libraryBindings.opengl.utils.GlRendering;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
@@ -14,10 +19,10 @@ import engine.utils.libraryBindings.opengl.utils.GlUtils;
 public abstract class AbstractPostProcessor implements PostProcessor {
 
     private final ShadersProgram<RenderOutputData> shadersProgram;
-    private FrameBufferObject fbo;
+    private Fbo fbo;
 
     public AbstractPostProcessor(String fragFile) throws Exception {
-        this("/engine/rendering/abstracted/postprocessing/simpleVertex.glsl", fragFile);
+        this("/engine/postprocessing/simpleVertex.glsl", fragFile);
     }
 
     public AbstractPostProcessor(String vertFile, String fragFile) throws Exception {
@@ -31,9 +36,10 @@ public abstract class AbstractPostProcessor implements PostProcessor {
      * @param height the height of the fbo
      * @return the created fbo
      */
-    protected FrameBufferObject createFbo(int width, int height) {
-        final FrameBufferObject fbo = new FrameBufferObject();
-        fbo.addAttatchments(new TextureObject(width, height));
+    protected Fbo createFbo(int width, int height) {
+        final Fbo fbo = Fbo.create(width, height);
+        fbo.addAttachment(TextureAttachment.ofColour(0, new TextureConfigs(
+                FormatType.RGB8, FormatType.RGB, DataType.U_BYTE)));
         return fbo;
     }
 
@@ -46,7 +52,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
      *
      * @return the fbo
      */
-    protected final FrameBufferObject getFbo() {
+    protected final Fbo getFbo() {
         return fbo == null ? (fbo = createFbo(Window.instance().getWidth(), Window.instance().getHeight())) : fbo;
     }
 
@@ -67,7 +73,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
     public void process(RenderOutputData renderOutputData) {
         beforeProcess(renderOutputData);
 
-        fbo.bind();
+        fbo.bind(FboTarget.DRAW_FRAMEBUFFER);
         GlUtils.clear(GlBuffer.COLOUR);
         getShadersProgram().bind();
 
@@ -75,24 +81,38 @@ public abstract class AbstractPostProcessor implements PostProcessor {
         getShadersProgram().updatePerInstanceUniforms(new RenderState<>(null, renderOutputData, null, 0));
 
         draw();
-        fbo.unbind();
 
         getShadersProgram().unbind();
     }
 
     @Override
     public final void resize(int width, int height) {
-        fbo.resize(width, height);
+        if (getFbo() == null) {
+            fbo = createFbo(width, height);
+        } else if (!getFbo().isSized(width, height)) {
+            getFbo().delete();
+            fbo = createFbo(width, height);
+        }
     }
 
     @Override
-    public final TextureObject getTexture() {
-        return getFbo().getAttachment(0);
+    public final ITexture getTexture() {
+        return getFbo().getAttachments().get(0).getTexture();
     }
 
+    @Override
+    public final void blitToFbo(Fbo fbo) {
+        getFbo().blitFbo(fbo);
+    }
+
+    @Override
+    public final void blitToScreen() {
+        getFbo().blitToScreen();
+    }
 
     @Override
     public final void cleanUp() {
+        getFbo().delete();
         getShadersProgram().delete();
     }
 }

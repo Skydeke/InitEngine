@@ -1,8 +1,7 @@
 package engine.rendering.instances.postprocessing.ssr;
 
-import engine.architecture.scene.SceneFbo;
 import engine.architecture.system.Pipeline;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 
 
 /**
@@ -19,8 +18,8 @@ public class SSR {
         ssrShader = new SSRShader();
     }
 
-    public void compute(TextureObject worldPos, TextureObject worldNorm, TextureObject ao) {
-        ssrShader.compute(worldPos, worldNorm, ao, SceneFbo.getInstance().getAttachment(0));
+    public void compute(ITexture worldPos, ITexture worldNorm, ITexture ao) {
+        ssrShader.compute(worldPos, worldNorm, ao, pipeline.getPbrFBO().getAttachments().get(3).getTexture());
     }
 
 }

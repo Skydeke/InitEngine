@@ -1,8 +1,9 @@
 package engine.architecture.models;
 
-import engine.fileLoaders.ImageLoader;
 import engine.utils.libraryBindings.maths.joml.Vector4f;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.textures.ImageLoader;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.*;
@@ -21,7 +22,7 @@ public class Material {
     private Vector4f emissiveColor;
     private Vector4f transparentColor;
 
-    private TextureObject diffuseTexture = TextureObject.emptyTexture();
+    private ITexture diffuseTexture = Texture.NONE;
     private boolean useDiffuseTex = false;
 
     private boolean cullBackface = true;
@@ -97,7 +98,7 @@ public class Material {
         if (diffuseTexture != null){
             useDiffuseTex = true;
         }else {
-            diffuseTexture = TextureObject.emptyTexture();
+            diffuseTexture = Texture.NONE;
         }
     }
 
@@ -107,7 +108,7 @@ public class Material {
         return new MaterialBuilder();
     }
 
-    private TextureObject getTexture(int aiTextureType, AIMaterial material, AIScene scene){
+    private ITexture getTexture(int aiTextureType, AIMaterial material, AIScene scene){
         AIString texturename = AIString.calloc();
         Assimp.aiGetMaterialTexture(material, aiTextureType, 0, texturename, (IntBuffer) null, null, null, null, null, null);
         String textPath = texturename.dataString();
@@ -149,7 +150,7 @@ public class Material {
         return transparentColor;
     }
 
-    public TextureObject getDiffuseTexture() {
+    public ITexture getDiffuseTexture() {
         return diffuseTexture;
     }
 

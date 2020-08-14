@@ -4,7 +4,7 @@ import engine.architecture.scene.light.Light;
 import engine.architecture.scene.light.LightManager;
 import engine.architecture.system.Config;
 import engine.rendering.Shader;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 import lombok.Getter;
 
 import static org.lwjgl.opengl.GL15.GL_READ_ONLY;
@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL30.*;
 public class PBRDeferredShader extends Shader {
 
     @Getter
-    public TextureObject targetTexture;
+    public ITexture targetTexture;
     private int numLights;
 
     public PBRDeferredShader() {
@@ -49,8 +49,8 @@ public class PBRDeferredShader extends Shader {
         }
     }
 
-    public void compute(TextureObject albedo, TextureObject position, TextureObject normal,
-                        TextureObject lightDepth, TextureObject ssao, TextureObject out) {
+    public void compute(ITexture albedo, ITexture position, ITexture normal,
+                        ITexture lightDepth, ITexture ssao, ITexture out) {
 
         bind();
 

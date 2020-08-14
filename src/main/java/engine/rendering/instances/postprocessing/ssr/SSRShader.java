@@ -3,7 +3,7 @@ package engine.rendering.instances.postprocessing.ssr;
 import engine.architecture.system.Config;
 import engine.rendering.Shader;
 import engine.utils.libraryBindings.maths.joml.Matrix4f;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 
 import static org.lwjgl.opengl.GL15.GL_READ_ONLY;
 import static org.lwjgl.opengl.GL15.GL_READ_WRITE;
@@ -27,8 +27,8 @@ public class SSRShader extends Shader {
     }
 
 
-    public void compute(TextureObject worldPos, TextureObject worldNorm,
-                        TextureObject ao, TextureObject out) {
+    public void compute(ITexture worldPos, ITexture worldNorm,
+                        ITexture ao, ITexture out) {
         bind();
 
         setUniform("resolution", boundContext.getResolution());

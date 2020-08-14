@@ -2,9 +2,9 @@ package engine.rendering.abstracted.postprocessing;
 
 import engine.rendering.RenderOutputData;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
-import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
+import engine.utils.libraryBindings.opengl.fbos.Fbo;
 import engine.utils.libraryBindings.opengl.objects.Vao;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import engine.utils.libraryBindings.opengl.utils.ModifiableList;
 
@@ -57,16 +57,16 @@ public class PostProcessing {
      * @param draw the fbo to draw to
      * @param read the fbo to read from
      */
-    public void processToFbo(FrameBufferObject draw, FrameBufferObject read) {
+    public void processToFbo(Fbo draw, Fbo read) {
         if (postProcessors.size() == 0) {
             read.blitFbo(draw);
         } else {
-            processToFbo(draw, read.getAttachment(0),
-                    read.getDepthAttachment());
+            processToFbo(draw, read.getAttachments().get(0).getTexture(),
+                    read.getDepthAttachment().getTexture());
         }
     }
 
-    public void processToFbo(FrameBufferObject draw, FrameBufferObject read, RenderOutputData renderOutputData) {
+    public void processToFbo(Fbo draw, Fbo read, RenderOutputData renderOutputData) {
         if (postProcessors.size() == 0) {
             read.blitFbo(draw);
         } else {
@@ -83,14 +83,14 @@ public class PostProcessing {
      * @param texture      the texture to process
      * @param depthTexture the depth texture use
      */
-    public void processToFbo(FrameBufferObject fbo, TextureObject texture, TextureObject depthTexture) {
+    public void processToFbo(Fbo fbo, ITexture texture, ITexture depthTexture) {
         process(texture, depthTexture);
         if (postProcessors.size() > 0) {
             postProcessors.get(postProcessors.size() - 1).blitToFbo(fbo);
         }
     }
 
-    public void processToFbo(FrameBufferObject fbo, RenderOutputData renderOutputData) {
+    public void processToFbo(Fbo fbo, RenderOutputData renderOutputData) {
         process(renderOutputData);
         if (postProcessors.size() > 0) {
             postProcessors.get(postProcessors.size() - 1).blitToFbo(fbo);
@@ -103,12 +103,12 @@ public class PostProcessing {
      *
      * @param fbo the fbo that contains the textures to process
      */
-    public void processToScreen(FrameBufferObject fbo) {
+    public void processToScreen(Fbo fbo) {
         if (postProcessors.size() == 0) {
             fbo.blitToScreen();
         } else {
-            processToScreen(fbo.getAttachment(0),
-                    fbo.getDepthAttachment());
+            processToScreen(fbo.getAttachments().get(0).getTexture(),
+                    fbo.getDepthAttachment().getTexture());
         }
     }
 
@@ -120,14 +120,14 @@ public class PostProcessing {
      * @param texture      the colour texture to process
      * @param depthTexture the depth texture to process
      */
-    public void processToScreen(TextureObject texture, TextureObject depthTexture) {
+    public void processToScreen(ITexture texture, ITexture depthTexture) {
         process(texture, depthTexture);
         if (postProcessors.size() > 0) {
             postProcessors.get(postProcessors.size() - 1).blitToScreen();
         }
     }
 
-    public void process(TextureObject texture, TextureObject depthTexture) {
+    public void process(ITexture texture, ITexture depthTexture) {
         boolean line = GlUtils.isPolygonLines();
         GlUtils.disableDepthTest(); // No depth test is required
         GlUtils.drawPolygonFill();  // The quad should be filled
@@ -151,7 +151,7 @@ public class PostProcessing {
         GlUtils.disableCulling();   // No culling is required
         Vao.bindIfNone();           // The quad should be drawn without a model
         // and vao cannot be bound to zero
-        TextureObject texture = renderOutputData.getColour();
+        ITexture texture = renderOutputData.getColour();
         for (PostProcessor postProcessor : postProcessors) {
             postProcessor.process(new RenderOutputData(texture,
                     renderOutputData.getNormal(), renderOutputData.getDepth()));
@@ -161,7 +161,7 @@ public class PostProcessing {
         if (line) GlUtils.drawPolygonLine();
     }
 
-    public TextureObject getOutput() {
+    public ITexture getOutput() {
         if (postProcessors.size() > 0) {
             return postProcessors.get(postProcessors.size() - 1).getTexture();
         } else {

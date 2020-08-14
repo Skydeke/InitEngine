@@ -5,13 +5,12 @@ in vec2 uv;
 
 // PANEL UNIFORMS
 uniform vec3 color;
-uniform sampler2D texture;
+uniform sampler2D textureSampler;
 uniform int isTexture;
 
 uniform ivec4 rounding;
 uniform ivec2 resolution;
 
-uniform int isDepth;
 const float zNear = 0.01, zFar = 100;
 
 float linearize_depth(float d)
@@ -72,13 +71,9 @@ void main(){
      }
 
     if(isTexture == 1){
-        vec2 tex = vec2(uv.x, 1 - uv.y);
-        if(isDepth == 1){
-            fragColor = vec4(vec3(linearize_depth(texture2D(texture, tex).r)),1.0);
-        } else {
-            fragColor = vec4(texture2D(texture, tex).rgb, 1);
-        }
-
+        fragColor = vec4(1, 0, 0, 1);
+        vec2 texCoords = vec2(uv.x, 1 - uv.y);
+        fragColor = vec4(texture(textureSampler, texCoords));
     } else fragColor = vec4(color, alpha);
 
     ivec2 coord = ivec2(uv.x * resolution.x, uv.y * resolution.y);

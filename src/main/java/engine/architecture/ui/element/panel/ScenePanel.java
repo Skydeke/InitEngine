@@ -1,7 +1,6 @@
 package engine.architecture.ui.element.panel;
 
 import engine.architecture.scene.SceneContext;
-import engine.architecture.scene.SceneFbo;
 import engine.architecture.system.AppContext;
 import engine.architecture.ui.constraints.CenterConstraint;
 import engine.architecture.ui.constraints.PercentageConstraint;
@@ -35,11 +34,10 @@ public class ScenePanel extends Panel {
         this.context = _context;
         context.setParent(this);
 
-        setImageBuffer(SceneFbo.getInstance().getAttachment(0), true);
-//        setImageBuffer(context.getPipeline().getPbrFBO().getAttachment(2), true);
-//        setImageBuffer(context.getPicking().getUUIDmap().getAttachment(0), true);
+        setImageBuffer(context.getPipeline().getPbrFBO().getAttachments().get(3).getTexture(), true);
+//        setImageBuffer(context.getPicking().getUUIDmap().getAttachments().get(0).getTexture(), true);
 
-        setImage(true);
+//        setImageBuffer(ImageLoader.loadTexture("images/black_marble/albedo.tga", false), false);
 
         onEvent(e -> {
 
@@ -61,7 +59,6 @@ public class ScenePanel extends Panel {
                     if (isFullDisplay) {
                         // unset fullscreen
                         setAlignType(LayoutType.RELATIVE_TO_PARENT);
-                        setConstraints(null);//Deactivate Constraints cause the ViewportLayout cant handle them.
                         ElementManager.instance().resetFocused();
                         AppContext.instance().resetRenderElement();
                         getParent().recalculateAbsolutePositions();
@@ -91,8 +88,8 @@ public class ScenePanel extends Panel {
     }
 
     private void screenShot() {
-        int WIDTH = SceneFbo.getInstance().getAttachment(0).getWidth();
-        int HEIGHT = SceneFbo.getInstance().getAttachment(0).getHeight();
+        int WIDTH = context.getPipeline().getPbrFBO().getWidth();
+        int HEIGHT = context.getPipeline().getPbrFBO().getHeight();
         //Creating an rbg array of total pixels
         int[] pixels = new int[WIDTH * HEIGHT];
         int bindex;

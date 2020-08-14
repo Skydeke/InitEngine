@@ -10,7 +10,7 @@ import engine.rendering.abstracted.Processable;
 import engine.utils.Color;
 import engine.utils.libraryBindings.maths.joml.Vector4i;
 import engine.utils.libraryBindings.opengl.shaders.*;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,14 +25,10 @@ public class Panel extends UIElement implements Processable {
     @Getter
     private boolean isBuffer = false;
     // defines color of panel in UI
-    @Setter
     @Getter
     private Color color;
     @Getter
-    private TextureObject imageBuffer;
-    @Setter
-    @Getter
-    private boolean isImage = false;
+    private Texture imageBuffer;
     @Getter
     @Setter
     private boolean scissor = true;
@@ -135,9 +131,9 @@ public class Panel extends UIElement implements Processable {
             }
         });
 
-        shadersProgram.addPerInstanceUniform(new UniformTextureProperty<>("texture", 0) {
+        shadersProgram.addPerInstanceUniform(new UniformTextureProperty<>("textureSampler", 0) {
             @Override
-            public TextureObject getUniformValue(RenderState<Panel> state) {
+            public Texture getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getImageBuffer();
             }
         });
@@ -145,12 +141,6 @@ public class Panel extends UIElement implements Processable {
             @Override
             public boolean getUniformValue(RenderState<Panel> state) {
                 return state.getInstance().getImageBuffer() != null;
-            }
-        });
-        shadersProgram.addPerInstanceUniform(new UniformBooleanProperty<>("isDepth") {
-            @Override
-            public boolean getUniformValue(RenderState<Panel> state) {
-                return state.getInstance().getImageBuffer() != null && state.getInstance().getImageBuffer().isDepth();
             }
         });
 
@@ -169,9 +159,8 @@ public class Panel extends UIElement implements Processable {
     }
 
 
-    public void setImageBuffer(TextureObject texture, boolean isFBOFlipped){
+    public void setImageBuffer(Texture texture, boolean isFBOFlipped){
         imageBuffer = texture;
-        isImage = true;
         isBuffer = isFBOFlipped;
     }
 
@@ -201,5 +190,9 @@ public class Panel extends UIElement implements Processable {
     @Override
     public Model getModel() {
         return model;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

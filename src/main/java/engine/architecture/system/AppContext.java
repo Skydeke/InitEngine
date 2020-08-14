@@ -95,6 +95,10 @@ public class AppContext {
         sceneViewport.get().getParent().recalculateAbsolutePositions();//One time Positioning
         sceneViewport.get().setConstraints(null);
 
+//        Panel p = new Panel();
+//        p.setColor(new Color(0, 255, 0));
+//        p.setBox(new Box(0, 0, 1, 1));
+//        root.addChild(p);
         root.recalculateAbsolutePositions();
     }
 

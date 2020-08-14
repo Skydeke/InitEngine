@@ -1,12 +1,12 @@
 package engine.rendering.abstracted.postprocessing.effects;
 
 import engine.architecture.scene.node.Node;
-import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.fbos.Fbo;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 
 public abstract class ExtraRenderEffect extends Effect {
 
-    protected final FrameBufferObject fbo;
+    protected final Fbo fbo;
 
     protected final int width;
     protected final int height;
@@ -15,14 +15,14 @@ public abstract class ExtraRenderEffect extends Effect {
         super(group);
         this.width = width;
         this.height = height;
-        this.fbo = new FrameBufferObject();
+        this.fbo = Fbo.create(width, height);
         setEnabled(true);
     }
 
-    protected abstract FrameBufferObject createFbo();
+    protected abstract Fbo createFbo();
 
-    public TextureObject getTexture() {
-        return fbo.getAttachment(0);
+    public ITexture getTexture() {
+        return fbo.getAttachments().get(0).getTexture();
     }
 
     @Override

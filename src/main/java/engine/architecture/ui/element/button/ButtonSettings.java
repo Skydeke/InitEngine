@@ -2,7 +2,7 @@ package engine.architecture.ui.element.button;
 
 import engine.utils.Color;
 import engine.utils.libraryBindings.maths.joml.Vector4i;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +24,7 @@ public class ButtonSettings {
     @Setter
     private Vector4i rounding = new Vector4i(5);
     @Getter
-    private Optional<TextureObject> buttonTexture = Optional.empty();
+    private Optional<Texture> buttonTexture = Optional.empty();
 
     public ButtonSettings(ButtonSettings copy) {
         setClickColor(copy.getClickColor());
@@ -39,7 +39,7 @@ public class ButtonSettings {
     public ButtonSettings() {
     }
 
-    public void setButtonTexture(TextureObject tex) {
+    public void setButtonTexture(Texture tex) {
         this.buttonTexture = Optional.of(tex);
     }
 

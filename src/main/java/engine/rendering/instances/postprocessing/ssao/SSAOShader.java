@@ -4,7 +4,7 @@ import engine.architecture.system.Config;
 import engine.rendering.Shader;
 import engine.utils.libraryBindings.maths.joml.Matrix4f;
 import engine.utils.libraryBindings.maths.joml.Vector3f;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class SSAOShader extends Shader {
     }
 
 
-    void compute(TextureObject worldPos, TextureObject normal, TextureObject target) {
+    void compute(ITexture worldPos, ITexture normal, ITexture target) {
 
         bind();
 

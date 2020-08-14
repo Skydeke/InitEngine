@@ -1,11 +1,11 @@
 package engine.architecture.system;
 
 import engine.architecture.ui.element.layout.Box;
-import engine.fileLoaders.ImageLoader;
 import engine.utils.libraryBindings.maths.joml.Vector2d;
 import engine.utils.libraryBindings.maths.joml.Vector2f;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
 import engine.utils.libraryBindings.maths.joml.Vector4i;
+import engine.utils.libraryBindings.opengl.textures.ImageLoader;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
 import lombok.Setter;

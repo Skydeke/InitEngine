@@ -6,7 +6,7 @@ import engine.architecture.scene.node.Node;
 import engine.architecture.system.Window;
 import engine.utils.Color;
 import engine.utils.libraryBindings.maths.joml.*;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 import engine.utils.libraryBindings.opengl.utils.Utils;
 import org.lwjgl.system.MemoryStack;
 
@@ -362,7 +362,7 @@ public class Shader {
      *
      * @param index of texture
      */
-    public void activeTexture(TextureObject texture, int index) {
+    public void activeTexture(ITexture texture, int index) {
         glActiveTexture(GL_TEXTURE0 + index);
         texture.bind(index);
     }
@@ -374,7 +374,7 @@ public class Shader {
     public void updateUniforms(Node moduleNode) {
     }
 
-    public void updateUniforms(TextureObject textureObject) {
+    public void updateUniforms(ITexture textureObject) {
     }
 
     public void updateUniforms(Light light) {
@@ -383,8 +383,8 @@ public class Shader {
     public void updateUniforms(float... floats) {
     }
 
-    void compute(TextureObject scene,
-                 TextureObject overlay, TextureObject dest) {
+    void compute(ITexture scene,
+                 ITexture overlay, ITexture dest) {
     }
 
 

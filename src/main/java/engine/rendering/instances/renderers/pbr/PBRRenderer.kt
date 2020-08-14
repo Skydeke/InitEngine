@@ -8,7 +8,7 @@ import engine.utils.libraryBindings.maths.joml.FrustumIntersection
 import engine.utils.libraryBindings.maths.joml.Vector3f
 import engine.utils.libraryBindings.maths.utils.Matrix4
 import engine.utils.libraryBindings.opengl.shaders.*
-import engine.utils.libraryBindings.opengl.textures.TextureObject
+import engine.utils.libraryBindings.opengl.textures.ITexture
 import engine.utils.libraryBindings.opengl.utils.GlUtils
 
 internal class PBRRenderer : Renderer3D<PBRModel>() {
@@ -26,7 +26,7 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
             }
         })
         shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<PBRModel>("albedoMap", 0) {
-            override fun getUniformValue(state: RenderState<PBRModel>): TextureObject {
+            override fun getUniformValue(state: RenderState<PBRModel>): ITexture? {
                 return state.instance.material.getAlbedoMap()
             }
         })
@@ -43,7 +43,7 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
             }
         })
         shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<PBRModel>("normalMap", 1) {
-            override fun getUniformValue(state: RenderState<PBRModel>): TextureObject {
+            override fun getUniformValue(state: RenderState<PBRModel>): ITexture? {
                 return state.instance.material.getNormalMap()
             }
         })
@@ -55,7 +55,7 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
             }
         })
         shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<PBRModel>("roughnessMap", 2) {
-            override fun getUniformValue(state: RenderState<PBRModel>): TextureObject {
+            override fun getUniformValue(state: RenderState<PBRModel>): ITexture? {
                 return state.instance.material.getRoughnessMap()
             }
         })
@@ -72,7 +72,7 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
             }
         })
         shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<PBRModel>("metalMap", 3) {
-            override fun getUniformValue(state: RenderState<PBRModel>): TextureObject {
+            override fun getUniformValue(state: RenderState<PBRModel>): ITexture? {
                 return state.instance.material.getMetalMap()
             }
         })

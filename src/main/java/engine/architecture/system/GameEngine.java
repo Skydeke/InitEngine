@@ -58,7 +58,7 @@ public class GameEngine implements Runnable {
             long b = System.nanoTime();
 
 //            System.out.print("\u001B[32m" + "\r frametime: " + ((b-a) / 1e+9)+ "\u001B[0m");
-//            System.out.print("\u001B[32m" + "\r fps: " + FRAMES_PER_SECOND + "\u001B[0m");
+            System.out.print("\u001B[32m" + "\r fps: " + FRAMES_PER_SECOND + "\u001B[0m");
         }
         game.cleanUp();
     }

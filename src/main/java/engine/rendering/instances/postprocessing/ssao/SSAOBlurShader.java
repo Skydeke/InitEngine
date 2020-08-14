@@ -1,7 +1,7 @@
 package engine.rendering.instances.postprocessing.ssao;
 
 import engine.rendering.Shader;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 
 import static org.lwjgl.opengl.GL15.GL_READ_ONLY;
 import static org.lwjgl.opengl.GL15.GL_WRITE_ONLY;
@@ -18,7 +18,7 @@ public class SSAOBlurShader extends Shader {
         addUniform("resolution");
     }
 
-    void compute(TextureObject preBlur, TextureObject target) {
+    void compute(ITexture preBlur, ITexture target) {
 
         bind();
         setUniform("resolution", boundContext.getResolution());

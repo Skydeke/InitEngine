@@ -1,15 +1,19 @@
 package engine.rendering.instances.renderers.pbr;
 
-import engine.fileLoaders.ImageLoader;
 import engine.utils.libraryBindings.maths.joml.Vector3f;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.textures.ImageLoader;
+import engine.utils.libraryBindings.opengl.textures.Texture;
+import engine.utils.libraryBindings.opengl.textures.parameters.MagFilterParameter;
+import engine.utils.libraryBindings.opengl.textures.parameters.MinFilterParameter;
+import engine.utils.libraryBindings.opengl.textures.parameters.WrapParameter;
 
 public class PBRMaterial {
 
-    TextureObject albedoMap = TextureObject.emptyTexture();
-    TextureObject normalMap = TextureObject.emptyTexture();
-    TextureObject roughnessMap = TextureObject.emptyTexture();
-    TextureObject metalMap = TextureObject.emptyTexture();
+    ITexture albedoMap = Texture.NONE;
+    ITexture normalMap = Texture.NONE;
+    ITexture roughnessMap = Texture.NONE;
+    ITexture metalMap = Texture.NONE;
     float IOR;
     private float metalConst, roughnessConst;
     private Vector3f albedoConst = new Vector3f();
@@ -36,24 +40,32 @@ public class PBRMaterial {
                        String roughnessFile, String metalFile, boolean srgb) {
         super();
         try {
-            TextureObject albedo = ImageLoader.loadTexture(
-                    texturePath + albedoFile, srgb)
-                    .trilinearFilter().wrap();
+            Texture albedo = ImageLoader.loadTexture(texturePath + albedoFile, srgb);
+            albedo.getFunctions().magFilter(MagFilterParameter.LINEAR);
+            albedo.getFunctions().minFilter(MinFilterParameter.LINEAR_MIPMAP_LINEAR);
+            albedo.getFunctions().wrapS(WrapParameter.REPEAT);
+            albedo.getFunctions().wrapT(WrapParameter.REPEAT);
             setAlbedoMap(albedo);
 
-            TextureObject normal = ImageLoader.loadTexture(
-                    texturePath + normalFile, srgb)
-                    .trilinearFilter().wrap();
+            Texture normal = ImageLoader.loadTexture(texturePath + normalFile, srgb);
+            albedo.getFunctions().magFilter(MagFilterParameter.LINEAR);
+            albedo.getFunctions().minFilter(MinFilterParameter.LINEAR_MIPMAP_LINEAR);
+            albedo.getFunctions().wrapS(WrapParameter.REPEAT);
+            albedo.getFunctions().wrapT(WrapParameter.REPEAT);
             setNormalMap(normal);
 
-            TextureObject roughness = ImageLoader.loadTexture(
-                    texturePath + roughnessFile, srgb)
-                    .trilinearFilter().wrap();
+            Texture roughness = ImageLoader.loadTexture(texturePath + roughnessFile, srgb);
+            albedo.getFunctions().magFilter(MagFilterParameter.LINEAR);
+            albedo.getFunctions().minFilter(MinFilterParameter.LINEAR_MIPMAP_LINEAR);
+            albedo.getFunctions().wrapS(WrapParameter.REPEAT);
+            albedo.getFunctions().wrapT(WrapParameter.REPEAT);
             setRoughnessMap(roughness);
 
-            TextureObject metal = ImageLoader.loadTexture(
-                    texturePath + metalFile, srgb)
-                    .trilinearFilter().wrap();
+            Texture metal = ImageLoader.loadTexture(texturePath + metalFile, srgb);
+            albedo.getFunctions().magFilter(MagFilterParameter.LINEAR);
+            albedo.getFunctions().minFilter(MinFilterParameter.LINEAR_MIPMAP_LINEAR);
+            albedo.getFunctions().wrapS(WrapParameter.REPEAT);
+            albedo.getFunctions().wrapT(WrapParameter.REPEAT);
             setMetalMap(metal);
 
             useAllMaps(true);
@@ -114,35 +126,35 @@ public class PBRMaterial {
     }
 
 
-    public TextureObject getAlbedoMap() {
+    public ITexture getAlbedoMap() {
         return albedoMap;
     }
 
-    public void setAlbedoMap(TextureObject albedoMap) {
+    public void setAlbedoMap(ITexture albedoMap) {
         this.albedoMap = albedoMap;
     }
 
-    public TextureObject getNormalMap() {
+    public ITexture getNormalMap() {
         return normalMap;
     }
 
-    public void setNormalMap(TextureObject normalMap) {
+    public void setNormalMap(ITexture normalMap) {
         this.normalMap = normalMap;
     }
 
-    public TextureObject getRoughnessMap() {
+    public ITexture getRoughnessMap() {
         return roughnessMap;
     }
 
-    public void setRoughnessMap(TextureObject roughnessMap) {
+    public void setRoughnessMap(ITexture roughnessMap) {
         this.roughnessMap = roughnessMap;
     }
 
-    public TextureObject getMetalMap() {
+    public ITexture getMetalMap() {
         return metalMap;
     }
 
-    public void setMetalMap(TextureObject metalMap) {
+    public void setMetalMap(ITexture metalMap) {
         this.metalMap = metalMap;
     }
 

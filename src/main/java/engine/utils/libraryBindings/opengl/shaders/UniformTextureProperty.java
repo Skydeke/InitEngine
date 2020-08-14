@@ -2,7 +2,7 @@ package engine.utils.libraryBindings.opengl.shaders;
 
 import engine.rendering.abstracted.Processable;
 import engine.utils.libraryBindings.opengl.textures.ITexture;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import org.lwjgl.opengl.GL20;
 
 public abstract class UniformTextureProperty<T extends Processable> implements UniformProperty<T> {
@@ -18,7 +18,7 @@ public abstract class UniformTextureProperty<T extends Processable> implements U
     @Override
     public void load(RenderState<T> state) {
         if (valueAvailable()) {
-            TextureObject.bind(getUniformValue(state), unit);
+            Texture.bind(getUniformValue(state), unit);
         }
     }
 

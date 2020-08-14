@@ -24,4 +24,5 @@ public interface ITexture {
      */
     void delete();
 
+    int getId();
 }

@@ -1,7 +1,7 @@
 package engine.rendering.abstracted.postprocessing;
 
 import engine.rendering.RenderOutputData;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +42,7 @@ public abstract class ComposedPostProcessor implements PostProcessor {
     }
 
     @Override
-    public TextureObject getTexture() {
+    public ITexture getTexture() {
         return getLast().getTexture();
     }
 

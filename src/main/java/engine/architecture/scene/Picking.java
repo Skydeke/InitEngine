@@ -4,10 +4,12 @@ import engine.architecture.scene.node.Node;
 import engine.architecture.system.Window;
 import engine.rendering.instances.renderers.UUIDRenderer;
 import engine.utils.libraryBindings.maths.joml.Vector3f;
+import engine.utils.libraryBindings.opengl.constants.DataType;
 import engine.utils.libraryBindings.opengl.constants.FormatType;
-import engine.utils.libraryBindings.opengl.fbos.FrameBufferObject;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
-import engine.utils.libraryBindings.opengl.textures.TextureTarget;
+import engine.utils.libraryBindings.opengl.fbos.Fbo;
+import engine.utils.libraryBindings.opengl.fbos.FboTarget;
+import engine.utils.libraryBindings.opengl.fbos.attachment.TextureAttachment;
+import engine.utils.libraryBindings.opengl.textures.TextureConfigs;
 import lombok.Getter;
 
 import java.nio.ByteBuffer;
@@ -18,21 +20,16 @@ public class Picking {
 
     private SceneContext context;
     @Getter
-    private FrameBufferObject UUIDmap;
+    private Fbo UUIDmap;
 
     public Picking(SceneContext context) {
         this.context = context;
-        this.UUIDmap = new FrameBufferObject();
-        UUIDmap.addAttatchments(new TextureObject(
-                        TextureTarget.TEXTURE_2D, Window.instance().getWidth(),
-                        Window.instance().getHeight())
-                        .allocateImage2D(FormatType.RGBA16F, FormatType.RGBA)
-                        .nofilter(),
-                new TextureObject(
-                        TextureTarget.TEXTURE_2D, Window.instance().getWidth(),
-                        Window.instance().getHeight())
-                        .allocateDepth()
-                        .bilinearFilter());
+        this.UUIDmap = Fbo.create(context.getResolution().x, context.getResolution().y);
+        UUIDmap.addAttachment(TextureAttachment.ofColour(0,
+                new TextureConfigs(FormatType.RGBA16F, FormatType.RGBA, DataType.FLOAT)));
+        UUIDmap.addAttachment(TextureAttachment.ofDepth(
+                new TextureConfigs(FormatType.DEPTH_COMPONENT24, FormatType.DEPTH_COMPONENT, DataType.FLOAT)));
+        UUIDmap.unbind();
     }
 
     public static Vector3f getUUIDColor(int UUID) {
@@ -46,7 +43,7 @@ public class Picking {
 
     public Node pick(int x, int y) {
 
-        UUIDmap.bind();
+        UUIDmap.bind(FboTarget.DRAW_FRAMEBUFFER);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         Window.instance().resizeViewport(context.getResolution());
         UUIDRenderer.getInstance().render(context, e -> !e.isSelected());
@@ -55,7 +52,7 @@ public class Picking {
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glReadPixels(x, y, 1, 1,
                 GL_RGBA, GL_UNSIGNED_BYTE, rgb);
-        UUIDmap.unbind();
+        UUIDmap.unbind(FboTarget.DRAW_FRAMEBUFFER);
 
         int r, g, b;
         r = rgb.get(0);

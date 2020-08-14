@@ -8,7 +8,7 @@ import engine.utils.libraryBindings.maths.joml.FrustumIntersection
 import engine.utils.libraryBindings.maths.joml.Vector3f
 import engine.utils.libraryBindings.maths.utils.Matrix4
 import engine.utils.libraryBindings.opengl.shaders.*
-import engine.utils.libraryBindings.opengl.textures.TextureObject
+import engine.utils.libraryBindings.opengl.textures.ITexture
 
 internal class EntityRenderer : Renderer3D<Entity>() {
 
@@ -28,7 +28,7 @@ internal class EntityRenderer : Renderer3D<Entity>() {
             }
         })
         shadersProgram.addPerInstanceUniform(object : UniformTextureProperty<Entity>("albedoTex", 0) {
-            override fun getUniformValue(state: RenderState<Entity>): TextureObject {
+            override fun getUniformValue(state: RenderState<Entity>): ITexture? {
                 return state.mesh.material.diffuseTexture
             }
         })

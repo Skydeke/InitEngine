@@ -86,9 +86,9 @@ public class SceneContext extends UIElement {
     public void init() {
         this.camera = new Camera(this);
         this.scene = new Scenegraph(camera);
+        this.resolution = new Vector2i(0, 0);
         this.picking = new Picking(this);
         this.selectionManager = new SelectionManager();
-        this.resolution = new Vector2i(0, 0);
         onEvent(e -> {
             if (!(e instanceof MouseMoveEvent))
                 camera.handle(e);

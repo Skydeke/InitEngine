@@ -1,9 +1,13 @@
 package engine.rendering.instances.postprocessing.ssao;
 
 import engine.architecture.system.Pipeline;
+import engine.utils.libraryBindings.opengl.constants.DataType;
 import engine.utils.libraryBindings.opengl.constants.FormatType;
-import engine.utils.libraryBindings.opengl.textures.TextureObject;
-import engine.utils.libraryBindings.opengl.textures.TextureTarget;
+import engine.utils.libraryBindings.opengl.fbos.attachment.TextureAttachment;
+import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.textures.TextureConfigs;
+import engine.utils.libraryBindings.opengl.textures.parameters.MagFilterParameter;
+import engine.utils.libraryBindings.opengl.textures.parameters.MinFilterParameter;
 import lombok.Getter;
 
 /**
@@ -21,8 +25,8 @@ import lombok.Getter;
 public class SSAO {
 
     @Getter
-    private TextureObject targetTexture;
-    private TextureObject preBlur;
+    private TextureAttachment targetTexture;
+    private TextureAttachment preBlur;
 
     private SSAOBlurShader ssaoBlurShader;
     private SSAOShader ssaoShader;
@@ -30,14 +34,16 @@ public class SSAO {
     private Pipeline pipeline;
 
     public SSAO(Pipeline pipeline) {
-        this.preBlur = new TextureObject(
-                TextureTarget.TEXTURE_2D, pipeline.getResolution())
-                .allocateImage2D(FormatType.R16F, FormatType.RED)
-                .bilinearFilter();
-        this.targetTexture = new TextureObject(
-                TextureTarget.TEXTURE_2D, pipeline.getResolution())
-                .allocateImage2D(FormatType.R16F, FormatType.RED)
-                .bilinearFilter();
+        TextureConfigs preBlurConfigs = new TextureConfigs(FormatType.R16F, FormatType.RED, DataType.FLOAT);
+        preBlurConfigs.magFilter = MagFilterParameter.LINEAR;
+        preBlurConfigs.minFilter = MinFilterParameter.LINEAR;
+        preBlur = TextureAttachment.ofColour(0, preBlurConfigs);
+        preBlur.resize(pipeline.getResolution().x, pipeline.getResolution().y);
+        TextureConfigs targetConfigs = new TextureConfigs(FormatType.R16F, FormatType.RED, DataType.FLOAT);
+        preBlurConfigs.magFilter = MagFilterParameter.LINEAR;
+        preBlurConfigs.minFilter = MinFilterParameter.LINEAR;
+        targetTexture = TextureAttachment.ofColour(0, targetConfigs);
+        targetTexture.resize(pipeline.getResolution().x, pipeline.getResolution().y);
         this.ssaoBlurShader = new SSAOBlurShader();
         this.ssaoShader = new SSAOShader();
         this.pipeline = pipeline;
@@ -51,13 +57,13 @@ public class SSAO {
      * @param worldPos World position RGBA32F
      * @param normal   World normal RGBA32F
      */
-    public void compute(TextureObject worldPos, TextureObject normal) {
-        ssaoShader.compute(worldPos, normal, preBlur);
-        ssaoBlurShader.compute(preBlur, targetTexture);
+    public void compute(ITexture worldPos, ITexture normal) {
+        ssaoShader.compute(worldPos, normal, preBlur.getTexture());
+        ssaoBlurShader.compute(preBlur.getTexture(), targetTexture.getTexture());
     }
 
     public void resize() {
-        targetTexture.resize(pipeline.getResolution());
-        preBlur.resize(pipeline.getResolution());
+        targetTexture.resize(pipeline.getResolution().x, pipeline.getResolution().y);
+        preBlur.resize(pipeline.getResolution().x, pipeline.getResolution().y);
     }
 }
