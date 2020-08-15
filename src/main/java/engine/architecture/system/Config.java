@@ -106,4 +106,104 @@ public class Config {
     public Vector2i getShadowBufferSize() {
         return new Vector2i(getShadowBufferWidth(), getShadowBufferHeight());
     }
+
+    public static Config getInstance() {
+        return instance;
+    }
+
+    public boolean isShadows() {
+        return shadows;
+    }
+
+    public int getWindowWidth() {
+        return windowWidth;
+    }
+
+    public int getWindowHeight() {
+        return windowHeight;
+    }
+
+    public String getWindowName() {
+        return windowName;
+    }
+
+    public boolean isVsync() {
+        return vsync;
+    }
+
+    public int getMultisamples() {
+        return multisamples;
+    }
+
+    public String getRenderEngine() {
+        return renderEngine;
+    }
+
+    public int getNumLights() {
+        return numLights;
+    }
+
+    public int getShadowBufferWidth() {
+        return shadowBufferWidth;
+    }
+
+    public int getShadowBufferHeight() {
+        return shadowBufferHeight;
+    }
+
+    public boolean isSsao() {
+        return ssao;
+    }
+
+    public float getSsaoRadius() {
+        return ssaoRadius;
+    }
+
+    public int getSsaoSamples() {
+        return ssaoSamples;
+    }
+
+    public float getSsaoPower() {
+        return ssaoPower;
+    }
+
+    public boolean isSsr() {
+        return ssr;
+    }
+
+    public int getSsrRaymarchSteps() {
+        return ssrRaymarchSteps;
+    }
+
+    public int getSsrBinarySearchSteps() {
+        return ssrBinarySearchSteps;
+    }
+
+    public float getSsrRayStepLen() {
+        return ssrRayStepLen;
+    }
+
+    public float getSsrFalloff() {
+        return ssrFalloff;
+    }
+
+    public int getSsrSamples() {
+        return ssrSamples;
+    }
+
+    public boolean isDebugLayer() {
+        return debugLayer;
+    }
+
+    public boolean isWireframe() {
+        return isWireframe;
+    }
+
+    public Vector3f getWireframeColor() {
+        return wireframeColor;
+    }
+
+    public float getAmbientLight() {
+        return ambientLight;
+    }
 }

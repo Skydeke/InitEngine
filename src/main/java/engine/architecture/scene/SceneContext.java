@@ -34,7 +34,7 @@ public class SceneContext extends UIElement {
     @Getter
     private SelectionManager selectionManager;
     @Getter
-    private Vector2i resolution;
+    public Vector2i resolution;
 
     public SceneContext() {
         super();

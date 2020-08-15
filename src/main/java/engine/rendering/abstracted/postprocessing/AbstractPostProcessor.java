@@ -1,5 +1,6 @@
 package engine.rendering.abstracted.postprocessing;
 
+import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
 import engine.rendering.RenderOutputData;
 import engine.utils.libraryBindings.opengl.constants.DataType;
@@ -11,7 +12,10 @@ import engine.utils.libraryBindings.opengl.fbos.attachment.TextureAttachment;
 import engine.utils.libraryBindings.opengl.shaders.RenderState;
 import engine.utils.libraryBindings.opengl.shaders.ShadersProgram;
 import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import engine.utils.libraryBindings.opengl.textures.TextureConfigs;
+import engine.utils.libraryBindings.opengl.textures.parameters.MagFilterParameter;
+import engine.utils.libraryBindings.opengl.textures.parameters.MinFilterParameter;
 import engine.utils.libraryBindings.opengl.utils.GlBuffer;
 import engine.utils.libraryBindings.opengl.utils.GlRendering;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
@@ -22,7 +26,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
     private Fbo fbo;
 
     public AbstractPostProcessor(String fragFile) throws Exception {
-        this("/engine/postprocessing/simpleVertex.glsl", fragFile);
+        this("/shaders/postprocessing/simpleVertex.glsl", fragFile);
     }
 
     public AbstractPostProcessor(String vertFile, String fragFile) throws Exception {
@@ -38,8 +42,11 @@ public abstract class AbstractPostProcessor implements PostProcessor {
      */
     protected Fbo createFbo(int width, int height) {
         final Fbo fbo = Fbo.create(width, height);
-        fbo.addAttachment(TextureAttachment.ofColour(0, new TextureConfigs(
-                FormatType.RGB8, FormatType.RGB, DataType.U_BYTE)));
+        TextureConfigs fboConfigs = new TextureConfigs(FormatType.RGBA8, FormatType.RGBA, DataType.U_BYTE);
+        fboConfigs.minFilter = MinFilterParameter.LINEAR;
+        fboConfigs.magFilter = MagFilterParameter.LINEAR;
+        fbo.addAttachment(TextureAttachment.ofColour(0, fboConfigs));
+        fbo.unbind();
         return fbo;
     }
 
@@ -53,7 +60,8 @@ public abstract class AbstractPostProcessor implements PostProcessor {
      * @return the fbo
      */
     protected final Fbo getFbo() {
-        return fbo == null ? (fbo = createFbo(Window.instance().getWidth(), Window.instance().getHeight())) : fbo;
+        return fbo == null ? (fbo = createFbo(AppContext.instance().getSceneContext().getResolution().x,
+                AppContext.instance().getSceneContext().getResolution().y)) : fbo;
     }
 
     /**
@@ -73,7 +81,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
     public void process(RenderOutputData renderOutputData) {
         beforeProcess(renderOutputData);
 
-        fbo.bind(FboTarget.DRAW_FRAMEBUFFER);
+        getFbo().bind(FboTarget.DRAW_FRAMEBUFFER);
         GlUtils.clear(GlBuffer.COLOUR);
         getShadersProgram().bind();
 
@@ -83,7 +91,9 @@ public abstract class AbstractPostProcessor implements PostProcessor {
         draw();
 
         getShadersProgram().unbind();
+        getFbo().unbind(FboTarget.DRAW_FRAMEBUFFER);
     }
+
 
     @Override
     public final void resize(int width, int height) {
@@ -96,7 +106,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
     }
 
     @Override
-    public final ITexture getTexture() {
+    public final Texture getTexture() {
         return getFbo().getAttachments().get(0).getTexture();
     }
 
@@ -106,7 +116,7 @@ public abstract class AbstractPostProcessor implements PostProcessor {
     }
 
     @Override
-    public final void blitToScreen() {
+    public final void blitToScene() {
         getFbo().blitToScene();
     }
 

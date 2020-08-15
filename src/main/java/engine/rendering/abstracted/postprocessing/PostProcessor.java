@@ -3,6 +3,7 @@ package engine.rendering.abstracted.postprocessing;
 import engine.rendering.RenderOutputData;
 import engine.utils.libraryBindings.opengl.fbos.Fbo;
 import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 
 public interface PostProcessor {
 
@@ -18,7 +19,7 @@ public interface PostProcessor {
      *
      * @return the processed colour texture
      */
-    ITexture getTexture();
+    Texture getTexture();
 
     /**
      * Resize the fbo, should be called every
@@ -36,5 +37,5 @@ public interface PostProcessor {
 
     void blitToFbo(Fbo fbo);
 
-    void blitToScreen();
+    void blitToScene();
 }

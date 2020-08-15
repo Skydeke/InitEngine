@@ -12,7 +12,9 @@ import engine.architecture.system.SimpleApplication;
 import engine.architecture.system.Window;
 import engine.architecture.ui.event.InputManager;
 import engine.fileLoaders.ModelLoader;
+import engine.rendering.instances.postprocessing.contrast.Contrast;
 import engine.rendering.instances.camera.FlyCamera;
+import engine.rendering.instances.postprocessing.ssr.SSRP;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
@@ -43,6 +45,9 @@ public class Game extends SimpleApplication {
     public void onInit(Window window, AppContext renderer) throws Exception {
         sceneRoot = new Node();
         lights = new Node();
+
+        renderer.getSceneContext().getPipeline().getPostProcessing().add(new Contrast(1.4f));
+//        renderer.getSceneContext().getPipeline().getPostProcessing().add(new SSRP());
 
 
         Model cube = ModelLoader.load("/models/cube.gltf");

@@ -7,7 +7,8 @@ import engine.utils.libraryBindings.opengl.textures.ITexture
 data class RenderOutputData(
     val colour: ITexture,
     val normal: ITexture,
-    val depth: ITexture
+    val depth: ITexture,
+    val position: ITexture
 ) : Processable {
     override fun process() {
     }

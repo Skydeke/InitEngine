@@ -10,8 +10,10 @@ import engine.architecture.ui.element.layout.LayoutType;
 import engine.architecture.ui.event.InputManager;
 import engine.architecture.ui.event.KeyboardEvent;
 import engine.architecture.ui.event.ResizeEvent;
+import engine.rendering.abstracted.postprocessing.AbstractPostProcessor;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
 import engine.utils.libraryBindings.opengl.fbos.SceneFbo;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -35,8 +37,8 @@ public class ScenePanel extends Panel {
         this.context = _context;
         context.setParent(this);
 
-//        setImageBuffer(context.getPipeline().getPbrFBO().getAttachments().get(3).getTexture(), true);
         setImageBuffer(SceneFbo.getInstance().getAttachments().get(0).getTexture(), true);
+//        setImageBuffer((Texture) context.getPipeline().getPostProcessing().getOutput(), true);
 //        setImageBuffer(context.getPicking().getUUIDmap().getAttachments().get(0).getTexture(), true);
 
 //        setImageBuffer(ImageLoader.loadTexture("images/black_marble/albedo.tga", false), false);

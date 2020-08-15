@@ -12,13 +12,14 @@ public class RenderState<T extends Processable> {
     private final T instance;
     private final Camera camera;
     private final int instanceMeshIdx;
-    private final Mesh mesh;
+    private Mesh mesh = null;
 
     public RenderState(Renderer<T> renderer, T instance, Camera camera, int instanceMeshIdx) {
         this.renderer = renderer;
         this.instance = instance;
         this.camera = camera;
         this.instanceMeshIdx = instanceMeshIdx;
+        if (instance.getModel() != null)
         this.mesh = instance.getModel().getMeshes()[instanceMeshIdx];
     }
 

@@ -97,36 +97,6 @@ public class PostProcessing {
         }
     }
 
-    /**
-     * Processes a texture with all the post processors
-     * received earlier and displays the result to the screen
-     *
-     * @param fbo the fbo that contains the textures to process
-     */
-    public void processToScreen(Fbo fbo) {
-        if (postProcessors.size() == 0) {
-            fbo.blitToScene();
-        } else {
-            processToScreen(fbo.getAttachments().get(0).getTexture(),
-                    fbo.getDepthAttachment().getTexture());
-        }
-    }
-
-
-    /**
-     * Processes a texture with all the post processors
-     * received earlier and displays the result to the screen
-     *
-     * @param texture      the colour texture to process
-     * @param depthTexture the depth texture to process
-     */
-    public void processToScreen(ITexture texture, ITexture depthTexture) {
-        process(texture, depthTexture);
-        if (postProcessors.size() > 0) {
-            postProcessors.get(postProcessors.size() - 1).blitToScreen();
-        }
-    }
-
     public void process(ITexture texture, ITexture depthTexture) {
         boolean line = GlUtils.isPolygonLines();
         GlUtils.disableDepthTest(); // No depth test is required
@@ -136,7 +106,7 @@ public class PostProcessing {
         Vao.bindIfNone();           // The quad should be drawn without a model
         // and vao cannot be bound to zero
         for (PostProcessor postProcessor : postProcessors) {
-            postProcessor.process(new RenderOutputData(texture, null, depthTexture));
+            postProcessor.process(new RenderOutputData(texture, null, depthTexture, null));
             texture = postProcessor.getTexture();
         }
 
@@ -154,7 +124,7 @@ public class PostProcessing {
         ITexture texture = renderOutputData.getColour();
         for (PostProcessor postProcessor : postProcessors) {
             postProcessor.process(new RenderOutputData(texture,
-                    renderOutputData.getNormal(), renderOutputData.getDepth()));
+                    renderOutputData.getNormal(), renderOutputData.getDepth(), renderOutputData.getPosition()));
             texture = postProcessor.getTexture();
         }
 
