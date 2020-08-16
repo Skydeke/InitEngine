@@ -1,13 +1,13 @@
 package engine.rendering.abstracted.postprocessing;
 
 import engine.rendering.RenderOutputData;
-import engine.utils.libraryBindings.opengl.textures.ITexture;
+import engine.utils.libraryBindings.opengl.fbos.Fbo;
 import engine.utils.libraryBindings.opengl.textures.Texture;
 
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class ComposedPostProcessor implements PostProcessor {
+public class ComposedPostProcessor implements PostProcessor {
 
     private final List<PostProcessor> postProcessors;
 
@@ -59,5 +59,15 @@ public abstract class ComposedPostProcessor implements PostProcessor {
         for (PostProcessor postProcessor : postProcessors) {
             postProcessor.cleanUp();
         }
+    }
+
+    @Override
+    public void blitToFbo(Fbo fbo) {
+        getLast().blitToFbo(fbo);
+    }
+
+    @Override
+    public void blitToScene() {
+        getLast().blitToScene();
     }
 }
