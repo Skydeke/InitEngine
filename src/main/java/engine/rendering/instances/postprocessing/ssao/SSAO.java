@@ -25,7 +25,7 @@ import lombok.Getter;
 public class SSAO {
 
     @Getter
-    private TextureAttachment targetTexture;
+    public TextureAttachment targetTexture;
     private TextureAttachment preBlur;
 
     private SSAOBlurShader ssaoBlurShader;

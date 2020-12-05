@@ -32,7 +32,7 @@ public class InputManager {
     @Getter private float scrollAmount;
 
     private Vector2d prevPos;
-    @Getter @Setter private Vector2d cursorPos;
+    @Setter private Vector2d cursorPos;
     @Getter private Vector2d displacement;
 
     private AppContext context;

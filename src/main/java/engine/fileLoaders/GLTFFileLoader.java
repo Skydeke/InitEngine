@@ -28,7 +28,7 @@ public class GLTFFileLoader {
 
     public static SimpleModel loadGLTF(String objFileName) {
         SimpleModel m = loadedModels.get(objFileName);
-        System.out.println(objFileName);
+        System.out.println("Loading file: " + objFileName);
         if (m != null) {
             return m;
         }
@@ -83,7 +83,8 @@ public class GLTFFileLoader {
         };
         fileIo.set(fileOpenProc, fileCloseProc, NULL);
         AIScene scene = aiImportFileEx(objFileName.replaceFirst("/", ""),
-                aiProcess_PreTransformVertices | aiProcess_GenSmoothNormals | aiProcess_Triangulate, fileIo);
+                aiProcess_PreTransformVertices | aiProcess_GenSmoothNormals | aiProcess_Triangulate | aiProcess_EmbedTextures |
+                        aiProcess_JoinIdenticalVertices | aiProcess_ImproveCacheLocality | aiProcess_OptimizeMeshes, fileIo);
         if (scene == null) {
             throw new IllegalStateException(aiGetErrorString());
         }
@@ -95,16 +96,19 @@ public class GLTFFileLoader {
             AIMaterial aiMaterial = AIMaterial.create(aiMaterials.get(i));
             processMaterial(aiMaterial, materials, scene);
         }
-        int numMeshes = scene.mNumMeshes();
+        int numMeshes = scene.mMeshes().capacity();
+        System.out.println("Loading file with " + numMeshes + " meshes.");
         PointerBuffer aiMeshes = scene.mMeshes();
         Mesh[] meshes = new Mesh[numMeshes];
         for (int i = 0; i < numMeshes; i++) {
+            assert aiMeshes != null;
             AIMesh aiMesh = AIMesh.create(aiMeshes.get(i));
             Mesh mesh = processMesh(aiMesh, materials);
             meshes[i] = mesh;
         }
         m = new SimpleModel(meshes, RenderMode.TRIANGLES, Box.of(min, max));
         loadedModels.put(objFileName, m);
+        scene.free();
         return m;
     }
 
@@ -140,11 +144,11 @@ public class GLTFFileLoader {
     }
 
     private static void processIndices(AIMesh aiMesh, ArrayList<Integer> indices) {
-        AIFace.Buffer aiTextCoords = aiMesh.mFaces();
-        while (aiTextCoords.remaining() > 0) {
-            AIFace aiNormal = aiTextCoords.get();
-            for (int i = 0; i < aiNormal.mIndices().capacity(); i++) {
-                indices.add(aiNormal.mIndices().get(i));
+        AIFace.Buffer aiFaces = aiMesh.mFaces();
+        while (aiFaces.remaining() > 0) {
+            AIFace aiFace = aiFaces.get();
+            for (int i = 0; i < aiFace.mIndices().capacity(); i++) {
+                indices.add(aiFace.mIndices().get(i));
             }
         }
     }
@@ -152,7 +156,10 @@ public class GLTFFileLoader {
 
     private static void processTextCoords(AIMesh aiMesh, ArrayList<Float> textures) {
         AIVector3D.Buffer aiTextCoords = aiMesh.mTextureCoords(0);
-        assert aiTextCoords != null;
+
+        if (aiTextCoords == null) {
+            return;
+        }
         while (aiTextCoords.remaining() > 0) {
             AIVector3D aiNormal = aiTextCoords.get();
             textures.add(aiNormal.x());

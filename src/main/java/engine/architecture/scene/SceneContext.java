@@ -4,6 +4,7 @@ import engine.architecture.scene.node.Scenegraph;
 import engine.architecture.system.Pipeline;
 import engine.architecture.ui.element.UIElement;
 import engine.architecture.ui.event.mouse.MouseMoveEvent;
+import engine.rendering.RenderOutputData;
 import engine.rendering.Shader;
 import engine.rendering.instances.camera.Camera;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
@@ -18,23 +19,23 @@ import lombok.Setter;
 
 public class SceneContext extends UIElement {
 
-    @Getter
-    public Camera camera;
+    private Camera camera;
     @Getter
     @Setter
-    public ClipPlane clipPlane = ClipPlane.NONE;
+    private ClipPlane clipPlane = ClipPlane.NONE;
     // scenegraph of 3D scene
     @Getter
-    protected Scenegraph scene;
+    private Scenegraph scene;
     @Getter
     private Picking picking;
     // uses scene to create texture of 3D scene
     @Getter
-    private Pipeline pipeline;
+    public Pipeline pipeline;
+    @Setter
+    private RenderOutputData outputData;
     @Getter
     private SelectionManager selectionManager;
-    @Getter
-    public Vector2i resolution;
+    private Vector2i resolution;
 
     public SceneContext() {
         super();
@@ -93,5 +94,17 @@ public class SceneContext extends UIElement {
             if (!(e instanceof MouseMoveEvent))
                 camera.handle(e);
         });
+    }
+
+    public Camera getCamera(){
+        return camera;
+    }
+
+    public Vector2i getResolution(){
+        return resolution;
+    }
+
+    public RenderOutputData getOutputData(){
+        return outputData;
     }
 }

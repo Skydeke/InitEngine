@@ -81,7 +81,8 @@ public class Game extends SimpleApplication {
         m2.getTransform().setPosition(0, 0, -10);
         m2.getTransform().setScale(2f);
 
-        Model modl5 = ModelLoader.load("/models/sceneFile/nIScene.gltf");
+        Model modl5 = ModelLoader.load("/models/scene.gltf");
+        //Model modl5 = ModelLoader.load("/models/sceneFile/nIScene.gltf");
         Entity e = new Entity(modl5) {
             @Override
             public void process() {

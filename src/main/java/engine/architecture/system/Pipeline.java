@@ -7,7 +7,6 @@ import engine.rendering.abstracted.renderers.Renderer;
 import engine.rendering.abstracted.renderers.Renderer2D;
 import engine.rendering.abstracted.renderers.Renderer3D;
 import engine.rendering.instances.postprocessing.ssao.SSAO;
-import engine.rendering.instances.postprocessing.ssr.SSR;
 import engine.rendering.instances.renderers.DebugRenderer;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRDeferredShader;
@@ -47,7 +46,6 @@ public class Pipeline {
     // fbo needed to calculate shadow factor for main lighting pass
     @Getter
     private Fbo shadowFBO;
-    private RenderOutputData outputData;
     @Getter
     private final PostProcessing postProcessing = new PostProcessing();
     /**
@@ -56,7 +54,6 @@ public class Pipeline {
     @Getter
     private PBRDeferredShader lightingPass;
     // screen space ambient occlusion pass
-    @Getter
     private SSAO ssaoPass;
     // screen space reflection pass
 //    @Getter
@@ -72,7 +69,7 @@ public class Pipeline {
      */
     public Pipeline(SceneContext context) {
         this.context = context;
-        /**
+        /*
          * Channels:
          * layout (location = 0) out vec4 pos_vbo
          * layout (location = 1) out vec4 norm_vbo;
@@ -103,12 +100,12 @@ public class Pipeline {
         pbrFBO.addAttachment(SceneFbo.getInstance().getDepthAttachment());
         pbrFBO.unbind();
 
-        this.outputData = new RenderOutputData(
+        context.setOutputData(new RenderOutputData(
                 SceneFbo.getInstance().getAttachments().get(0).getTexture(),
                 pbrFBO.getAttachments().get(1).getTexture(),
                 SceneFbo.getInstance().getDepthAttachment().getTexture(),
                 pbrFBO.getAttachments().get(0).getTexture()
-        );
+        ));
 
         shadowFBO = Fbo.create(Config.instance().getShadowBufferWidth(), Config.instance().getShadowBufferHeight());
         TextureConfigs shadowConfigs = new TextureConfigs(FormatType.DEPTH_COMPONENT24, FormatType.DEPTH_COMPONENT, DataType.FLOAT);
@@ -194,14 +191,14 @@ public class Pipeline {
 //                        ssaoPass.getTargetTexture().getTexture());
 
             SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
-            postProcessing.processToFbo(SceneFbo.getInstance(), getOutput());
+            postProcessing.processToFbo(SceneFbo.getInstance(), context.getOutputData());
             SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
 
-//            pbrFBO.bind(FboTarget.DRAW_FRAMEBUFFER);
-//            for (Renderer lateRenderer : lateRenderers) {
-//                lateRenderer.render(context);
-//            }
-//            pbrFBO.unbind(FboTarget.DRAW_FRAMEBUFFER);
+            SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
+            for (Renderer lateRenderer : lateRenderers) {
+                lateRenderer.render(context);
+            }
+            SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
             // reset viewport to window size
             Window.instance().resetViewport();
 
@@ -220,15 +217,6 @@ public class Pipeline {
 //            SceneFbo.getInstance().unbind();
         }
         finish();
-    }
-
-    /**
-     * Returns the output of the renderer
-     *
-     * @return the output of the renderer
-     */
-    public RenderOutputData getOutput() {
-        return outputData;
     }
 
     /**
@@ -275,5 +263,9 @@ public class Pipeline {
 
     private void finish() {
         renderers.forEach(Renderer::finish);
+    }
+
+    public SSAO getSsaoPass() {
+        return ssaoPass;
     }
 }

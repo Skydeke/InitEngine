@@ -38,6 +38,11 @@ public class ShadersProgram<T extends Processable> {
         return new ShadersProgram<>(id, vertexShader, fragmentShader);
     }
 
+    public static <T extends Processable> ShadersProgram<T> create(Shader vertexShader, Shader fragmentShader, Shader computeShader) throws Exception {
+        final int id = GL20.glCreateProgram();
+        return new ShadersProgram<>(id, vertexShader, fragmentShader, computeShader);
+    }
+
     public static <T extends Processable> ShadersProgram<T> create(String vertexFile, String fragmentFile) throws Exception {
         final Shader vertexShader = Shader.createVertex(vertexFile);
         final Shader fragmentShader = Shader.createFragment(fragmentFile);
