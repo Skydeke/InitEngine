@@ -7,6 +7,7 @@ import engine.rendering.abstracted.renderers.Renderer;
 import engine.rendering.abstracted.renderers.Renderer2D;
 import engine.rendering.abstracted.renderers.Renderer3D;
 import engine.rendering.instances.postprocessing.ssao.SSAO;
+import engine.rendering.instances.postprocessing.ssr.SSR;
 import engine.rendering.instances.renderers.DebugRenderer;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRDeferredShader;
@@ -56,8 +57,8 @@ public class Pipeline {
     // screen space ambient occlusion pass
     private SSAO ssaoPass;
     // screen space reflection pass
-//    @Getter
-//    private SSR ssrPass;
+    @Getter
+    private SSR ssrPass;
 
     private boolean anyChange = true;
     /**
@@ -120,7 +121,7 @@ public class Pipeline {
 
         lightingPass = new PBRDeferredShader();
         ssaoPass = new SSAO(this);
-//        ssrPass = new SSR(this);
+        ssrPass = new SSR(this);
 
         addRenderer(EntityRenderer.getInstance());
         addRenderer(PBRRenderer.getInstance());
@@ -184,11 +185,11 @@ public class Pipeline {
                     SceneFbo.getInstance().getAttachments().get(0).getTexture());
 
             // calculate reflections
-//            if (Config.instance().isSsr())
-//                ssrPass.compute(
-//                        pbrFBO.getAttachments().get(0).getTexture(),
-//                        pbrFBO.getAttachments().get(1).getTexture(),
-//                        ssaoPass.getTargetTexture().getTexture());
+            if (Config.instance().isSsr())
+                ssrPass.compute(
+                        pbrFBO.getAttachments().get(0).getTexture(),
+                        pbrFBO.getAttachments().get(1).getTexture(),
+                        ssaoPass.getTargetTexture().getTexture());
 
             SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
             postProcessing.processToFbo(SceneFbo.getInstance(), context.getOutputData());
@@ -210,11 +211,11 @@ public class Pipeline {
                 SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
             }
 
-//            SceneFbo.getInstance().bind();
-//            for (Renderer2D r : renderers2D) {
-//                r.render(context);
-//            }
-//            SceneFbo.getInstance().unbind();
+            SceneFbo.getInstance().bind();
+            for (Renderer2D r : renderers2D) {
+                r.render(context);
+            }
+            SceneFbo.getInstance().unbind();
         }
         finish();
     }

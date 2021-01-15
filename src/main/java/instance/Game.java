@@ -17,6 +17,8 @@ import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
+import imgui.ImGui;
+import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
@@ -25,6 +27,7 @@ public class Game extends SimpleApplication {
 
     private Node sceneRoot, lights;
     private double duration = 1;
+    private ImGui imgui = ImGui.INSTANCE;
 
     public static void main(String[] args) {
         try {
@@ -45,11 +48,12 @@ public class Game extends SimpleApplication {
         lights = new Node();
 
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new Contrast(1.4f));
-//        renderer.getSceneContext().getPipeline().getPostProcessing().add(new SSRP());
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new Bloom(.1f, .1f, .1f));
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new CelShading());
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new Hdr());
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new RadialBlur());
+
+        System.out.println(imgui);
 
 
 
@@ -81,9 +85,9 @@ public class Game extends SimpleApplication {
         m2.getTransform().setPosition(0, 0, -10);
         m2.getTransform().setScale(2f);
 
-        Model modl5 = ModelLoader.load("/models/scene.gltf");
-        //Model modl5 = ModelLoader.load("/models/sceneFile/nIScene.gltf");
-        Entity e = new Entity(modl5) {
+        Model model = ModelLoader.load("/models/scene.gltf");
+        //Model model = ModelLoader.load("/models/sceneFile/nIScene.gltf");
+        Entity e = new Entity(model) {
             @Override
             public void process() {
                 EntityRenderer.getInstance().process(this);
@@ -147,6 +151,10 @@ public class Game extends SimpleApplication {
         if(InputManager.instance().isKeyReleased(GLFW_KEY_E)){
             move = !move;
         }
+        if (InputManager.instance().isKeyReleased(GLFW.GLFW_KEY_G)){
+            imgui.showDemoWindow(new boolean[]{false});
+        }
+
         this.duration = timeDelta;
         LightManager.getSun().update();
         if (move)
@@ -164,14 +172,12 @@ public class Game extends SimpleApplication {
         float scale = 6;
 
         PBRModel model;
-        PBRMaterial mat = new PBRMaterial("images/white_marble/",
+        PBRMaterial mat = new PBRMaterial("images/black_marble/",
                 "albedo.tga", "normal.tga", "rough.tga", "metal.png", false);
         mat.setMetalConst(0.05f);
-//        mat.setMetalConst(0.85f);
-//        mat.setMetalConst(1f);
         mat.useMetalMap(false);
 
-        PBRMaterial mat2 = new PBRMaterial("images/wood_floor/", false);
+        PBRMaterial mat2 = new PBRMaterial("images/tiles/", "jpg",  false);
         mat2.setMetalConst(0.4f);
         mat2.useMetalMap(false);
 
@@ -192,8 +198,8 @@ public class Game extends SimpleApplication {
     private void buildWalls() {
         PBRModel model;
 
-        PBRMaterial mat = new PBRMaterial("images/black_marble/",
-                "albedo.tga", "normal.tga", "rough.tga", "metal.png", false);
+        PBRMaterial mat = new PBRMaterial("images/stone_wall/","jpg", false);
+//        PBRMaterial mat = new PBRMaterial("images/metal_plates/","jpg", false);
 
         float scale = 6;
         int amount = 4;
