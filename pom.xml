@@ -14,6 +14,7 @@
         <lwjgl.natives>natives-windows</lwjgl.natives>
         <lwjgl.version>3.2.3</lwjgl.version>
         <joml.version>1.9.24</joml.version>
+        <imgui.version>1.79</imgui.version>
     </properties>
 
     <profiles>
@@ -115,7 +116,31 @@
         </dependencies>
     </dependencyManagement>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>jitpack</id>
+            <name>Jitpack</name>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>sonatype</id>
+            <name>Sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <dependency>
+            <groupId>com.github.kotlin-graphics</groupId>
+            <artifactId>imgui</artifactId>
+            <version>${imgui.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
@@ -182,6 +207,15 @@
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-stb</artifactId>
+            <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-jemalloc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-jemalloc</artifactId>
             <classifier>${lwjgl.natives}</classifier>
         </dependency>
         <dependency>
