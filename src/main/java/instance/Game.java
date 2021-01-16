@@ -56,7 +56,6 @@ public class Game extends SimpleApplication {
         System.out.println(imgui);
 
 
-
         Model cube = ModelLoader.load("/models/cube.gltf");
         PBRMaterial fu = new PBRMaterial("images/plastic_squares/", false);
         PBRModel dragon1 = new PBRModel(cube, fu);
@@ -145,13 +144,13 @@ public class Game extends SimpleApplication {
 
     @Override
     public void onUpdate(double timeDelta) {
-        if(InputManager.instance().isKeyHeld(GLFW_KEY_T)){
+        if (InputManager.instance().isKeyHeld(GLFW_KEY_T)) {
             t = t + duration;
         }
-        if(InputManager.instance().isKeyReleased(GLFW_KEY_E)){
+        if (InputManager.instance().isKeyReleased(GLFW_KEY_E)) {
             move = !move;
         }
-        if (InputManager.instance().isKeyReleased(GLFW.GLFW_KEY_G)){
+        if (InputManager.instance().isKeyReleased(GLFW.GLFW_KEY_G)) {
             imgui.showDemoWindow(new boolean[]{false});
         }
 
@@ -177,7 +176,7 @@ public class Game extends SimpleApplication {
         mat.setMetalConst(0.05f);
         mat.useMetalMap(false);
 
-        PBRMaterial mat2 = new PBRMaterial("images/tiles/", "jpg",  false);
+        PBRMaterial mat2 = new PBRMaterial("images/tiles/", "jpg", false);
         mat2.setMetalConst(0.4f);
         mat2.useMetalMap(false);
 
@@ -198,7 +197,7 @@ public class Game extends SimpleApplication {
     private void buildWalls() {
         PBRModel model;
 
-        PBRMaterial mat = new PBRMaterial("images/stone_wall/","jpg", false);
+        PBRMaterial mat = new PBRMaterial("images/stone_wall/", "jpg", false);
 //        PBRMaterial mat = new PBRMaterial("images/metal_plates/","jpg", false);
 
         float scale = 6;
