@@ -1,8 +1,7 @@
 package engine.rendering.instances.camera;
 
-import engine.architecture.ui.element.UIElement;
 
-public abstract class CameraController extends UIElement {
+public abstract class CameraController {
 
     public static final CameraController NONE = new CameraController() {
         @Override

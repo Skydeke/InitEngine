@@ -116,7 +116,7 @@ public class Fbo implements IFbo {
                 fbo.getHeight(), GlBuffer.getValue(buffers), filter.get());
     }
 
-    private void blitFramebuffer(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2,
+    public static void blitFramebuffer(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2,
                                  MagFilterParameter filter, GlBuffer... buffers) {
         GL30.glBlitFramebuffer(x1, y1, w1, h1, x2, y2, w2, h2, GlBuffer.getValue(buffers), filter.get());
     }

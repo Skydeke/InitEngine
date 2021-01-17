@@ -1,9 +1,8 @@
 package engine.architecture.ui.event;
+
 import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
-import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.event.mouse.MouseClickEvent;
-import engine.architecture.ui.event.mouse.MouseWheelEvent;
 import engine.utils.libraryBindings.maths.joml.Vector2d;
 import engine.utils.libraryBindings.maths.joml.Vector2f;
 import lombok.Getter;
@@ -100,9 +99,9 @@ public class InputManager {
                         _action = KeyboardEvent.KEY_RELEASED;
                     }
 
-                    ElementManager.instance().fire(
-                            new KeyboardEvent(key, _action, mods)
-                    );
+//                    ElementManager.instance().fire(
+//                            new KeyboardEvent(key, _action, mods)
+//                    );
 
                 });
 
@@ -126,24 +125,24 @@ public class InputManager {
                     }
 
 
-                    ElementManager.instance().fire(new MouseClickEvent(
-                            button, _action, mods, new Vector2f (
-                            (float)cursorPos.x/(float)Window.instance().getWidth(),
-                            1f-(float)cursorPos.y/(float)Window.instance().getHeight())
-                            , new Vector2f (
-                            (float)displacement.x/(float)Window.instance().getWidth(),
-                            (float)displacement.y/(float)Window.instance().getHeight())
-                    ));
+//                    ElementManager.instance().fire(new MouseClickEvent(
+//                            button, _action, mods, new Vector2f (
+//                            (float)cursorPos.x/(float)Window.instance().getWidth(),
+//                            1f-(float)cursorPos.y/(float)Window.instance().getHeight())
+//                            , new Vector2f (
+//                            (float)displacement.x/(float)Window.instance().getWidth(),
+//                            (float)displacement.y/(float)Window.instance().getHeight())
+//                    ));
                 });
 
         /** Mouse scroll Callback */
         glfwSetScrollCallback(window.getHandle(), (windowHandle, dx, dy) -> {
             scrollAmount = (float) dy;
-            ElementManager.instance().fire(new MouseWheelEvent(
-                    dy, new Vector2f(
-                    (float) cursorPos.x / (float) Window.instance().getWidth(),
-                    1f - (float) cursorPos.y / (float) Window.instance().getHeight())
-            ));
+//            ElementManager.instance().fire(new MouseWheelEvent(
+//                    dy, new Vector2f(
+//                    (float) cursorPos.x / (float) Window.instance().getWidth(),
+//                    1f - (float) cursorPos.y / (float) Window.instance().getHeight())
+//            ));
         });
     }
 
@@ -217,13 +216,13 @@ public class InputManager {
         prevPos.y = cursorPos.y;
 
         for(Integer k: pressedButtons){
-            ElementManager.instance().fire(new MouseClickEvent(k, MouseClickEvent.BUTTON_HELD, mods, new Vector2f (
-                    (float)cursorPos.x/(float)Window.instance().getWidth(),
-                    1f-(float)cursorPos.y/(float)Window.instance().getHeight())
-                    , new Vector2f (
-                    (float)displacement.x/(float)Window.instance().getWidth(),
-                    -(float)displacement.y/(float)Window.instance().getHeight())
-            ));
+//            ElementManager.instance().fire(new MouseClickEvent(k, MouseClickEvent.BUTTON_HELD, mods, new Vector2f (
+//                    (float)cursorPos.x/(float)Window.instance().getWidth(),
+//                    1f-(float)cursorPos.y/(float)Window.instance().getHeight())
+//                    , new Vector2f (
+//                    (float)displacement.x/(float)Window.instance().getWidth(),
+//                    -(float)displacement.y/(float)Window.instance().getHeight())
+//            ));
         }
 
         /** update key maps */

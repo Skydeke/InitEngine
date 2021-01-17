@@ -1,7 +1,6 @@
 package engine.rendering.instances.camera;
 
 import engine.architecture.system.Window;
-import engine.architecture.ui.element.ElementManager;
 import engine.architecture.ui.event.InputManager;
 import engine.utils.libraryBindings.maths.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
@@ -18,12 +17,10 @@ public class CameraMouseDragRotation extends CameraController {
             if (cursorPosAtStart == null) {
                 Window.instance().hideCursor(true);
                 cursorPosAtStart = Window.instance().getCursorPos();
-                ElementManager.instance().setEventHog(this);
             }
             rotation.control(camera);
         }
         if (InputManager.instance().isButtonReleased(GLFW.GLFW_MOUSE_BUTTON_RIGHT)) {
-            ElementManager.instance().resetEventHog();
             Window.instance().hideCursor(false);
             Window.instance().setCursorPos(cursorPosAtStart);
             cursorPosAtStart = null;

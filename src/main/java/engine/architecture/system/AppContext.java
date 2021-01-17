@@ -1,35 +1,37 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
-import engine.architecture.ui.constraints.CenterConstraint;
-import engine.architecture.ui.constraints.PercentageConstraint;
-import engine.architecture.ui.constraints.UIConstraints;
-import engine.architecture.ui.element.ElementManager;
-import engine.architecture.ui.element.RootElement;
-import engine.architecture.ui.element.UIElement;
-import engine.architecture.ui.element.button.Button;
-import engine.architecture.ui.element.button.ButtonSettings;
-import engine.architecture.ui.element.layout.Box;
-import engine.architecture.ui.element.viewport.SceneViewport;
-import engine.architecture.ui.element.viewport.VerticalViewport;
-import engine.utils.libraryBindings.maths.joml.Vector4i;
+import engine.utils.libraryBindings.opengl.fbos.SceneFbo;
+import engine.utils.libraryBindings.opengl.textures.Texture;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
+import glm_.vec2.Vec2;
+import glm_.vec4.Vec4;
+import imgui.ImGui;
+import imgui.MutableProperty0;
+import imgui.api.ContextKt;
+import imgui.classes.Context;
+import imgui.classes.IO;
+import imgui.impl.gl.ImplGL3;
+import imgui.impl.glfw.ImplGlfw;
 import lombok.Getter;
+import org.lwjgl.opengl.GL;
+import uno.glfw.GlfwWindow;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.Objects;
 
 public class AppContext {
 
     private static AppContext instance;
     @Getter
     public SceneContext sceneContext;
-    @Getter
-    private RootElement root;
-    @Getter
-    private UIElement renderElement;
-    @Getter
-    private ElementManager elementManager;
+
+    private final ImGui imGui = ImGui.INSTANCE;
+    private ImplGL3 implGl3;
+    private ImplGlfw implGlfw;
+    private IO io;
+
+    private final MutableProperty0<Boolean> showAnotherWindow = new MutableProperty0<>(false);
+    private final int[] counter = {0};
 
     public static AppContext instance() {
         if (instance == null)
@@ -38,101 +40,81 @@ public class AppContext {
     }
 
     public void init(Application game) throws Exception {
-
-        root = new RootElement();
-        renderElement = root;
-        elementManager = ElementManager.instance();
-
-        elementManager.init(this);
-
         // initialize pipeline from config
         this.sceneContext = game.getContext();
         sceneContext.init();
         sceneContext.loadRenderer();
         // initialize engine implementation
         game.init(Window.instance(), this);
-        // replace with application load protocol
-        __init__ui();
+        initUi();
     }
 
-
-    // TODO: create application loader
-    // TEMPORARY FOR TESTING
-    private void __init__ui() {
-        Optional<SceneViewport> sceneViewport = Optional.of(new SceneViewport(sceneContext));
-
-        ButtonSettings bs = new ButtonSettings();
-//        bs.setButtonColor(new Color(0x6060FF));
-//        bs.setClickColor(new Color(0x60FFFF));
-//        bs.setHoverColor(new Color(0xFFFFFF));
-        bs.setRounding(new Vector4i(5));
-
-        Button button = new Button(bs), up = new Button(bs), down = new Button(bs), ssrToggle = new Button(bs);
-        button.addListener(e -> Config.instance().setSsao(!Config.instance().isSsao()));
-        button.addListener(e -> System.out.println("Pressed SSAO button"));
-        up.addListener(e -> Config.instance().setSsaoPower(Config.instance().getSsaoPower() + 1));
-        up.addListener(e -> System.out.println("Pressed SSAO UP button"));
-        down.addListener(e -> Config.instance().setSsaoPower(Config.instance().getSsaoPower() - 1));
-        down.addListener(e -> System.out.println("Pressed SSAO DOWN button"));
-        ssrToggle.addListener(e -> Config.instance().setSsr(!Config.instance().isSsr()));
-        ssrToggle.addListener(e -> System.out.println("Pressed SSR button"));
-
-//        VerticalViewport pv = new VerticalViewport(40, 100, 100);
-//        VerticalViewport p2 = new VerticalViewport(40, 100, 100);
-//        VerticalViewport p3 = new VerticalViewport(40, 100, 100);
-        VerticalViewport viewport = new VerticalViewport(40, 100, 160, button, up, down, ssrToggle);
-        root.addChildren(viewport);//), pv, p2, p3);
-        viewport.setBox(new Box(0.05f, 0.25f, 0.2f, 0.25f));
-//        pv.setBox(new Box(0.8f, 0.3f, 0.15f, 0.5f));
-//        p2.setBox(new Box(0.5f, 0.3f, 0.15f, 0.5f));
-//        p3.setBox(new Box(0.3f, 0.3f, 0.15f, 0.5f));
-
-        root.addChildren(sceneViewport.get());
-        sceneViewport.get().setBox(new Box(0.3f, 0.1f, 0.65f, 0.8f));
-        sceneViewport.get().setConstraints(new UIConstraints(new PercentageConstraint(0.3f), new CenterConstraint(),
-                new PercentageConstraint(0.65f),
-                new PercentageConstraint(0.8f)));
-        sceneViewport.get().getParent().recalculateAbsolutePositions();//One time Positioning
-        sceneViewport.get().setConstraints(null);
-
-//        Panel p = new Panel();
-//        p.setColor(new Color(0, 255, 0));
-//        p.setBox(new Box(0, 0, 1, 1));
-//        root.addChild(p);
-        root.recalculateAbsolutePositions();
+    private void initUi() {
+        GL.createCapabilities();
+        Context context = new Context();
+        ContextKt.setGImGui(context);
+        GlfwWindow glfwWindow = GlfwWindow.from(Window.instance().getHandle());
+        glfwWindow.makeContextCurrent();
+        implGlfw = new ImplGlfw(glfwWindow, false, null);
+        implGl3 = new ImplGL3();
+        imGui.styleColorsDark(null);
+        io = imGui.getIo();
     }
 
     void update() {
+        implGl3.newFrame();
+        implGlfw.newFrame();
+        imGui.newFrame();
+
         if (Window.instance().isResized()) {
             System.out.println("Window size changed.");
-            root.recalculateAbsolutePositions();
+            sceneContext.setResolution(Window.instance().getResolution());
             Window.instance().setResized(false);
         }
+
         sceneContext.update();
-        root.update();
-        elementManager.update();
     }
 
     void draw(boolean isVisible) {
-        if (isVisible){
-            sceneContext.render();
-            Window.instance().resetViewport();
-            GlUtils.disableDepthTest();
-            Collections.reverse(renderElement.getChildren());
-            renderElement.render();
-            Collections.reverse(renderElement.getChildren());
+        if (isVisible) {
             GlUtils.enableDepthTest();
+            sceneContext.render();
+            GlUtils.disableDepthTest();
+            Window.instance().resetViewport();
         }
-    }
 
-    public void setRenderElement(UIElement renderElement) {
-        root.setActivated(false);
-        this.renderElement = renderElement;
-        this.renderElement.setActivated(true);
-        this.renderElement.recalculateAbsolutePositions();
-    }
+        SceneFbo.getInstance().blitToScreen();
 
-    public void resetRenderElement() {
-        setRenderElement(root);
+        imGui.text("Hello, world!");                                // Display some text (you can use a format string too)
+
+        imGui.checkbox("Another Window", showAnotherWindow);
+
+        if (imGui.button("Button", new Vec2())) // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+            counter[0]++;
+
+        imGui.sameLine(0f, -1f);
+        imGui.text("counter = " + counter[0]);
+
+        imGui.text("Application average %.3f ms/frame (%.1f FPS)", 1_000f / io.getFramerate(), io.getFramerate());
+
+        // 2. Show another simple window. In most cases you will use an explicit begin/end pair to name the window.
+        if (showAnotherWindow.get()) {
+            imGui.begin("Another Window", showAnotherWindow, 0);
+            imGui.text("Hello from another window!");
+            if (imGui.button("Close Me", new Vec2()))
+                showAnotherWindow.set(false);
+            imGui.end();
+        }
+        Texture renderedScene = SceneFbo.getInstance().getAttachments().get(0).getTexture();
+        renderedScene.bind();
+        imGui.image(renderedScene.getId(), new Vec2(1000,
+                        100),
+                new Vec2(0, 1),
+                new Vec2(1, 0),
+                new Vec4(0.5f),
+                new Vec4(0.1f));
+
+        imGui.render();
+        implGl3.renderDrawData(Objects.requireNonNull(imGui.getDrawData()));
     }
 }

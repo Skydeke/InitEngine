@@ -17,8 +17,6 @@ import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
-import imgui.ImGui;
-import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
@@ -27,7 +25,6 @@ public class Game extends SimpleApplication {
 
     private Node sceneRoot, lights;
     private double duration = 1;
-    private ImGui imgui = ImGui.INSTANCE;
 
     public static void main(String[] args) {
         try {
@@ -52,8 +49,6 @@ public class Game extends SimpleApplication {
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new CelShading());
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new Hdr());
 //        renderer.getSceneContext().getPipeline().getPostProcessing().add(new RadialBlur());
-
-        System.out.println(imgui);
 
 
         Model cube = ModelLoader.load("/models/cube.gltf");
@@ -136,6 +131,7 @@ public class Game extends SimpleApplication {
 
         context.getCamera().setController(new FlyCamera());
 //        context.getCamera().setController(new ThirdPersonCamera(dragon1.getTransform(), context.getCamera()));
+
     }
 
 
@@ -149,9 +145,6 @@ public class Game extends SimpleApplication {
         }
         if (InputManager.instance().isKeyReleased(GLFW_KEY_E)) {
             move = !move;
-        }
-        if (InputManager.instance().isKeyReleased(GLFW.GLFW_KEY_G)) {
-            imgui.showDemoWindow(new boolean[]{false});
         }
 
         this.duration = timeDelta;

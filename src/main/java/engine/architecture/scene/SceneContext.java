@@ -2,8 +2,6 @@ package engine.architecture.scene;
 
 import engine.architecture.scene.node.Scenegraph;
 import engine.architecture.system.Pipeline;
-import engine.architecture.ui.element.UIElement;
-import engine.architecture.ui.event.mouse.MouseMoveEvent;
 import engine.rendering.RenderOutputData;
 import engine.rendering.Shader;
 import engine.rendering.instances.camera.Camera;
@@ -17,7 +15,7 @@ import lombok.Setter;
  * and GUI layers, updating modules, and events
  */
 
-public class SceneContext extends UIElement {
+public class SceneContext {
 
     private Camera camera;
     @Getter
@@ -54,9 +52,6 @@ public class SceneContext extends UIElement {
     public void update() {
         // instance update
 
-        // scene UI update
-        super.update();
-
         // now update scene with proper inputs reaching the
         scene.update();
         camera.update();
@@ -80,20 +75,12 @@ public class SceneContext extends UIElement {
         }
     }
 
-    public float getAspectRatio() {
-        return (float) resolution.x / (float) resolution.y;
-    }
-
     public void init() {
         this.camera = new Camera(this);
         this.scene = new Scenegraph(camera);
         this.resolution = new Vector2i(0, 0);
         this.picking = new Picking(this);
         this.selectionManager = new SelectionManager();
-        onEvent(e -> {
-            if (!(e instanceof MouseMoveEvent))
-                camera.handle(e);
-        });
     }
 
     public Camera getCamera(){

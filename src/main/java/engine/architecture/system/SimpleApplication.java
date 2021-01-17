@@ -27,7 +27,6 @@ public abstract class SimpleApplication extends Application {
      */
     @Override
     public void cleanUp() {
-        context.cleanup();
         onCleanUp();
     }
 

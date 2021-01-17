@@ -1,10 +1,8 @@
 package engine.architecture.system;
 
-import engine.architecture.ui.element.layout.Box;
 import engine.utils.libraryBindings.maths.joml.Vector2d;
 import engine.utils.libraryBindings.maths.joml.Vector2f;
 import engine.utils.libraryBindings.maths.joml.Vector2i;
-import engine.utils.libraryBindings.maths.joml.Vector4i;
 import engine.utils.libraryBindings.opengl.textures.ImageLoader;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import lombok.Getter;
@@ -107,7 +105,7 @@ public class Window {
         });
 
         glfwMakeContextCurrent(handle);
-        GL.createCapabilities();
+        GL.createCapabilities(true);
         glfwShowWindow(handle);
 
         // Enable v-sync
@@ -214,11 +212,6 @@ public class Window {
         return new Vector2f((float) x.get() / getWidth(), 1 - (float) (y.get() / getHeight()));
     }
 
-    public void setScissor(Box box) {
-        glEnable(GL_SCISSOR_TEST);
-        Vector4i pix = box.pixelDimensions(getResolution());
-        glScissor(pix.x, pix.y, pix.z + 2, pix.w + 2);
-    }
 
     public void disableScissor() {
         glDisable(GL_SCISSOR_TEST);
