@@ -9,8 +9,8 @@
     <version>v1.0</version>
     <packaging>jar</packaging>
 
-    //Jemalloc 3.2.3 crashes for some reason, so going with 3.2.2
-    // best would be the same as LWJGL-version
+    <!-- Jemalloc 3.2.3 crashes for some reason, so going with 3.2.2,
+         best would be the same as LWJGL-version -->
     <properties>
         <kotlin.version>1.4.10</kotlin.version>
         <lwjgl.version>3.2.3</lwjgl.version>
