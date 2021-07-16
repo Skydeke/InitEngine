@@ -1,7 +1,7 @@
 package engine.architecture.system;
 
 
-import engine.architecture.ui.event.InputManager;
+import engine.architecture.event.InputManager;
 
 public class GameEngine implements Runnable {
 
@@ -48,17 +48,12 @@ public class GameEngine implements Runnable {
                 times = 0;
                 fps = 0;
             }
-            long a = System.nanoTime();
             game.update(Time.getDelta());
             app.update();
             app.draw(window.isVisible());
             inputManager.update();
             window.update(app.getSceneContext().getPipeline().isAnyChange());
             AppContext.instance().getSceneContext().getPipeline().setAnyChange(false);
-            long b = System.nanoTime();
-
-//            System.out.print("\u001B[32m" + "\r frametime: " + ((b-a) / 1e+9)+ "\u001B[0m");
-            System.out.print("\u001B[32m" + "\r fps: " + FRAMES_PER_SECOND + "\u001B[0m");
         }
         game.cleanUp();
     }

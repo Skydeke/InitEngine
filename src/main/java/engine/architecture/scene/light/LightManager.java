@@ -32,6 +32,16 @@ public class LightManager {
         return false;
     }
 
+    public static Boolean unregisterLight(Light light) {
+        instance();
+        if (light instanceof DirectionalLight)
+            return true;
+        else
+            instance().sceneLights.remove(light);
+            return true;
+
+    }
+
     public static DirectionalLight getSun() {
         return instance().sun;
     }

@@ -25,4 +25,10 @@ public class PointLight extends Light {
         addChild(debugEntity);
         getTransform().setScale(.2f);
     }
+
+    public void remove(){
+        removeChild(debugEntity);
+        if (!LightManager.unregisterLight(this))
+            this.deactivate();
+    }
 }

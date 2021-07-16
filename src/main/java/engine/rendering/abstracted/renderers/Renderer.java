@@ -31,15 +31,17 @@ public abstract class Renderer<T extends Processable> implements IRenderer {
         if (toProcess != null){
             if (renderList.get(toProcess.getModel()) == null){
                 renderList.put(toProcess.getModel(), new LinkedList<>());
-                renderList.get(toProcess.getModel()).add(toProcess);
-//            System.out.println("Created new List and added one T");
+                if (!renderList.get(toProcess.getModel()).contains(toProcess)) {
+                    renderList.get(toProcess.getModel()).add(toProcess);
+//                    System.out.println("Created new List and added one T");
+                }
                 return;
             }
             if (renderList.get(toProcess.getModel()) != null && !renderList.get(toProcess.getModel()).contains(toProcess)) {
                 LinkedList<T> list = renderList.get(toProcess.getModel());
-                if (list != null) {
+                if (list != null && !list.contains(toProcess)) {
                     list.add(toProcess);
-//                System.out.println("Found List and added one T");
+//                    System.out.println("Found List and added one T");
                 }
             }
         }
@@ -55,9 +57,7 @@ public abstract class Renderer<T extends Processable> implements IRenderer {
     }
 
     @Override
-    public void finish() {
-        this.renderList.clear();
-    }
+    public void finish() {}
 
     /**
      * Clean up the engine.rendering.renderer

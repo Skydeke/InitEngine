@@ -75,25 +75,25 @@ public class Vbo implements IVbo {
     public void allocateFloat(FloatBuffer floatBuffer) {
         bind();
         GL15.glBufferData(target, floatBuffer, usage);
-        size = floatBuffer.limit() * DataType.FLOAT.getBytes();
+        size = (long) floatBuffer.limit() * DataType.FLOAT.getBytes();
     }
 
     public void allocateFloat(float[] floatArray) {
         bind();
         GL15.glBufferData(target, floatArray, usage);
-        size = floatArray.length * DataType.FLOAT.getBytes();
+        size = (long) floatArray.length * DataType.FLOAT.getBytes();
     }
 
     public void allocateInt(IntBuffer intBuffer) {
         bind();
         GL15.glBufferData(target, intBuffer, usage);
-        size = intBuffer.limit() * DataType.INT.getBytes();
+        size = (long) intBuffer.limit() * DataType.INT.getBytes();
     }
 
     public void allocateInt(int[] intArray) {
         bind();
         GL15.glBufferData(target, intArray, usage);
-        size = intArray.length * DataType.INT.getBytes();
+        size = (long) intArray.length * DataType.INT.getBytes();
     }
 
     public void allocateData(ByteBuffer byteBuffer) {

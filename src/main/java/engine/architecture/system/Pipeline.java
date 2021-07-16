@@ -146,6 +146,7 @@ public class Pipeline {
         context.getScene().processEffects(this);
         // call sub-render method
         // that will populate the scene texture
+        //Makes sure that all GameObjects are processes and queued for rendering in the correct renderers.
         context.getScene().process();
         context.setClipPlane(ClipPlane.NONE);
         checkForChanges();

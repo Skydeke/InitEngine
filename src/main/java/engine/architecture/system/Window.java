@@ -201,7 +201,8 @@ public class Window {
     }
 
     public void setCursorPos(Vector2d pos) {
-        glfwSetCursorPos(handle, pos.x, getHeight() - pos.y);
+        if(pos != null)
+            glfwSetCursorPos(handle, pos.x, getHeight() - pos.y);
     }
 
     public Vector2f getCursorPosf() {

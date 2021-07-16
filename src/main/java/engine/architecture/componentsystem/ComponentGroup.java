@@ -22,9 +22,22 @@ public class ComponentGroup {
      * @param gameComponent the component to add
      */
     public void add(GameComponent gameComponent) {
-        newComponents.add(gameComponent);
-        gameComponents.add(gameComponent);
-        gameComponent.init(parent, this);
+        if (getNullable(gameComponent.getClass()) == null) {
+            newComponents.add(gameComponent);
+            gameComponents.add(gameComponent);
+            gameComponent.init(parent, this);
+        }
+    }
+
+    /**
+     * Removes a component to the component group
+     *
+     * @param gameComponent the component to add
+     */
+    public void remove(GameComponent gameComponent) {
+        newComponents.remove(gameComponent);
+        gameComponents.remove(gameComponent);
+        gameComponent.stop();
     }
 
     /**
@@ -74,4 +87,7 @@ public class ComponentGroup {
         newComponents.clear();
     }
 
+    public <T extends GameComponent> boolean hasComponent(Class<T> compClass) {
+        return getNullable(compClass) != null;
+    }
 }

@@ -45,6 +45,13 @@ public abstract class GameComponent {
     }
 
     /**
+     * Destroy the component
+     */
+    public void stop() {
+
+    }
+
+    /**
      * Update the component, the method is called once per frame
      */
     public void update() {
@@ -64,6 +71,12 @@ public abstract class GameComponent {
 
     protected final <T extends GameComponent> T getNullableComponent(Class<T> compClass) {
         return group != null ? group.getNullable(compClass) : null;
+    }
+
+    protected final <T extends GameComponent> boolean hasComponent(Class<T> compClass) {
+        if (group == null){
+            return false;
+        }else return group.getNullable(compClass) != null;
     }
 
     /**

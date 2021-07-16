@@ -1,6 +1,6 @@
 package engine.rendering.instances.camera;
 
-import engine.architecture.ui.event.InputManager;
+import engine.architecture.event.InputManager;
 
 public class CameraMouseRotation extends CameraController {
 

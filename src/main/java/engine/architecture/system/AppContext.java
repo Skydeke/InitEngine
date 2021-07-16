@@ -85,6 +85,10 @@ public class AppContext {
 
         SceneFbo.getInstance().blitToScreen();
 
+        //TODO Create a posibility to create your UI in the SimpleApplication class
+        //TODO Create Event-System, better Input System
+
+
         imGui.text("Hello, world!");                                // Display some text (you can use a format string too)
 
         imGui.checkbox("Another Window", showAnotherWindow);
@@ -101,18 +105,20 @@ public class AppContext {
         if (showAnotherWindow.get()) {
             imGui.begin("Another Window", showAnotherWindow, 0);
             imGui.text("Hello from another window!");
+            //Texture renderedScene = SceneFbo.getInstance().getAttachments().get(0).getTexture();
+            Texture renderedScene = getSceneContext().getPipeline().getShadowFBO().getDepthAttachment().getTexture();
+            renderedScene.bind();
+            imGui.image(renderedScene.getId(), new Vec2(1280,
+                            720),
+                    new Vec2(0, 1),
+                    new Vec2(1, 0),
+                    new Vec4(1.0f),
+                    new Vec4(0.0f));
             if (imGui.button("Close Me", new Vec2()))
                 showAnotherWindow.set(false);
             imGui.end();
         }
-        Texture renderedScene = SceneFbo.getInstance().getAttachments().get(0).getTexture();
-        renderedScene.bind();
-        imGui.image(renderedScene.getId(), new Vec2(1000,
-                        100),
-                new Vec2(0, 1),
-                new Vec2(1, 0),
-                new Vec4(0.5f),
-                new Vec4(0.1f));
+        imGui.showDemoWindow(new boolean[]{true});
 
         imGui.render();
         implGl3.renderDrawData(Objects.requireNonNull(imGui.getDrawData()));

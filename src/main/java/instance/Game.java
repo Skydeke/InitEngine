@@ -1,5 +1,7 @@
 package instance;
 
+import engine.architecture.componentsystem.LightComponent;
+import engine.architecture.event.InputManager;
 import engine.architecture.models.Model;
 import engine.architecture.scene.entity.Entity;
 import engine.architecture.scene.light.DirectionalLight;
@@ -10,21 +12,21 @@ import engine.architecture.system.AppContext;
 import engine.architecture.system.GameEngine;
 import engine.architecture.system.SimpleApplication;
 import engine.architecture.system.Window;
-import engine.architecture.ui.event.InputManager;
 import engine.fileLoaders.ModelLoader;
 import engine.rendering.instances.camera.FlyCamera;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
+import engine.utils.libraryBindings.opengl.utils.GlUtils;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Game extends SimpleApplication {
 
     private Node sceneRoot, lights;
     private double duration = 1;
+    private PBRModel dragon1;
 
     public static void main(String[] args) {
         try {
@@ -53,7 +55,7 @@ public class Game extends SimpleApplication {
 
         Model cube = ModelLoader.load("/models/cube.gltf");
         PBRMaterial fu = new PBRMaterial("images/plastic_squares/", false);
-        PBRModel dragon1 = new PBRModel(cube, fu);
+        dragon1 = new PBRModel(cube, fu);
 
         Model mesh = ModelLoader.load("/models/dragon.obj");
         PBRModel dragon2 = new PBRModel(mesh, new PBRMaterial("images/chipped_paint/",
@@ -146,6 +148,28 @@ public class Game extends SimpleApplication {
         if (InputManager.instance().isKeyReleased(GLFW_KEY_E)) {
             move = !move;
         }
+        if (InputManager.instance().isKeyPressed(GLFW_KEY_F5)) {
+            GlUtils.drawPolygonLine();
+        }
+        if (InputManager.instance().isKeyPressed(GLFW_KEY_F6)) {
+            GlUtils.drawPolygonFill();
+        }
+
+        if (InputManager.instance().isKeyReleased(GLFW_KEY_U)) {
+            dragon1.getComponents().add(new LightComponent());
+        }
+        if (InputManager.instance().isKeyReleased(GLFW_KEY_I)) {
+            if (dragon1.getComponents().hasComponent(LightComponent.class)){
+                LightComponent lc = dragon1.getComponents().get(LightComponent.class);
+                dragon1.getComponents().remove(lc);
+            }
+        }
+        if (InputManager.instance().isKeyPressed(GLFW_KEY_O)) {
+            dragon1.getTransform().addPosition(0, +0.1f,0);
+        }
+        if (InputManager.instance().isKeyPressed(GLFW_KEY_P)) {
+            dragon1.getTransform().addPosition(0, -0.1f,0);
+        }
 
         this.duration = timeDelta;
         LightManager.getSun().update();
@@ -154,8 +178,6 @@ public class Game extends SimpleApplication {
 
         lights.getTransform().setPosition((float) (Math.sin(q / 4)) * 20, 1f, 0f);
         LightManager.getSun().getTransform().setRotation((float) (Math.sin(t) * 0.5), 0.5f, (float) -(Math.cos(t) * 0.5));
-
-//        System.out.print("\u001B[32m" + "\r fps: " + GameEngine.FRAMES_PER_SECOND + "\u001B[0m");
     }
 
     private void buildFloor() {

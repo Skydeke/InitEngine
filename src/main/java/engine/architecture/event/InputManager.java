@@ -1,8 +1,8 @@
-package engine.architecture.ui.event;
+package engine.architecture.event;
 
+import engine.architecture.event.mouse.MouseClickEvent;
 import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
-import engine.architecture.ui.event.mouse.MouseClickEvent;
 import engine.utils.libraryBindings.maths.joml.Vector2d;
 import engine.utils.libraryBindings.maths.joml.Vector2f;
 import lombok.Getter;

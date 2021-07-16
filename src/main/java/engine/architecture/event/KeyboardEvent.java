@@ -1,4 +1,4 @@
-package engine.architecture.ui.event;
+package engine.architecture.event;
 
 import lombok.Getter;
 

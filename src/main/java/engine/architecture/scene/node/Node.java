@@ -48,6 +48,10 @@ public class Node {
         children.add(child);
     }
 
+    public void removeChild(Node child) {
+        children.remove(child);
+    }
+
     private void setParent(Node parent) {
         getTransform().addTransformation(parent.getTransform().getTransform());
         this.parent = parent;

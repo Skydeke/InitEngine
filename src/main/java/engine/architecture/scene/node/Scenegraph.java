@@ -21,6 +21,7 @@ public class Scenegraph extends Node {
         this.camera = camera;
         this.sky = new Sky();
         this.effects = new ArrayList<>();
+        getChildren().add(sky);
     }
 
     public void addEffect(Effect effect) {
@@ -35,10 +36,5 @@ public class Scenegraph extends Node {
 
     public <T extends Effect> T getEffect(Class<T> c) {
         return effects.stream().filter(c::isInstance).findFirst().map(c::cast).orElse(null);
-    }
-
-    public void process() {
-        super.process();
-        sky.process();
     }
 }
