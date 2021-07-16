@@ -8,6 +8,7 @@ import glm_.vec2.Vec2;
 import glm_.vec4.Vec4;
 import imgui.ImGui;
 import imgui.MutableProperty0;
+import imgui.WindowFlag;
 import imgui.api.ContextKt;
 import imgui.classes.Context;
 import imgui.classes.IO;
@@ -30,8 +31,8 @@ public class AppContext {
     private ImplGlfw implGlfw;
     private IO io;
 
-    private final MutableProperty0<Boolean> showAnotherWindow = new MutableProperty0<>(false);
-    private final int[] counter = {0};
+    private final MutableProperty0<Boolean> showShadowMapInfoWindow = new MutableProperty0<>(false);
+    private final MutableProperty0<Boolean> showSceneInfoWindow = new MutableProperty0<>(false);
 
     public static AppContext instance() {
         if (instance == null)
@@ -55,7 +56,7 @@ public class AppContext {
         ContextKt.setGImGui(context);
         GlfwWindow glfwWindow = GlfwWindow.from(Window.instance().getHandle());
         glfwWindow.makeContextCurrent();
-        implGlfw = new ImplGlfw(glfwWindow, false, null);
+        implGlfw = new ImplGlfw(glfwWindow, true, null);
         implGl3 = new ImplGL3();
         imGui.styleColorsDark(null);
         io = imGui.getIo();
@@ -88,37 +89,55 @@ public class AppContext {
         //TODO Create a posibility to create your UI in the SimpleApplication class
         //TODO Create Event-System, better Input System
 
-
+//        imGui.begin("Debug", new boolean[]{true}, WindowFlag.NoTitleBar.i);
+        imGui.begin("Debug", new boolean[]{true}, WindowFlag.None.i);
         imGui.text("Hello, world!");                                // Display some text (you can use a format string too)
-
-        imGui.checkbox("Another Window", showAnotherWindow);
-
-        if (imGui.button("Button", new Vec2())) // Buttons return true when clicked (NB: most widgets return true when edited/activated)
-            counter[0]++;
-
-        imGui.sameLine(0f, -1f);
-        imGui.text("counter = " + counter[0]);
-
-        imGui.text("Application average %.3f ms/frame (%.1f FPS)", 1_000f / io.getFramerate(), io.getFramerate());
+        if (imGui.treeNode("SSAO")) {
+            if (imGui.button("Toggle SSAO", new Vec2()))
+                Config.getInstance().setSsao(!Config.getInstance().isSsao());
+            if (imGui.button("Increase SSAO-Power", new Vec2()))
+                Config.getInstance().setSsaoPower(Config.getInstance().getSsaoPower() + 1);
+            if (imGui.button("Decrease SSAO-Power", new Vec2()))
+                Config.getInstance().setSsaoPower(Config.getInstance().getSsaoPower() - 1);
+            imGui.treePop();
+        }
+        if (imGui.treeNode("SSR")) {
+            if (imGui.button("Toggle SSR", new Vec2()))
+                Config.getInstance().setSsr(!Config.getInstance().isSsr());
+            imGui.treePop();
+        }
+        imGui.text("FPS: Application average %.3f ms/frame (%.1f FPS)", 1_000f / io.getFramerate(), io.getFramerate());
+        imGui.checkbox("See Shadow-Map-Texture", showShadowMapInfoWindow);
+        imGui.checkbox("See Scene-Texture", showSceneInfoWindow);
 
         // 2. Show another simple window. In most cases you will use an explicit begin/end pair to name the window.
-        if (showAnotherWindow.get()) {
-            imGui.begin("Another Window", showAnotherWindow, 0);
-            imGui.text("Hello from another window!");
-            //Texture renderedScene = SceneFbo.getInstance().getAttachments().get(0).getTexture();
+        if (showShadowMapInfoWindow.get()) {
+            imGui.begin("Shadow-Map Window", showShadowMapInfoWindow, 0);
+            imGui.text("This is the Shadow-Map window!");
             Texture renderedScene = getSceneContext().getPipeline().getShadowFBO().getDepthAttachment().getTexture();
             renderedScene.bind();
-            imGui.image(renderedScene.getId(), new Vec2(1280,
-                            720),
+            imGui.image(renderedScene.getId(), new Vec2(650,
+                            360),
                     new Vec2(0, 1),
                     new Vec2(1, 0),
                     new Vec4(1.0f),
                     new Vec4(0.0f));
-            if (imGui.button("Close Me", new Vec2()))
-                showAnotherWindow.set(false);
             imGui.end();
         }
-        imGui.showDemoWindow(new boolean[]{true});
+
+        if (showSceneInfoWindow.get()) {
+            imGui.begin("Scene Window", showSceneInfoWindow, 0);
+            imGui.text("This is the Scene window!");
+            Texture renderedScene = SceneFbo.getInstance().getAttachments().get(0).getTexture();
+            renderedScene.bind();
+            imGui.image(renderedScene.getId(), new Vec2(650,
+                            360),
+                    new Vec2(0, 1),
+                    new Vec2(1, 0),
+                    new Vec4(1.0f),
+                    new Vec4(0.0f));
+            imGui.end();
+        }
 
         imGui.render();
         implGl3.renderDrawData(Objects.requireNonNull(imGui.getDrawData()));
