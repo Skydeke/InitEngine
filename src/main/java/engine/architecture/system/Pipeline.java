@@ -158,7 +158,6 @@ public class Pipeline {
                 shadowFBO.bind(FboTarget.DRAW_FRAMEBUFFER);
                 GlUtils.clear(GlBuffer.DEPTH);
                 ShadowRenderer.getInstance().render(context);
-                shadowFBO.unbind(FboTarget.DRAW_FRAMEBUFFER);
             }
 
             pbrFBO.bind(FboTarget.DRAW_FRAMEBUFFER);
@@ -167,7 +166,6 @@ public class Pipeline {
             for (Renderer r : renderers) {
                 r.render(context);
             }
-            pbrFBO.unbind(FboTarget.DRAW_FRAMEBUFFER);
 
 
             // calculate ssao
@@ -194,25 +192,18 @@ public class Pipeline {
 
             SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
             postProcessing.processToFbo(SceneFbo.getInstance(), context.getOutputData());
-            SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
-
-            SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
             for (Renderer lateRenderer : lateRenderers) {
                 lateRenderer.render(context);
             }
-            SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
             // reset viewport to window size
             Window.instance().resetViewport();
 
             if (Config.instance().isDebugLayer()) {
-                SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
                 Window.instance().resizeViewport(getResolution());
                 DebugRenderer.getInstance().render(context);
                 Window.instance().resetViewport();
-                SceneFbo.getInstance().unbind(FboTarget.DRAW_FRAMEBUFFER);
             }
 
-            SceneFbo.getInstance().bind();
             for (Renderer2D r : renderers2D) {
                 r.render(context);
             }

@@ -6,6 +6,7 @@ import engine.architecture.scene.light.LightManager
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
 import engine.utils.libraryBindings.maths.joml.FrustumIntersection
+import engine.utils.libraryBindings.maths.joml.Vector3f
 import engine.utils.libraryBindings.maths.utils.Matrix4
 import engine.utils.libraryBindings.opengl.shaders.RenderState
 import engine.utils.libraryBindings.opengl.shaders.ShadersProgram
@@ -91,7 +92,7 @@ internal class ShadowRenderer : Renderer3D<Entity>() {
 
     private fun checkRenderPass(entity: Entity): Boolean {
         return !checkClippingCulling(entity.transform.position) &&
-                frustumIntersection.testAab(entity.model.bounds.min, entity.model.bounds.max)
+                frustumIntersection.testAab(entity.model.bounds.min.mul(entity.transform.scale, Vector3f()), entity.model.bounds.max.mul(entity.transform.scale, Vector3f()))
     }
 
     override fun cleanUp() {
