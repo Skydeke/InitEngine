@@ -40,8 +40,7 @@ uniform int multisamples = 0;
 
 const float PI = 3.14159265359;
 
-float DistributionGGX(float NdotH, float roughness)
-{
+float DistributionGGX(float NdotH, float roughness) {
     float a      = roughness * roughness;
     float a2     = a * a;
     float NdotH2 = NdotH * NdotH;
@@ -52,9 +51,7 @@ float DistributionGGX(float NdotH, float roughness)
 
     return num / denom;
 }
-
-float GeometrySchlickGGX(float NdotV, float roughness)
-{
+float GeometrySchlickGGX(float NdotV, float roughness) {
     float r = (roughness + 1.0);
     float k = (r*r)/8.0;
 
@@ -63,18 +60,15 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 
     return num / denom;
 }
-float GeometrySmith(float NdotL, float NdotV, float roughness)
-{
+float GeometrySmith(float NdotL, float NdotV, float roughness) {
     float ggx2  = GeometrySchlickGGX(NdotV, roughness);
     float ggx1  = GeometrySchlickGGX(NdotL, roughness);
 
     return ggx1 * ggx2;
 }
-vec3 FresnelSchlick(float cosTheta, vec3 F0)
-{
+vec3 FresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 }
-
 vec3 diffuseSpecular(vec4 albedo, vec3 N, vec3 V, vec3 F0, float metal,
     float rough, float ao, vec3 lightDir, float lightIntensity, vec3 lightColor){
 
@@ -102,7 +96,6 @@ vec3 diffuseSpecular(vec4 albedo, vec3 N, vec3 V, vec3 F0, float metal,
 
     return (diffuse + specular) * NdotL * lightIntensity * lightColor / (len*len);
 }
-
 float shadowFactor(vec3 position){
 
     vec4 shadowSpaceCoord = shadowSpaceMatrix * vec4(position,1.0);
@@ -137,18 +130,14 @@ void main(){
         ssao_factor = pow(imageLoad(ssao_image, coord).r, ssaoPower);
     }
 
-    for(i = 0; i < samples; i++)
-    {
+    for(i = 0; i < samples; i++){
         vec4 normal_and_metal = imageLoad(normal_image, coord, i);
         vec3 normal = normal_and_metal.rgb;
 
-        if(normal_and_metal == vec4(0, 0, 0, 0))
-        {
+        if(normal_and_metal == vec4(0, 0, 0, 0)){
             color = vec3(1, 0, 0);//imageLoad(albedo_image, coord, i).rgb;
             break;
-        }
-        else
-        {
+        } else {
             vec4 albedo = imageLoad(albedo_image, coord, i);
             vec4 position_and_roughness = imageLoad(position_image, coord, i);
             vec3 position = position_and_roughness.rgb;
@@ -174,7 +163,6 @@ void main(){
                 if(lights[q].activated == 1)
                     Lo += diffuseSpecular( albedo, N, V, F0, metal, rough, ssao_factor,
                     lights[q].position - position , lights[q].intensity, lights[q].color);
-
             }
 
             vec3 ambient = sun.ambient * albedo.rgb * ssao_factor;

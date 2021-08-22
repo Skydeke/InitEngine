@@ -84,7 +84,7 @@ internal class EntityRenderer : Renderer3D<Entity>() {
                             entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
                         )
                     )
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<Entity>(this, entity, context.camera, i)
@@ -115,7 +115,7 @@ internal class EntityRenderer : Renderer3D<Entity>() {
                             entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
                         )
                     )
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<Entity>(this, entity, context.camera, i)

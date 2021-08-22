@@ -19,9 +19,14 @@ public class Scenegraph extends Node {
     public Scenegraph(Camera camera) {
         super();
         this.camera = camera;
-        this.sky = new Sky();
+        try {
+            this.sky = new Sky();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.effects = new ArrayList<>();
-        getChildren().add(sky);
+        addChild(camera);
+        addChild(sky);
     }
 
     public void addEffect(Effect effect) {
@@ -36,5 +41,9 @@ public class Scenegraph extends Node {
 
     public <T extends Effect> T getEffect(Class<T> c) {
         return effects.stream().filter(c::isInstance).findFirst().map(c::cast).orElse(null);
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 }

@@ -59,7 +59,7 @@ public class PBRDeferredShader extends Shader {
         setUniform("numLights", currlights);
         for (int i = 0; i < currlights; i++) {
             Light currLight = LightManager.getLight(i);
-            if (currLight == null || !currLight.isActivated())
+            if (currLight == null)
                 setUniform("lights[" + i + "].activated", 0);
             else {
                 setUniform("lights[" + i + "].activated", 1);

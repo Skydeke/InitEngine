@@ -32,7 +32,7 @@ public class GameEngine implements Runnable {
 
     public void start() {
 //        this.gameUpdateThread.start();
-        this.run();
+        this.gameLoopThread.run();
     }
 
     @Override

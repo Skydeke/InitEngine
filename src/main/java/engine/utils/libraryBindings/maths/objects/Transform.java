@@ -126,6 +126,13 @@ public final class Transform implements Transformable {
                 (float) Math.toRadians(z));
     }
 
+    public void setRotation(Vector3f v) {
+        getRotation().identity().rotateXYZ(
+                (float) Math.toRadians(v.x),
+                (float) Math.toRadians(v.y),
+                (float) Math.toRadians(v.z));
+    }
+
     public void addRotation(float x, float y, float z) {
         getRotation().rotateX((float) Math.toRadians(x));
         getRotation().rotateLocalY((float) Math.toRadians(y));

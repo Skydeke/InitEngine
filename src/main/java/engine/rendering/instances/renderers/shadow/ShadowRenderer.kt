@@ -47,7 +47,7 @@ internal class ShadowRenderer : Renderer3D<Entity>() {
                 for (entity in renderList[model]!!){
                     frustumIntersection.set(context.camera.projectionViewMatrix.mul(
                         entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<Entity>(this, entity, context.camera, i)
@@ -76,7 +76,7 @@ internal class ShadowRenderer : Renderer3D<Entity>() {
                 for (entity in renderList[model]!!){
                     frustumIntersection.set(context.camera.projectionViewMatrix.mul(
                         entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<Entity>(this, entity, context.camera, i)

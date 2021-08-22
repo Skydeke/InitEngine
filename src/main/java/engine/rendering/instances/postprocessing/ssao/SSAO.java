@@ -10,6 +10,8 @@ import engine.utils.libraryBindings.opengl.textures.parameters.MagFilterParamete
 import engine.utils.libraryBindings.opengl.textures.parameters.MinFilterParameter;
 import lombok.Getter;
 
+import static engine.rendering.abstracted.renderers.Renderer.getContext;
+
 /**
  * SCREEN-SPACED AMBIENT OCCLUSION
  * <p>
@@ -38,12 +40,12 @@ public class SSAO {
         preBlurConfigs.magFilter = MagFilterParameter.LINEAR;
         preBlurConfigs.minFilter = MinFilterParameter.LINEAR;
         preBlur = TextureAttachment.ofColour(0, preBlurConfigs);
-        preBlur.resize(pipeline.getResolution().x, pipeline.getResolution().y);
+        preBlur.resize(getContext().getResolution().x, getContext().getResolution().y);
         TextureConfigs targetConfigs = new TextureConfigs(FormatType.R16F, FormatType.RED, DataType.FLOAT);
         preBlurConfigs.magFilter = MagFilterParameter.LINEAR;
         preBlurConfigs.minFilter = MinFilterParameter.LINEAR;
         targetTexture = TextureAttachment.ofColour(0, targetConfigs);
-        targetTexture.resize(pipeline.getResolution().x, pipeline.getResolution().y);
+        targetTexture.resize(getContext().getResolution().x, getContext().getResolution().y);
         this.ssaoBlurShader = new SSAOBlurShader();
         this.ssaoShader = new SSAOShader();
         this.pipeline = pipeline;
@@ -63,7 +65,7 @@ public class SSAO {
     }
 
     public void resize() {
-        targetTexture.resize(pipeline.getResolution().x, pipeline.getResolution().y);
-        preBlur.resize(pipeline.getResolution().x, pipeline.getResolution().y);
+        targetTexture.resize(getContext().getResolution().x, getContext().getResolution().y);
+        preBlur.resize(getContext().getResolution().x, getContext().getResolution().y);
     }
 }

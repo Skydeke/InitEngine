@@ -1,17 +1,18 @@
 package engine.rendering.instances.camera;
 
+import engine.architecture.componentsystem.GameComponent;
 import engine.architecture.scene.SceneContext;
+import engine.architecture.system.AppContext;
 import engine.architecture.system.GameState;
 import engine.rendering.abstracted.camera.CameraProjection;
 import engine.utils.libraryBindings.maths.Angle;
 import engine.utils.libraryBindings.maths.joml.Matrix4f;
 import engine.utils.libraryBindings.maths.joml.Matrix4fc;
-import engine.utils.libraryBindings.maths.objects.Transform;
 import engine.utils.libraryBindings.maths.utils.Matrix4;
 import engine.utils.property.FloatProperty;
 import lombok.Getter;
 
-public class Camera {
+public class Camera extends GameComponent {
 
     private final Matrix4f projectionViewMatrix = Matrix4.createIdentity();
     private final Matrix4f projectionMatrix = Matrix4.createIdentity();
@@ -24,15 +25,11 @@ public class Camera {
     private CameraController controller = CameraController.NONE;
     private CameraProjection projection = new PerspectiveProjection();
 
-    private final Transform transform;
-
-    private boolean enabled = true;
     @Getter
     private final SceneContext context;
 
     public Camera(SceneContext context) {
         this.context = context;
-        this.transform = new Transform();
         getTransform().setRotation(Angle.degrees(0), Angle.degrees(0), Angle.degrees(0));
     }
 
@@ -53,6 +50,10 @@ public class Camera {
         if (GameState.getCurrent() == GameState.GAME) {
             controller.control(this);
         }
+        AppContext.instance().getSceneContext().getScene()
+                .getSky().getTransform().setPosition(
+                        getTransform().getPosition().x, getTransform().getPosition().y, getTransform().getPosition().z);
+
         updateProjectionMatrix();
         updateViewMatrix();
         updateProjectionViewMatrix();
@@ -65,16 +66,6 @@ public class Camera {
     public void setProjection(CameraProjection projection) {
         this.projection = projection;
         updateProjectionMatrix();
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    /* ========= TRANSFORM ========= */
-
-    public Transform getTransform() {
-        return transform;
     }
 
 
@@ -134,7 +125,7 @@ public class Camera {
     /* ========= MATRICES ========= */
 
     public void updateViewMatrix() {
-        Matrix4.ofView(transform.getPosition(), transform.getRotation(), viewMatrix);
+        Matrix4.ofView(getTransform().getPosition(), getTransform().getRotation(), viewMatrix);
     }
 
     public void updateProjectionMatrix() {
@@ -147,7 +138,7 @@ public class Camera {
     }
 
     public Matrix4fc getViewMatrix() {
-        return enabled ? viewMatrix : Matrix4.pool.poolAndGive().identity();
+        return viewMatrix;
     }
 
     public Matrix4fc getProjectionMatrix() {

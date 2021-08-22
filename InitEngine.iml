@@ -6,8 +6,8 @@
         <compilerSettings />
         <compilerArguments>
           <option name="jvmTarget" value="9" />
-          <option name="languageVersion" value="1.4" />
-          <option name="apiVersion" value="1.4" />
+          <option name="languageVersion" value="1.5" />
+          <option name="apiVersion" value="1.5" />
           <option name="pluginOptions">
             <array />
           </option>
@@ -113,8 +113,8 @@
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-jemalloc:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.joml:joml:1.9.24" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:natives-windows:3.2.3" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.10" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.5.21" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.21" level="project" />
   </component>
 </module>

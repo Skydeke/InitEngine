@@ -127,7 +127,7 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
                             entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
                         )
                     )
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<PBRModel>(this, entity, context.camera, i)
@@ -158,7 +158,7 @@ internal class PBRRenderer : Renderer3D<PBRModel>() {
                             entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()
                         )
                     )
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<PBRModel>(this, entity, context.camera, i)

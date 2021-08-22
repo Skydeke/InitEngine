@@ -14,7 +14,6 @@ import engine.rendering.instances.renderers.pbr.PBRDeferredShader;
 import engine.rendering.instances.renderers.pbr.PBRRenderer;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
 import engine.rendering.instances.renderers.sky.SkyRenderer;
-import engine.utils.libraryBindings.maths.joml.Vector2i;
 import engine.utils.libraryBindings.opengl.constants.DataType;
 import engine.utils.libraryBindings.opengl.constants.FormatType;
 import engine.utils.libraryBindings.opengl.fbos.Fbo;
@@ -84,7 +83,7 @@ public class Pipeline {
          * |_|__________|__________|__________|__________|
          *
          */
-        pbrFBO = Fbo.create(getResolution().x, getResolution().y);
+        pbrFBO = Fbo.create(getContext().getResolution().x, getContext().getResolution().y);
         TextureConfigs posConfigs = new TextureConfigs(FormatType.RGBA32F, FormatType.RGBA, DataType.FLOAT);
         posConfigs.magFilter = MagFilterParameter.LINEAR;
         posConfigs.minFilter = MinFilterParameter.LINEAR;
@@ -138,10 +137,6 @@ public class Pipeline {
         postProcessing.resize(getContext().getResolution());
     }
 
-    public Vector2i getResolution() {
-        return context.getResolution();
-    }
-
     public void draw() {
         context.getScene().processEffects(this);
         // call sub-render method
@@ -169,7 +164,7 @@ public class Pipeline {
 
 
             // calculate ssao
-//            if (Config.instance().isSsao())
+            if (Config.instance().isSsao())
                 ssaoPass.compute(
                         pbrFBO.getAttachments().get(0).getTexture(),
                         pbrFBO.getAttachments().get(1).getTexture());
@@ -189,6 +184,7 @@ public class Pipeline {
                         pbrFBO.getAttachments().get(0).getTexture(),
                         pbrFBO.getAttachments().get(1).getTexture(),
                         ssaoPass.getTargetTexture().getTexture());
+            pbrFBO.unbind(FboTarget.DRAW_FRAMEBUFFER);
 
             SceneFbo.getInstance().bind(FboTarget.DRAW_FRAMEBUFFER);
             postProcessing.processToFbo(SceneFbo.getInstance(), context.getOutputData());
@@ -199,9 +195,7 @@ public class Pipeline {
             Window.instance().resetViewport();
 
             if (Config.instance().isDebugLayer()) {
-                Window.instance().resizeViewport(getResolution());
                 DebugRenderer.getInstance().render(context);
-                Window.instance().resetViewport();
             }
 
             for (Renderer2D r : renderers2D) {

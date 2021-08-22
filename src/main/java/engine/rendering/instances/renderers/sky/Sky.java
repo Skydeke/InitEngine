@@ -6,10 +6,11 @@ import engine.fileLoaders.ModelLoader;
 
 public class Sky extends Entity {
 
-    public Sky() {
-        super(ModelLoader.cube);
+    public Sky() throws Exception {
+//        super(ModelLoader.load("/models/primitives/dome.obj"));
+        super(ModelLoader.sphere);
         getModel().getMeshes()[0].setMaterial(Material.builder().deactivateBackFaceCulling().create());
-        getTransform().setScale(2800);
+        getTransform().setScale(1000);
     }
 
     @Override

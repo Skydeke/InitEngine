@@ -14,6 +14,7 @@ import engine.architecture.system.SimpleApplication;
 import engine.architecture.system.Window;
 import engine.fileLoaders.ModelLoader;
 import engine.rendering.instances.camera.FlyCamera;
+import engine.rendering.instances.renderers.UUIDRenderer;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
@@ -74,7 +75,7 @@ public class Game extends SimpleApplication {
         Node matTesters = new Node();
         Model m = ModelLoader.load("/models/mat_test.obj");
 
-        PBRModel m1 = new PBRModel(m, new PBRMaterial(0.15f, 0.488f, 0.5f, 0.95f, 0f));
+        PBRModel m1 = new PBRModel(m, new PBRMaterial(15f, 0.488f, 0.5f, 0.95f, 0f));
         m1.getTransform().setPosition(0, 0, -15);
         m1.getTransform().setScale(2f);
         PBRModel m2 = new PBRModel(m, new PBRMaterial("images/chipped_paint/", false));
@@ -88,6 +89,7 @@ public class Game extends SimpleApplication {
             public void process() {
                 EntityRenderer.getInstance().process(this);
                 ShadowRenderer.getInstance().process(this);
+                UUIDRenderer.getInstance().process(this);
             }
         };
         e.getTransform().setPosition(70, 0, 0);
@@ -127,13 +129,12 @@ public class Game extends SimpleApplication {
 
 
         LightManager.setSun(new DirectionalLight());
-        LightManager.getSun().setIntensity(1.2f).getTransform().setRotation(0, -1, 0);
+        LightManager.getSun().setIntensity(1.2f).getTransform().setRotation(0, -0.5f, 0);
 
         context.getScene().addChildren(sceneRoot, lights);
 
         context.getCamera().setController(new FlyCamera());
 //        context.getCamera().setController(new ThirdPersonCamera(dragon1.getTransform(), context.getCamera()));
-
     }
 
 
@@ -177,7 +178,6 @@ public class Game extends SimpleApplication {
             q += this.duration;
 
         lights.getTransform().setPosition((float) (Math.sin(q / 4)) * 20, 1f, 0f);
-        LightManager.getSun().getTransform().setRotation((float) (Math.sin(t) * 0.5), 0.5f, (float) -(Math.cos(t) * 0.5));
     }
 
     private void buildFloor() {

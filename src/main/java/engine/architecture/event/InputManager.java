@@ -5,6 +5,7 @@ import engine.architecture.system.AppContext;
 import engine.architecture.system.Window;
 import engine.utils.libraryBindings.maths.joml.Vector2d;
 import engine.utils.libraryBindings.maths.joml.Vector2f;
+import engine.utils.libraryBindings.maths.joml.Vector2i;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -240,6 +241,10 @@ public class InputManager {
         return new Vector2f(
                 (float) cursorPos.x / (float) Window.instance().getWidth(),
                 1f - (float) cursorPos.y / (float) Window.instance().getHeight());
+    }
+
+    public Vector2i getCursorPosPixel() {
+        return new Vector2i((int) cursorPos.x, (int) cursorPos.y);
     }
 
     public Vector2f getCursorDelta(){

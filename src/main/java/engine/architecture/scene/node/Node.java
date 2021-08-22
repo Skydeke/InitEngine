@@ -13,11 +13,6 @@ import java.util.Objects;
 public class Node {
 
     public int UUID;
-
-    @Setter
-    private boolean activated = true;
-    @Getter
-    private boolean selected = false;
     @Getter
     @Setter
     private boolean hidden = false;
@@ -77,33 +72,17 @@ public class Node {
 
     public void update() {
         for (Node child : children)
-            if (child.isActivated()) child.update();
+            child.update();
     }
 
     public void process() {
-        children.stream().filter(Node::isActivated).forEach(Node::process);
+        children.forEach(Node::process);
     }
 
     public void cleanup() {
         children.forEach(Node::cleanup);
     }
 
-    public boolean isActivated() {
-        return activated;
-    }
-
-    public void activate() {
-        activated = true;
-    }
-
-    public void deactivate() {
-        activated = false;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-        for (Node child : children) child.setSelected(selected);
-    }
 
     @FunctionalInterface
     public interface Condition {

@@ -12,7 +12,6 @@ internal class SkyRenderer : Renderer3D<Sky>() {
 
     init {
         this.shadersProgram = ShadersProgram.create(VERT_FILE, FRAG_FILE)
-
         shadersProgram.addPerRenderUniform(object : UniformValueProperty<Sky>("viewProjectionMatrix") {
             override fun getUniformValue(state: RenderState<Sky>): UniformValue {
                 return getContext().camera.projectionViewMatrix

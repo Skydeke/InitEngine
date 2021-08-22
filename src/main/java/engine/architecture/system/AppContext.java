@@ -1,10 +1,12 @@
 package engine.architecture.system;
 
 import engine.architecture.scene.SceneContext;
+import engine.architecture.scene.light.LightManager;
 import engine.utils.libraryBindings.opengl.fbos.SceneFbo;
 import engine.utils.libraryBindings.opengl.textures.Texture;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 import glm_.vec2.Vec2;
+import glm_.vec3.Vec3;
 import glm_.vec4.Vec4;
 import imgui.ImGui;
 import imgui.MutableProperty0;
@@ -33,6 +35,7 @@ public class AppContext {
 
     private final MutableProperty0<Boolean> showShadowMapInfoWindow = new MutableProperty0<>(false);
     private final MutableProperty0<Boolean> showSceneInfoWindow = new MutableProperty0<>(false);
+    private final Vec3 v = new Vec3(0, 0.007f, -0.015f);
 
     public static AppContext instance() {
         if (instance == null)
@@ -56,7 +59,7 @@ public class AppContext {
         ContextKt.setGImGui(context);
         GlfwWindow glfwWindow = GlfwWindow.from(Window.instance().getHandle());
         glfwWindow.makeContextCurrent();
-        implGlfw = new ImplGlfw(glfwWindow, true, null);
+        implGlfw = new ImplGlfw(glfwWindow, false, null);
         implGl3 = new ImplGL3();
         imGui.styleColorsDark(null);
         io = imGui.getIo();
@@ -72,7 +75,6 @@ public class AppContext {
             sceneContext.setResolution(Window.instance().getResolution());
             Window.instance().setResized(false);
         }
-
         sceneContext.update();
     }
 
@@ -138,6 +140,9 @@ public class AppContext {
                     new Vec4(0.0f));
             imGui.end();
         }
+        imGui.dragVec3("Label", v, 0.001f, -1, 1, "%.1111f", 0);
+        v.normalize();
+        LightManager.getSun().getTransform().setRotation(v.getX(), v.getY(), v.getZ());
 
         imGui.render();
         implGl3.renderDrawData(Objects.requireNonNull(imGui.getDrawData()));

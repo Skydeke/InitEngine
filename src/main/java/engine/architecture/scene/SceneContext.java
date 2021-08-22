@@ -17,22 +17,17 @@ import lombok.Setter;
 
 public class SceneContext {
 
-    private Camera camera;
     @Getter
     @Setter
     private ClipPlane clipPlane = ClipPlane.NONE;
     // scenegraph of 3D scene
     @Getter
     private Scenegraph scene;
-    @Getter
-    private Picking picking;
     // uses scene to create texture of 3D scene
     @Getter
     public Pipeline pipeline;
     @Setter
     private RenderOutputData outputData;
-    @Getter
-    private SelectionManager selectionManager;
     private Vector2i resolution;
 
     public SceneContext() {
@@ -54,7 +49,6 @@ public class SceneContext {
 
         // now update scene with proper inputs reaching the
         scene.update();
-        camera.update();
     }
 
     /**
@@ -71,20 +65,17 @@ public class SceneContext {
             this.resolution.x = size.x;
             this.resolution.y = size.y;
             pipeline.resize();
-            picking.getUUIDmap().resize(size.x, size.y);
         }
     }
 
     public void init() {
-        this.camera = new Camera(this);
+        Camera camera = new Camera(this);
         this.scene = new Scenegraph(camera);
         this.resolution = new Vector2i(0, 0);
-        this.picking = new Picking(this);
-        this.selectionManager = new SelectionManager();
     }
 
     public Camera getCamera(){
-        return camera;
+        return scene.getCamera();
     }
 
     public Vector2i getResolution(){

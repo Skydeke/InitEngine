@@ -1,9 +1,8 @@
 package engine.architecture.componentsystem;
 
 import engine.architecture.scene.node.Node;
-import engine.utils.libraryBindings.maths.objects.Transform;
 
-public abstract class GameComponent {
+public abstract class GameComponent extends Node{
 
     private Node parent;
     private ComponentGroup group;
@@ -77,23 +76,5 @@ public abstract class GameComponent {
         if (group == null){
             return false;
         }else return group.getNullable(compClass) != null;
-    }
-
-    /**
-     * Returns the transform of the game object
-     *
-     * @return the transform
-     */
-    protected final Transform getTransform() {
-        return getParent().getTransform();
-    }
-
-    /**
-     * Returns the parent of the game object
-     *
-     * @return the parent of the game object
-     */
-    protected final Node getParent() {
-        return parent;
     }
 }

@@ -37,6 +37,14 @@ public class CameraKeyboardMovement extends CameraController {
                 InputManager.instance().isKeyHeld(GLFW.GLFW_KEY_LEFT_SHIFT)) {
             deltaPosition.add(0, -speeds.y, 0);
         }
+        if (InputManager.instance().isKeyPressed(GLFW.GLFW_KEY_M) ||
+                InputManager.instance().isKeyHeld(GLFW.GLFW_KEY_M)) {
+            deltaPosition.add(0, +speeds.y*100, 0);
+        }
+        if (InputManager.instance().isKeyPressed(GLFW.GLFW_KEY_N) ||
+                InputManager.instance().isKeyHeld(GLFW.GLFW_KEY_N)) {
+            deltaPosition.add(0, -speeds.y*100, 0);
+        }
 //        deltaPosition.rotateY(camera.getTransform().getRotation().y);
 //        deltaPosition.rotateX(camera.getTransform().getRotation().x);
 //        deltaPosition.rotateZ(camera.getTransform().getRotation().z);

@@ -33,7 +33,7 @@ public class Window {
     @Getter
     Vector2d lockedcursorPos = new Vector2d(0, 0);
     @Getter
-    private int height, width;
+    public int height, width;
     @Getter
     private long handle;
     @Getter

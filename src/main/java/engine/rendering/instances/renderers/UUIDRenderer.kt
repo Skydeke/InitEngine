@@ -1,11 +1,11 @@
 package engine.rendering.instances.renderers
 
-import engine.architecture.scene.Picking
 import engine.architecture.scene.SceneContext
 import engine.architecture.scene.entity.Entity
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
 import engine.utils.libraryBindings.maths.joml.FrustumIntersection
+import engine.utils.libraryBindings.maths.joml.Vector3f
 import engine.utils.libraryBindings.maths.utils.Matrix4
 import engine.utils.libraryBindings.opengl.shaders.RenderState
 import engine.utils.libraryBindings.opengl.shaders.ShadersProgram
@@ -26,11 +26,11 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
 
         shadersProgram.addPerInstanceUniform(object : UniformValueProperty<Entity>("color") {
             override fun getUniformValue(state: RenderState<Entity>): UniformValue {
-//                return state.instance.color
-                return Picking.getUUIDColor(state.instance.uuid)
+//                return Picking.getUUIDColor(state.instance.uuid)
+                return Vector3f(0f,0f,0f)
             }
         })
-        shadersProgram.addPerInstanceUniform(object : UniformValueProperty<Entity>("projectionMatrix") {
+        shadersProgram.addPerRenderUniform(object : UniformValueProperty<Entity>("projectionMatrix") {
             override fun getUniformValue(state: RenderState<Entity>): UniformValue {
                 return getContext().camera.projectionMatrix
             }
@@ -40,7 +40,7 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
                 return state.instance.transform.transformationMatrix
             }
         })
-        shadersProgram.addPerInstanceUniform(object : UniformValueProperty<Entity>("viewMatrix") {
+        shadersProgram.addPerRenderUniform(object : UniformValueProperty<Entity>("viewMatrix") {
             override fun getUniformValue(state: RenderState<Entity>): UniformValue {
                 return getContext().camera.viewMatrix
             }
@@ -57,12 +57,12 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
         shadersProgram.updatePerRenderUniforms(renderState)
 
         for (model in renderList.keys) {
-            for (i in 0..model.meshes.size) {
+            for (i in model.meshes.indices) {
                 model.bindAndConfigure(i)
                 for (entity in renderList[model]!!){
                     frustumIntersection.set(context.camera.projectionViewMatrix.mul(
                         entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
-                    if (!checkRenderPass(entity) && entity.isActivated) {
+                    if (!checkRenderPass(entity)) {
                         continue
                     }
                     val instanceState = RenderState<Entity>(this, entity, context.camera, i)
@@ -91,7 +91,7 @@ internal class UUIDRenderer : Renderer3D<Entity>() {
                 for (entity in renderList[model]!!){
                     frustumIntersection.set(context.camera.projectionViewMatrix.mul(
                         entity.transform.transformationMatrix, Matrix4.pool.poolAndGive()))
-                    if (!checkRenderPass(entity) && entity.isActivated && condition.isvalid(entity)) {
+                    if (!checkRenderPass(entity) && condition.isvalid(entity)) {
                         continue
                     }
                     val instanceState = RenderState<Entity>(this, entity, context.camera, i)
