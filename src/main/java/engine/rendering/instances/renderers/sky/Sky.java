@@ -10,7 +10,7 @@ public class Sky extends Entity {
 //        super(ModelLoader.load("/models/primitives/dome.obj"));
         super(ModelLoader.sphere);
         getModel().getMeshes()[0].setMaterial(Material.builder().deactivateBackFaceCulling().create());
-        getTransform().setScale(1000);
+        getTransform().setScale(100);
     }
 
     @Override

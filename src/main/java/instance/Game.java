@@ -19,6 +19,7 @@ import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
 import engine.rendering.instances.renderers.pbr.PBRModel;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
+import engine.utils.libraryBindings.maths.objects.Transform;
 import engine.utils.libraryBindings.opengl.utils.GlUtils;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -129,7 +130,7 @@ public class Game extends SimpleApplication {
 
 
         LightManager.setSun(new DirectionalLight());
-        LightManager.getSun().setIntensity(1.2f).getTransform().setRotation(0, -0.5f, 0);
+        LightManager.getSun().setIntensity(5f).getTransform().setRotation(0, -0.5f, 0);
 
         context.getScene().addChildren(sceneRoot, lights);
 
@@ -143,9 +144,7 @@ public class Game extends SimpleApplication {
 
     @Override
     public void onUpdate(double timeDelta) {
-        if (InputManager.instance().isKeyHeld(GLFW_KEY_T)) {
-            t = t + duration;
-        }
+        t = t + duration;
         if (InputManager.instance().isKeyReleased(GLFW_KEY_E)) {
             move = !move;
         }
@@ -176,8 +175,21 @@ public class Game extends SimpleApplication {
         LightManager.getSun().update();
         if (move)
             q += this.duration;
-
+//        LightManager.getSun().getTransform().setRotation(0, (float) (-0.007*Math.cos(Math.PI*2/24*t)), -0.043f);
+        Transform sunLocation = LightManager.getSun().getTransform();
+        sunLocation.setRotation(0, clamp(0, 1, (float) Math.sin(t)), (float) Math.cos(t));
         lights.getTransform().setPosition((float) (Math.sin(q / 4)) * 20, 1f, 0f);
+    }
+
+    public float clamp(float min, float max, float v){
+        if (v>min && v<max){
+            return v;
+        }else if (v< min){
+            return min;
+        }else if (v> max){
+            return max;
+        }
+        return v;
     }
 
     private void buildFloor() {

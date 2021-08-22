@@ -1,6 +1,7 @@
 package engine.rendering.instances.renderers.sky
 
 import engine.architecture.scene.SceneContext
+import engine.architecture.scene.light.LightManager
 import engine.architecture.scene.node.Node
 import engine.rendering.abstracted.renderers.Renderer3D
 import engine.utils.libraryBindings.opengl.shaders.*
@@ -25,6 +26,17 @@ internal class SkyRenderer : Renderer3D<Sky>() {
         shadersProgram.addPerInstanceUniform(object : UniformFloatProperty<Sky>("scale") {
             override fun getUniformValue(state: RenderState<Sky>): Float {
                 return state.instance.transform.scale.y
+            }
+        })
+
+        shadersProgram.addPerInstanceUniform(object : UniformValueProperty<Sky>("sun_direction") {
+            override fun getUniformValue(state: RenderState<Sky>): UniformValue {
+                return LightManager.getSun().transform.eulerAngles
+            }
+        })
+        shadersProgram.addPerInstanceUniform(object : UniformFloatProperty<Sky>("sun_intensity") {
+            override fun getUniformValue(state: RenderState<Sky>): Float {
+                return LightManager.getSun().intensity
             }
         })
     }

@@ -6,6 +6,7 @@ layout (location = 2) in vec3 norm;
 
 out vec3 fragPos;
 out float height;
+out vec2 pass_uv;
 
 uniform mat4 modelMatrix;
 uniform mat4 viewProjectionMatrix;
@@ -15,6 +16,7 @@ void main(){
     fragPos = normalize(pos);
     vec4 worldpos = modelMatrix * vec4(pos, 1);
     height = worldpos.y;
+    pass_uv = uv;
     gl_Position = viewProjectionMatrix * worldpos;
 
 }
