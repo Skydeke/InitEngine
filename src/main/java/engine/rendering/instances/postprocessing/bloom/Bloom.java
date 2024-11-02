@@ -9,26 +9,26 @@ import engine.rendering.instances.postprocessing.mincolour.MinColour;
 
 public class Bloom extends ComposedPostProcessor implements PostProcessor {
 
-    private final Combine combine;
+  private final Combine combine;
 
-    private Bloom(MinColour minColour, GaussianBlur gaussianBlur, Combine combine) {
-        super(minColour, gaussianBlur, combine);
-        this.combine = combine;
-    }
+  private Bloom(MinColour minColour, GaussianBlur gaussianBlur, Combine combine) {
+    super(minColour, gaussianBlur, combine);
+    this.combine = combine;
+  }
 
-    public Bloom(float r, float g, float a) {
-        this(new MinColour(r, g, a), new GaussianBlur(16, 4), new Combine(1, 1.2f));
-    }
+  public Bloom(float r, float g, float a) throws Exception {
+    this(new MinColour(r, g, a), new GaussianBlur(16, 4), new Combine(1, 1.2f));
+  }
 
-    public static Bloom create(float r, float g, float a) throws Exception {
-        final MinColour minColour = new MinColour(r, g, a);
-        final GaussianBlur gaussianBlur = new GaussianBlur(16, 4);
-        final Combine combine = new Combine(1, 1.2f);
-        return new Bloom(minColour, gaussianBlur, combine);
-    }
+  public static Bloom create(float r, float g, float a) throws Exception {
+    final MinColour minColour = new MinColour(r, g, a);
+    final GaussianBlur gaussianBlur = new GaussianBlur(16, 4);
+    final Combine combine = new Combine(1, 1.2f);
+    return new Bloom(minColour, gaussianBlur, combine);
+  }
 
-    @Override
-    public void beforeProcess(RenderOutputData postProcessingData) {
-        combine.setCombination(postProcessingData.getColour());
-    }
+  @Override
+  public void beforeProcess(RenderOutputData postProcessingData) {
+    combine.setCombination(postProcessingData.getColour());
+  }
 }

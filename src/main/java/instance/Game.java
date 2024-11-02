@@ -14,6 +14,13 @@ import engine.architecture.system.SimpleApplication;
 import engine.architecture.system.Window;
 import engine.fileLoaders.ModelLoader;
 import engine.rendering.instances.camera.FlyCamera;
+import engine.rendering.instances.postprocessing.bloom.Bloom;
+import engine.rendering.instances.postprocessing.celshading.CelShading;
+import engine.rendering.instances.postprocessing.contrast.Contrast;
+import engine.rendering.instances.postprocessing.radialblur.RadialBlur;
+import engine.rendering.instances.postprocessing.ssr.SSRP;
+import engine.rendering.instances.postprocessing.hdr.Hdr;
+import engine.rendering.instances.postprocessing.gammacorrection.GammaCorrection;
 import engine.rendering.instances.renderers.UUIDRenderer;
 import engine.rendering.instances.renderers.entity.EntityRenderer;
 import engine.rendering.instances.renderers.pbr.PBRMaterial;
@@ -56,6 +63,8 @@ public class Game extends SimpleApplication {
     // renderer.getSceneContext().getPipeline().getPostProcessing().add(new Hdr());
     // renderer.getSceneContext().getPipeline().getPostProcessing().add(new
     // RadialBlur());
+    // renderer.getSceneContext().getPipeline().getPostProcessing().add(new
+    // GammaCorrection());
 
     Model cube = ModelLoader.load("/models/cube.gltf");
     PBRMaterial fu = new PBRMaterial("images/plastic_squares/", false);

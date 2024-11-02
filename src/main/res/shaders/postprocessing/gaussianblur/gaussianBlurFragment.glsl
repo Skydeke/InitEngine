@@ -2,9 +2,19 @@
 
 const int levels = 11;
 const int hlevels = levels / 2;
-const float[] blurLevels =
-    {0.0093, 0.028002, 0.065984, 0.121703, 0.175713, 0.198596, 0.175713, 0.121703, 0.065984, 0.028002, 0.0093};
-    //{1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels, 1.0/levels};
+const float[levels] blurLevels = float[]( 
+      0.0093,
+      0.028002,
+      0.065984,
+      0.121703,
+      0.175713,
+      0.198596,
+      0.175713,
+      0.121703,
+      0.065984,
+      0.028002,
+      0.0093
+    );
 
 out vec4 fragColour;
 

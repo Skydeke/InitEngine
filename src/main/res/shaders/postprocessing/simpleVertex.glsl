@@ -1,9 +1,11 @@
 #version 400
 
-const float positions[8] = {
-    -1, +1, -1, -1,
-    +1, +1, +1, -1
-};
+float positions[8] = float[](
+    -1.0, +1.0,
+    -1.0, -1.0,
+    +1.0, +1.0,
+    +1.0, -1.0
+);
 
 out vec2 texCoord;
 
