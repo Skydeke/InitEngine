@@ -12,7 +12,7 @@
     <!-- Jemalloc 3.2.3 crashes for some reason, so going with 3.2.2,
          best would be the same as LWJGL-version -->
     <properties>
-        <kotlin.version>1.5.21</kotlin.version>
+        <kotlin.version>2.0.21</kotlin.version>
         <lwjgl.version>3.2.3</lwjgl.version>
         <joml.version>1.9.24</joml.version>
         <imgui.version>1.79</imgui.version>
@@ -120,26 +120,26 @@
 
     <repositories>
         <repository>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>https://repo.maven.apache.org/maven2</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
             <id>sonatype</id>
             <name>Sonatype</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>central2</id>
+            <name>Central Repository</name>
+            <url>https://repo1.maven.org/maven2/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>scijava</id>
+            <url>https://maven.scijava.org/content/repositories/public/</url>
+        </repository>
+        <repository>
+            <id>kotlin-graphics-mary</id>
+            <url>https://raw.githubusercontent.com/kotlin-graphics/mary/master</url>
+        </repository>
+
+        <repository>
             <id>jitpack</id>
             <name>Jitpack</name>
             <url>https://jitpack.io</url>
@@ -148,15 +148,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio</artifactId>
+            <version>3.5</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
             <groupId>com.github.kotlin-graphics</groupId>
             <artifactId>imgui</artifactId>
             <version>${imgui.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
-            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.twelvemonkeys.imageio</groupId>
+                    <artifactId>imageio</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -238,9 +244,23 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/res</directory> <!-- Set your custom resource folder path here -->
+                <includes>
+                    <include>**/*</include> <!-- Include all files in this directory -->
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -303,5 +323,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -5,9 +5,11 @@ import engine.architecture.componentsystem.ComponentGroup;
 import engine.architecture.models.Model;
 import engine.architecture.scene.node.Node;
 import engine.rendering.abstracted.Processable;
+import lombok.Getter;
 
 public abstract class Entity extends Node implements ComponentBased, Processable {
 
+    @Getter
     private final Model model;
 
     private final ComponentGroup components = new ComponentGroup(this);

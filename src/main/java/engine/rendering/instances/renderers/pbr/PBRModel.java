@@ -4,11 +4,15 @@ import engine.architecture.models.Model;
 import engine.architecture.scene.entity.Entity;
 import engine.rendering.instances.renderers.UUIDRenderer;
 import engine.rendering.instances.renderers.shadow.ShadowRenderer;
+import lombok.Getter;
+import lombok.Setter;
 
 public class PBRModel extends Entity {
 
-    PBRMaterial material;
+    @Getter
+    private PBRMaterial material;
 
+    @Setter
     private float UVscalar = 1f;
 
     public PBRModel(Model mesh, PBRMaterial material) {
@@ -26,7 +30,4 @@ public class PBRModel extends Entity {
         return UVscalar;
     }
 
-    public void setUVscalar(float UVscalar) {
-        this.UVscalar = UVscalar;
-    }
 }
